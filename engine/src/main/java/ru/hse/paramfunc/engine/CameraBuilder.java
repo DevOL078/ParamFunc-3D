@@ -41,6 +41,7 @@ public class CameraBuilder {
 
         cameraGroup2 = new Group();
         cameraGroup2.getChildren().add(cameraGroup1);
+        // Устанавливаем камеры в центр пространства
         cameraGroup2.setTranslateX(50);
         cameraGroup2.setTranslateY(-50);
         cameraGroup2.setTranslateZ(-50);

@@ -4,13 +4,26 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.engine.CameraBuilder;
 import ru.hse.paramfunc.engine.SpaceSubScene;
+import ru.hse.paramfunc.parser.FunctionValues3DParser;
+import ru.hse.paramfunc.storage.FunctionValueStorage;
+
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class Test extends Application {
 
+    private final static String TEST_FILE_PATH = "./etc/test13-04-2020_23-31-56.txt";
+
     @Override
     public void start(Stage stage) throws Exception {
+        loadPoints();
+        System.out.println(FunctionValueStorage.getInstance().getPoints().stream()
+                .map(FunctionPoint::toString)
+                .collect(Collectors.joining("\n")));
+
         Group root = new Group();
         Scene scene = new Scene(root, 1024, 726, true);
         SpaceSubScene subScene = new SpaceSubScene(1024, 726);
@@ -19,38 +32,13 @@ public class Test extends Application {
         CameraBuilder cameraBuilder = new CameraBuilder();
         cameraBuilder.setUp(subScene, scene);
 
-//        scene.setOnKeyPressed(event -> {
-//            double change = 1.0;
-//            if (event.isShiftDown()) {
-//                change = 20.0;
-//            }
-//            KeyCode keycode = event.getCode();
-//            Camera camera = subScene.getCamera();
-//            if (keycode == KeyCode.W) {
-//                camera.setTranslateZ(camera.getTranslateZ() + change);
-//            }
-//            if (keycode == KeyCode.S) {
-//                camera.setTranslateZ(camera.getTranslateZ() - change);
-//            }
-//            if (keycode == KeyCode.A) {
-//                camera.setTranslateX(camera.getTranslateX() - change);
-//            }
-//            if (keycode == KeyCode.D) {
-//                camera.setTranslateX(camera.getTranslateX() + change);
-//            }
-//            if (keycode == KeyCode.E) {
-//                camera.setTranslateY(camera.getTranslateY() - change);
-//            }
-//            if (keycode == KeyCode.Q) {
-//                camera.setTranslateY(camera.getTranslateY() + change);
-//            }
-//            System.out.println(camera.getTranslateX() + " " + camera.getTranslateY() + " " + camera.getTranslateZ());
-//        });
-
-
         root.getChildren().add(subScene);
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void loadPoints() throws IOException {
+        FunctionValues3DParser.getInstance().parse(TEST_FILE_PATH);
     }
 
     public static void main(String[] args) {

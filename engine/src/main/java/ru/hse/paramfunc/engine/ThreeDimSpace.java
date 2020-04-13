@@ -19,14 +19,12 @@ public class ThreeDimSpace extends Group {
 
 
     public ThreeDimSpace() {
-        super();
         //Создание вспомогательных плоскостей OXY, OYZ, OXZ
         this.surfaceGroup = new Group();
         super.getChildren().add(this.surfaceGroup);
-        initSurfaces();
     }
 
-    private void initSurfaces() {
+    public void setUp() {
         oxy = new Rectangle3D(
                 new SpacePoint(100, 0, 0),
                 new SpacePoint(100, 100, 0),
@@ -58,7 +56,6 @@ public class ThreeDimSpace extends Group {
         oyz.addLabel("0.8", l18, -90, -7, 1, 8);
         oyz.addLabel("0.9", l19, -90, -7, 1, 8);
         oyz.addAllNodes(l11, l12, l13, l14, l15, l16, l17, l18, l19);
-
         ozx = new Rectangle3D(
                 new SpacePoint(100, 0, 0),
                 new SpacePoint(100, 0, 100),
