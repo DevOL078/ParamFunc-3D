@@ -66,6 +66,12 @@ public class CameraBuilder {
             Bounds bounds = cameraGroup2.localToScene(cameraGroup2.getBoundsInLocal());
             scene.onCameraMove(bounds);
         });
+        rootScene.setOnScroll(e -> {
+            camera.setTranslateZ(camera.getTranslateZ() + 10 * (e.getDeltaY() > 0 ? 1 : -1));
+
+            Bounds bounds = cameraGroup2.localToScene(cameraGroup2.getBoundsInLocal());
+            scene.onCameraMove(bounds);
+        });
 
         scene.setOnMouseDragged(event -> {
             oldPosX = posX;

@@ -6,7 +6,11 @@ import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Sphere;
+import org.fxyz3d.geometry.Point3D;
+import ru.hse.paramfunc.element.Line3D;
 
 public class SpaceSubScene extends SubScene {
 
@@ -16,6 +20,7 @@ public class SpaceSubScene extends SubScene {
 
     private ThreeDimSpace threeDimSpace;
     private PointsGroup pointsGroup;
+    private Group additionalLinesGroup;
     private PerspectiveCamera camera;
 
     public SpaceSubScene(double v, double v1) {
@@ -25,8 +30,9 @@ public class SpaceSubScene extends SubScene {
         this.threeDimSpace.setUp();
         this.pointsGroup = new PointsGroup();
         this.pointsGroup.setUp();
+        this.additionalLinesGroup = new Group();
 
-        sceneGroup.getChildren().addAll(this.threeDimSpace, this.pointsGroup);
+        sceneGroup.getChildren().addAll(this.threeDimSpace, this.pointsGroup, this.additionalLinesGroup);
         this.camera = new PerspectiveCamera(true);
     }
 
@@ -40,6 +46,8 @@ public class SpaceSubScene extends SubScene {
         super.setCamera(camera);
 
         super.setFill(Paint.valueOf("#343030"));
+
+        addAdditionalLinesForPoints();
 
         AnimationTimer frameRateMeter = new AnimationTimer() {
 
@@ -65,6 +73,34 @@ public class SpaceSubScene extends SubScene {
 
     public void onCameraMove(Bounds bounds) {
         this.threeDimSpace.updateSurfaceVisibility(bounds);
+    }
+
+    private void addAdditionalLinesForPoints() {
+        pointsGroup.getChildren().forEach(node -> {
+            Sphere point = (Sphere) node;
+            point.setOnMouseEntered(e -> {
+                double pointX = point.getTranslateX();
+                double pointY = point.getTranslateY();
+                double pointZ = point.getTranslateZ();
+
+                float visibleX = this.threeDimSpace.getVisibleOYZCoordinate();
+                float visibleY = this.threeDimSpace.getVisibleOXYCoordinate();
+                float visibleZ = this.threeDimSpace.getVisibleOZXCoordinate();
+
+                Point3D targetPoint = new Point3D(pointX, pointY, pointZ);
+                Point3D line1End = new Point3D(pointX, pointY, visibleZ);
+                Point3D line2End = new Point3D(pointX, visibleY, pointZ);
+                Point3D line3End = new Point3D(visibleX, pointY, pointZ);
+
+                Line3D line1 = new Line3D(targetPoint, line1End, Color.YELLOW, 0.3f);
+                Line3D line2 = new Line3D(targetPoint, line2End, Color.YELLOW, 0.3f);
+                Line3D line3 = new Line3D(targetPoint, line3End, Color.YELLOW, 0.3f);
+                this.additionalLinesGroup.getChildren().addAll(line1, line2, line3);
+            });
+            point.setOnMouseExited(e -> {
+                this.additionalLinesGroup.getChildren().clear();
+            });
+        });
     }
 
 }
