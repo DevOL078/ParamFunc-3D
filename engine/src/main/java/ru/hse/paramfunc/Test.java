@@ -4,14 +4,11 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.engine.CameraBuilder;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.parser.FunctionValues3DParser;
-import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 public class Test extends Application {
 
@@ -20,9 +17,6 @@ public class Test extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         loadPoints();
-        System.out.println(FunctionValueStorage.getInstance().getPoints().stream()
-                .map(FunctionPoint::toString)
-                .collect(Collectors.joining("\n")));
 
         Group root = new Group();
         Scene scene = new Scene(root, 1024, 726, true);
