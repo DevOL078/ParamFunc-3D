@@ -10,7 +10,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Sphere;
 import org.fxyz3d.geometry.Point3D;
+import ru.hse.paramFunc.animation.Animation;
+import ru.hse.paramFunc.animation.DynamicLinesAnimation;
+import ru.hse.paramFunc.animation.FlyingPointAnimation;
 import ru.hse.paramfunc.element.Line3D;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpaceSubScene extends SubScene {
 
@@ -21,7 +27,11 @@ public class SpaceSubScene extends SubScene {
     private ThreeDimSpace threeDimSpace;
     private PointsGroup pointsGroup;
     private Group additionalLinesGroup;
+    private Group animationGroup;
     private PerspectiveCamera camera;
+
+    private Map<String, Animation> animationMap;
+    private Animation currentAnimation;
 
     public SpaceSubScene(double v, double v1) {
         super(new Group(), v, v1, true, SceneAntialiasing.DISABLED);
@@ -31,12 +41,21 @@ public class SpaceSubScene extends SubScene {
         this.pointsGroup = new PointsGroup();
         this.pointsGroup.setUp();
         this.additionalLinesGroup = new Group();
+        this.animationGroup = new Group();
+        this.animationMap = new HashMap<>();
 
-        sceneGroup.getChildren().addAll(this.threeDimSpace, this.pointsGroup, this.additionalLinesGroup);
+        sceneGroup.getChildren().addAll(
+                this.threeDimSpace,
+                this.pointsGroup,
+                this.additionalLinesGroup,
+                this.animationGroup);
         this.camera = new PerspectiveCamera(true);
     }
 
     public void setUp() {
+        animationMap.put("Flying point", new FlyingPointAnimation("Flying point"));
+        animationMap.put("Dynamic lines", new DynamicLinesAnimation("Dynamic lines"));
+
         camera.setTranslateX(0);
         camera.setTranslateY(0);
         camera.setTranslateZ(0);
@@ -73,6 +92,52 @@ public class SpaceSubScene extends SubScene {
 
     public void onCameraMove(Bounds bounds) {
         this.threeDimSpace.updateSurfaceVisibility(bounds);
+    }
+
+    public void setCurrentAnimation(String name) {
+        if(this.currentAnimation != null) {
+            this.currentAnimation.reset();
+        }
+        if(!this.animationGroup.getChildren().isEmpty()) {
+            this.animationGroup.getChildren().clear();
+        }
+        Animation animation = this.animationMap.get(name);
+        if(animation == null) {
+            throw new IllegalStateException("Animation with name " + name + " was not found");
+        }
+        animation.init();
+        this.currentAnimation = animation;
+
+        System.out.println("Set current animation: " + name);
+    }
+
+    public void startCurrentAnimation() {
+        if(this.currentAnimation == null) {
+            throw new IllegalStateException("Current animation is null");
+        }
+        this.currentAnimation.start();
+        if(this.animationGroup.getChildren().isEmpty()) {
+            this.animationGroup.getChildren().add(this.currentAnimation.getGroup());
+        }
+
+        System.out.println("Start animation: " + this.currentAnimation.getName());
+    }
+
+    public void pauseCurrentAnimation() {
+        if(this.currentAnimation == null) {
+            throw new IllegalStateException("Current animation is null");
+        }
+        this.currentAnimation.pause();
+    }
+
+    public void stopCurrentAnimation() {
+        if(this.currentAnimation == null) {
+            throw new IllegalStateException("Current animation is null");
+        }
+        this.currentAnimation.stop();
+        this.animationGroup.getChildren().remove(this.currentAnimation.getGroup());
+
+        System.out.println("Stop animation: " + this.currentAnimation.getName());
     }
 
     private void addAdditionalLinesForPoints() {

@@ -11,6 +11,7 @@
     <modules>
         <module>engine</module>
         <module>core</module>
+        <module>animation</module>
     </modules>
 
     <properties>

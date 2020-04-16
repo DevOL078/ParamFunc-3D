@@ -56,16 +56,6 @@ public class CameraBuilder {
             posY = oldPosY;
         });
 
-        rootScene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.W) {
-                camera.setTranslateZ(camera.getTranslateZ() + 10);
-            } else if (event.getCode() == KeyCode.S) {
-                camera.setTranslateZ(camera.getTranslateZ() - 10);
-            }
-
-            Bounds bounds = cameraGroup2.localToScene(cameraGroup2.getBoundsInLocal());
-            scene.onCameraMove(bounds);
-        });
         rootScene.setOnScroll(e -> {
             camera.setTranslateZ(camera.getTranslateZ() + 10 * (e.getDeltaY() > 0 ? 1 : -1));
 
