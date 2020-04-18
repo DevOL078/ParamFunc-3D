@@ -9,10 +9,10 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>engine</module>
-        <module>core</module>
-        <module>animation</module>
-        <module>ui</module>
+        <module>pf3d-core</module>
+        <module>pf3d-animation</module>
+        <module>pf3d-engine</module>
+        <module>pf3d-ui</module>
     </modules>
 
     <properties>
