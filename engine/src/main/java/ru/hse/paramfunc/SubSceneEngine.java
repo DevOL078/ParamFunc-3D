@@ -12,9 +12,9 @@ import ru.hse.paramfunc.parser.FunctionValues3DParser;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class Engine {
+public class SubSceneEngine {
 
-    private final static String TEST_FILE_PATH = "./etc/test13-04-2020_23-31-56.txt";
+    private final static String TEST_FILE_PATH = "C:\\Users\\Dmitry\\Desktop\\Diploma\\ParamFunc-3D\\etc\\test13-04-2020_23-31-56.txt";
 
     private static SpaceSubScene subScene;
 

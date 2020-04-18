@@ -4,8 +4,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ru.hse.paramfunc.Engine;
+import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.enums.SceneType;
+
 
 public class SceneRunner {
 
@@ -37,7 +38,7 @@ public class SceneRunner {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         Scene scene = new Scene(root, 1024, 700, true);
         scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
-        Engine.start(scene);
+        SubSceneEngine.start(scene);
         stage.setScene(scene);
         stage.show();
     }
