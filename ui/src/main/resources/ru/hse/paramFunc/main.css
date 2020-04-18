@@ -1,0 +1,32 @@
+.header {
+    -fx-min-height: 30px;
+    -fx-text-alignment: center;
+    -fx-background-color: #4E4E4E;
+    -fx-font-size: 18px;
+}
+
+.header .text {
+    -fx-fill: white;
+}
+
+.header .menu {
+    -fx-min-height: 30px;
+    -fx-padding: 0 30px 0 30px;
+}
+
+.header .menu:hover {
+    -fx-background-color: #4E4E4E;
+}
+
+.header .menu:showing {
+    -fx-background-color: #4E4E4E;
+}
+
+.header .menu:hover .text {
+    -fx-background-color: #4E4E4E;
+    -fx-fill: grey;
+}
+
+.footer {
+    -fx-background-color: grey;
+}

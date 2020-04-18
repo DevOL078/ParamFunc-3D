@@ -49,7 +49,7 @@ public class FunctionValues3DParser implements Parser {
                             .build());
                 });
         points.forEach(System.out::println);
-        FunctionValueStorage.getInstance().addAll(points);
+        FunctionValueStorage.getInstance().setAllPoints(points);
     }
 
 }

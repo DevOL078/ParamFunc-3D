@@ -3,8 +3,6 @@ package ru.hse.paramfunc.storage;
 import ru.hse.paramfunc.domain.FunctionPoint;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class FunctionValueStorage {
@@ -12,32 +10,44 @@ public class FunctionValueStorage {
     // Singleton
     private static FunctionValueStorage instance = new FunctionValueStorage();
 
-    private final List<FunctionPoint> functionPoints;
+    private List<FunctionPoint> allPoints;
+    private List<FunctionPoint> selectedPoints;
 
-    private FunctionValueStorage() { this.functionPoints = new ArrayList<>(); }
+    private FunctionValueStorage() {
+        this.allPoints = new ArrayList<>();
+        this.selectedPoints = new ArrayList<>();
+    }
 
     public static FunctionValueStorage getInstance() {
         return instance;
     }
 
-    public void normalize() {
-        // TODO
+    public List<FunctionPoint> getAllPoints() {
+        return List.copyOf(this.allPoints);
     }
 
-    public List<FunctionPoint> getPoints() {
-        return List.copyOf(this.functionPoints);
+    public List<FunctionPoint> getSelectedPoints() {
+        return List.copyOf(this.selectedPoints);
     }
 
-    public void addAll(FunctionPoint... points) {
-        this.functionPoints.addAll(List.of(points));
+    public void setAllPoints(List<FunctionPoint> points) {
+        this.allPoints = List.copyOf(points);
     }
 
-    public void addAll(Collection<FunctionPoint> points) {
-        this.functionPoints.addAll(points);
+    public void setSelectedPoints(List<FunctionPoint> points) {
+        this.selectedPoints = List.copyOf(points);
     }
+
+//    public void addAll(FunctionPoint... points) {
+//        this.allPoints.addAll(List.of(points));
+//    }
+//
+//    public void addAll(Collection<FunctionPoint> points) {
+//        this.allPoints.addAll(points);
+//    }
 
     public void reset() {
-        this.functionPoints.clear();
+        this.allPoints.clear();
     }
 
 }
