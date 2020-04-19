@@ -1,4 +1,4 @@
-package ru.hse.paramfunc.selector;
+package ru.hse.paramfunc.selection;
 
 import ru.hse.paramfunc.domain.FunctionPoint;
 

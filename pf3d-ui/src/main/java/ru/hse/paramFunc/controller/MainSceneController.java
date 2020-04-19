@@ -3,10 +3,18 @@ package ru.hse.paramFunc.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.SubSceneEngine;
+import ru.hse.paramfunc.domain.enums.SceneType;
 
 public class MainSceneController {
+
+    @FXML
+    private MenuItem allPointsMenuItem;
+
+    @FXML
+    private MenuItem selectPointsMenuItem;
 
     @FXML
     private Pane spacePane;
@@ -60,6 +68,22 @@ public class MainSceneController {
         animationChoiceBox.setOnAction(e -> {
             String name = animationChoiceBox.getSelectionModel().getSelectedItem();
             SubSceneEngine.getSpaceSubScene().setCurrentAnimation(name);
+        });
+
+        allPointsMenuItem.setOnAction(e -> {
+            try {
+                SceneRunner.getInstance().run(SceneType.ALL_POINTS);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        selectPointsMenuItem.setOnAction(e -> {
+            try {
+                SceneRunner.getInstance().run(SceneType.SELECTION);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
     }
 

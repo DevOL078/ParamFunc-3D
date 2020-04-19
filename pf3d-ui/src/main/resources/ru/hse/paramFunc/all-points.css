@@ -1,0 +1,7 @@
+.all-points-button {
+    -fx-background-color: #C4C4C4;
+}
+
+.all-points-button:hover {
+    -fx-background-color: #898989;
+}

@@ -1,6 +1,7 @@
 package ru.hse.paramfunc.storage;
 
 import ru.hse.paramfunc.domain.FunctionPoint;
+import ru.hse.paramfunc.selection.SelectionListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,12 @@ public class FunctionValueStorage {
     private List<FunctionPoint> allPoints;
     private List<FunctionPoint> selectedPoints;
 
+    private List<SelectionListener> listeners;
+
     private FunctionValueStorage() {
         this.allPoints = new ArrayList<>();
         this.selectedPoints = new ArrayList<>();
+        this.listeners = new ArrayList<>();
     }
 
     public static FunctionValueStorage getInstance() {
@@ -36,6 +40,7 @@ public class FunctionValueStorage {
 
     public void setSelectedPoints(List<FunctionPoint> points) {
         this.selectedPoints = List.copyOf(points);
+        this.notifyAllListeners();
     }
 
 //    public void addAll(FunctionPoint... points) {
@@ -48,6 +53,17 @@ public class FunctionValueStorage {
 
     public void reset() {
         this.allPoints.clear();
+        this.selectedPoints.clear();
+    }
+
+    public void addListener(SelectionListener listener) {
+        if(!this.listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void notifyAllListeners() {
+        listeners.forEach(listener -> listener.receive(List.copyOf(this.selectedPoints)));
     }
 
 }
