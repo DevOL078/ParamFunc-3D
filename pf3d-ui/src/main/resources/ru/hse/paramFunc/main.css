@@ -27,6 +27,52 @@
     -fx-fill: grey;
 }
 
+.custom-accordion .title {
+    -fx-background-color: #898989;
+}
+
+.custom-accordion .title .text {
+    -fx-fill: #FFFFFF;
+}
+
+.custom-titled-pane > .title > .arrow-button .arrow {
+    -fx-background-radius: 0;
+    -fx-background-color: #4E4E4E;
+    -fx-effect: none !important;
+}
+
+.custom-accordion .content {
+    -fx-background-color: #57575C;
+}
+
+.inspector-label .text {
+    -fx-fill: #FFFFFF;
+}
+
+.inspector-button {
+    -fx-background-color: #C4C4C4;
+}
+
+.inspector-button:default {
+    -fx-background-color: #4E4E4E;
+}
+
+.inspector-button:default .text {
+    -fx-fill: #FFFFFF;
+}
+
+.inspector-button:hover {
+    -fx-background-color: #898989;
+}
+
+.inspector-checkbox .text {
+    -fx-fill: #FFFFFF;
+}
+
+.inspector-checkbox .box {
+    -fx-background-color: #C4C4C4;
+}
+
 .footer {
-    -fx-background-color: grey;
+    -fx-background-color: lightgrey;
 }
