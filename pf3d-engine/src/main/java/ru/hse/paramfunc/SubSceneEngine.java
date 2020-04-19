@@ -41,6 +41,10 @@ public class SubSceneEngine {
         }
     }
 
+    public static SpaceSubScene getSpaceSubScene() {
+        return subScene;
+    }
+
     private static Pane findSpacePane(Scene scene) {
         Pane sceneRoot = (Pane) scene.getRoot();
         LinkedList<Pane> queue = new LinkedList<>();

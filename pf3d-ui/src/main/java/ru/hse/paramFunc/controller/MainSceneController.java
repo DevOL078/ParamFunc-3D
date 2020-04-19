@@ -3,6 +3,8 @@ package ru.hse.paramFunc.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import ru.hse.paramFunc.animation.AnimationStorage;
+import ru.hse.paramfunc.SubSceneEngine;
 
 public class MainSceneController {
 
@@ -10,7 +12,7 @@ public class MainSceneController {
     private Pane spacePane;
 
     @FXML
-    private ChoiceBox<?> animationChoiceBox;
+    private ChoiceBox<String> animationChoiceBox;
 
     @FXML
     private Button cameraXButton;
@@ -52,7 +54,13 @@ public class MainSceneController {
     private ColorPicker linesColorPicker;
 
     public void initialize() {
-
+        AnimationStorage.getAnimations().forEach(animation -> {
+            animationChoiceBox.getItems().add(animation.getName());
+        });
+        animationChoiceBox.setOnAction(e -> {
+            String name = animationChoiceBox.getSelectionModel().getSelectedItem();
+            SubSceneEngine.getSpaceSubScene().setCurrentAnimation(name);
+        });
     }
 
 }

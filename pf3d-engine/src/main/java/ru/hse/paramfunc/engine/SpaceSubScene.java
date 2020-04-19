@@ -11,6 +11,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Sphere;
 import org.fxyz3d.geometry.Point3D;
 import ru.hse.paramFunc.animation.Animation;
+import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramFunc.animation.DynamicLinesAnimation;
 import ru.hse.paramFunc.animation.FlyingPointAnimation;
 import ru.hse.paramfunc.element.Line3D;
@@ -53,8 +54,8 @@ public class SpaceSubScene extends SubScene {
     }
 
     public void setUp() {
-        animationMap.put("Flying point", new FlyingPointAnimation("Flying point"));
-        animationMap.put("Dynamic lines", new DynamicLinesAnimation("Dynamic lines"));
+        AnimationStorage.getAnimations()
+                .forEach(animation -> animationMap.put(animation.getName(), animation));
 
         camera.setTranslateX(0);
         camera.setTranslateY(0);
