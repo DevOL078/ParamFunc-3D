@@ -1,22 +1,26 @@
 package ru.hse.paramFunc.controller;
 
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramfunc.domain.FunctionPoint;
+import ru.hse.paramfunc.domain.enums.SceneType;
 import ru.hse.paramfunc.domain.enums.SelectionType;
-import ru.hse.paramfunc.selection.SelectionListener;
 import ru.hse.paramfunc.selection.SelectionService;
 import ru.hse.paramfunc.storage.FunctionValueStorage;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class SelectionController implements SelectionListener {
+public class SelectionController {
 
     @FXML
     private TextArea intervalSelectionTextArea;
@@ -43,14 +47,14 @@ public class SelectionController implements SelectionListener {
     private Button saveButton;
 
     @FXML
-    private Button resetButton;
+    private Button clearButton;
 
     @FXML
-    private Button returnButton;
+    private Button closeButton;
+
+    private ObservableList<FunctionPoint> selectedPoints;
 
     public void initialize() {
-        FunctionValueStorage.getInstance().addListener(this);
-
         tColumn.setCellValueFactory(new PropertyValueFactory<>("t"));
         xColumn.setCellValueFactory(new PropertyValueFactory<>("originalX"));
         yColumn.setCellValueFactory(new PropertyValueFactory<>("originalY"));
@@ -64,20 +68,31 @@ public class SelectionController implements SelectionListener {
         yColumn.prefWidthProperty().bind(selectionTableView.widthProperty().divide(4));
         zColumn.prefWidthProperty().bind(selectionTableView.widthProperty().divide(4));
 
-        selectionTableView.getItems().addAll(FunctionValueStorage.getInstance().getSelectedPoints());
+        this.selectedPoints = FXCollections.observableArrayList(FunctionValueStorage.getInstance().getSelectedPoints());
+
+        ListProperty<FunctionPoint> selectedPointsProperty = new SimpleListProperty<>(this.selectedPoints);
+
+        selectionTableView.itemsProperty().bind(selectedPointsProperty);
 
         selectButton.setOnAction(e -> {
-            SelectionService.selectPoints(SelectionType.INTERVAL, intervalSelectionTextArea.getText());
+            List<FunctionPoint> selectedPoints = SelectionService
+                    .selectPoints(SelectionType.INTERVAL, intervalSelectionTextArea.getText());
+            this.selectedPoints.clear();
+            this.selectedPoints.addAll(selectedPoints);
         });
-    }
 
-    @Override
-    public void receive(List<FunctionPoint> selectedPoints) {
-        selectionTableView.getItems().clear();
-        List<FunctionPoint> sortedSelectedPoints = selectedPoints.stream()
-                .sorted(Comparator.comparing(FunctionPoint::getT))
-                .collect(Collectors.toList());
-        selectionTableView.getItems().addAll(sortedSelectedPoints);
+        saveButton.setOnAction(e -> {
+            FunctionValueStorage.getInstance().setSelectedPoints(new ArrayList<>(this.selectedPoints));
+            SceneRunner.getInstance().stop(SceneType.SELECTION);
+        });
+
+        clearButton.setOnAction(e -> {
+            this.selectedPoints.clear();
+        });
+
+        closeButton.setOnAction(e -> {
+            SceneRunner.getInstance().stop(SceneType.SELECTION);
+        });
     }
 
 }

@@ -12,14 +12,16 @@ import javafx.scene.shape.Sphere;
 import org.fxyz3d.geometry.Point3D;
 import ru.hse.paramFunc.animation.Animation;
 import ru.hse.paramFunc.animation.AnimationStorage;
-import ru.hse.paramFunc.animation.DynamicLinesAnimation;
-import ru.hse.paramFunc.animation.FlyingPointAnimation;
+import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.Line3D;
+import ru.hse.paramfunc.selection.SelectionListener;
+import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class SpaceSubScene extends SubScene {
+public class SpaceSubScene extends SubScene implements SelectionListener {
 
     private final long[] frameTimes = new long[100];
     private int frameTimeIndex = 0;
@@ -34,13 +36,14 @@ public class SpaceSubScene extends SubScene {
     private Map<String, Animation> animationMap;
     private Animation currentAnimation;
 
+    private AnimationTimer frameRateMeter;
+
     public SpaceSubScene(double v, double v1) {
         super(new Group(), v, v1, true, SceneAntialiasing.DISABLED);
         Group sceneGroup = (Group) super.getRoot();
         this.threeDimSpace = new ThreeDimSpace();
         this.threeDimSpace.setUp();
         this.pointsGroup = new PointsGroup();
-        this.pointsGroup.setUp();
         this.additionalLinesGroup = new Group();
         this.animationGroup = new Group();
         this.animationMap = new HashMap<>();
@@ -51,11 +54,6 @@ public class SpaceSubScene extends SubScene {
                 this.additionalLinesGroup,
                 this.animationGroup);
         this.camera = new PerspectiveCamera(true);
-    }
-
-    public void setUp() {
-        AnimationStorage.getAnimations()
-                .forEach(animation -> animationMap.put(animation.getName(), animation));
 
         camera.setTranslateX(0);
         camera.setTranslateY(0);
@@ -63,14 +61,10 @@ public class SpaceSubScene extends SubScene {
         camera.setNearClip(0.1);
         camera.setFarClip(10000.0);
         camera.setTranslateZ(-100);
+
         super.setCamera(camera);
-
         super.setFill(Paint.valueOf("#343030"));
-
-        addAdditionalLinesForPoints();
-
-        AnimationTimer frameRateMeter = new AnimationTimer() {
-
+        this.frameRateMeter = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 long oldFrameTime = frameTimes[frameTimeIndex];
@@ -83,12 +77,24 @@ public class SpaceSubScene extends SubScene {
                     long elapsedNanos = now - oldFrameTime;
                     long elapsedNanosPerFrame = elapsedNanos / frameTimes.length;
                     double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame;
-//                    System.out.println(String.format("Current frame rate: %.3f", frameRate));
+                    System.out.println(frameRate);
                 }
             }
         };
+        this.frameRateMeter.start();
 
-        frameRateMeter.start();
+        FunctionValueStorage.getInstance().addListener(this);
+    }
+
+    public void setUp() {
+        this.pointsGroup.setUp();
+
+        this.animationMap.values().forEach(Animation::reset);
+        this.animationMap.clear();
+        AnimationStorage.getAnimations()
+                .forEach(animation -> animationMap.put(animation.getName(), animation));
+
+        addAdditionalLinesForPoints();
     }
 
     public void onCameraMove(Bounds bounds) {
@@ -96,14 +102,14 @@ public class SpaceSubScene extends SubScene {
     }
 
     public void setCurrentAnimation(String name) {
-        if(this.currentAnimation != null) {
+        if (this.currentAnimation != null) {
             this.currentAnimation.reset();
         }
-        if(!this.animationGroup.getChildren().isEmpty()) {
+        if (!this.animationGroup.getChildren().isEmpty()) {
             this.animationGroup.getChildren().clear();
         }
         Animation animation = this.animationMap.get(name);
-        if(animation == null) {
+        if (animation == null) {
             throw new IllegalStateException("Animation with name " + name + " was not found");
         }
         animation.init();
@@ -113,11 +119,11 @@ public class SpaceSubScene extends SubScene {
     }
 
     public void startCurrentAnimation() {
-        if(this.currentAnimation == null) {
+        if (this.currentAnimation == null) {
             throw new IllegalStateException("Current animation is null");
         }
         this.currentAnimation.start();
-        if(this.animationGroup.getChildren().isEmpty()) {
+        if (this.animationGroup.getChildren().isEmpty()) {
             this.animationGroup.getChildren().add(this.currentAnimation.getGroup());
         }
 
@@ -125,14 +131,14 @@ public class SpaceSubScene extends SubScene {
     }
 
     public void pauseCurrentAnimation() {
-        if(this.currentAnimation == null) {
+        if (this.currentAnimation == null) {
             throw new IllegalStateException("Current animation is null");
         }
         this.currentAnimation.pause();
     }
 
     public void stopCurrentAnimation() {
-        if(this.currentAnimation == null) {
+        if (this.currentAnimation == null) {
             throw new IllegalStateException("Current animation is null");
         }
         this.currentAnimation.stop();
@@ -169,4 +175,9 @@ public class SpaceSubScene extends SubScene {
         });
     }
 
+    @Override
+    public void receive(List<FunctionPoint> selectedPoints) {
+        this.pointsGroup.setUp();
+        this.setUp();
+    }
 }

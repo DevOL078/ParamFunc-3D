@@ -36,6 +36,12 @@ public class FunctionValueStorage {
 
     public void setAllPoints(List<FunctionPoint> points) {
         this.allPoints = List.copyOf(points);
+        if (this.allPoints.size() > 50) {
+            this.selectedPoints = this.allPoints.subList(0, 50);
+        } else {
+            this.selectedPoints = List.copyOf(this.allPoints);
+        }
+        this.notifyAllListeners();
     }
 
     public void setSelectedPoints(List<FunctionPoint> points) {

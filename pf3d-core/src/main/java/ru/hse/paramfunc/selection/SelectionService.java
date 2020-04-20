@@ -4,9 +4,11 @@ import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.enums.SelectionType;
 import ru.hse.paramfunc.storage.FunctionValueStorage;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SelectionService {
 
@@ -18,7 +20,7 @@ public class SelectionService {
         selectorMap.put(SelectionType.FUNCTIONAL, new FunctionalSelector());
     }
 
-    public static void selectPoints(SelectionType selectionType, String rule) {
+    public static List<FunctionPoint> selectPoints(SelectionType selectionType, String rule) {
         List<FunctionPoint> selectedPoints;
         try {
             switch (selectionType) {
@@ -36,7 +38,9 @@ public class SelectionService {
             throw new IllegalStateException("Selection error");
         }
 
-        FunctionValueStorage.getInstance().setSelectedPoints(selectedPoints);
+        return selectedPoints.stream()
+                .sorted(Comparator.comparing(FunctionPoint::getT))
+                .collect(Collectors.toList());
     }
 
 }

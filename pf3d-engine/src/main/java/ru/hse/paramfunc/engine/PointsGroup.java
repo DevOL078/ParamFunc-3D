@@ -14,7 +14,7 @@ public class PointsGroup extends Group {
     private List<SpacePoint> spacePoints;
 
     public void setUp() {
-        List<FunctionPoint> points = FunctionValueStorage.getInstance().getAllPoints();
+        List<FunctionPoint> points = FunctionValueStorage.getInstance().getSelectedPoints();
         normalizePoints(points);
         this.spacePoints = points.stream()
                 .map(SpacePoint::new)
@@ -22,6 +22,7 @@ public class PointsGroup extends Group {
         List<Sphere> spheres = this.spacePoints.stream()
                 .map(SpacePoint::getSphere)
                 .collect(Collectors.toList());
+        super.getChildren().clear();
         super.getChildren().addAll(spheres);
     }
 

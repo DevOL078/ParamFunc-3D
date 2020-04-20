@@ -33,7 +33,7 @@ public class DynamicLinesAnimation extends Animation {
         this.pointsGroup = new Group();
         this.animation = new ParallelTransition();
 
-        List<FunctionPoint> points = FunctionValueStorage.getInstance().getAllPoints().stream()
+        List<FunctionPoint> points = FunctionValueStorage.getInstance().getSelectedPoints().stream()
                 .sorted(Comparator.comparing(FunctionPoint::getT))
                 .collect(Collectors.toList());
 

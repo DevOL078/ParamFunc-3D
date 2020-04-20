@@ -53,6 +53,10 @@ public class SceneRunner {
                 stopAllPointsScene();
                 break;
             }
+            case SELECTION: {
+                stopSelectionScene();
+                break;
+            }
         }
     }
 

@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.hse.paramFunc.controller.SelectionController">
    <children>
       <GridPane layoutX="100.0" layoutY="161.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -60,6 +59,7 @@
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -73,12 +73,20 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="returnButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Return" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                  <Button fx:id="closeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Close" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
                         <Font size="15.0" />
                      </font>
                      <GridPane.margin>
                         <Insets left="10.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="clearButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Clear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                </children>
@@ -86,26 +94,17 @@
             <GridPane GridPane.rowIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="selectButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Select" GridPane.halignment="RIGHT">
+                  <Button fx:id="selectButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Select" GridPane.halignment="CENTER">
                      <font>
                         <Font size="15.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                  </Button>
-                  <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Reset" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                </children>

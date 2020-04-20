@@ -26,7 +26,7 @@ public class FlyingPointAnimation extends Animation {
 
     @Override
     public void init() {
-        List<FunctionPoint> points = FunctionValueStorage.getInstance().getAllPoints().stream()
+        List<FunctionPoint> points = FunctionValueStorage.getInstance().getSelectedPoints().stream()
                 .sorted(Comparator.comparing(FunctionPoint::getT))
                 .collect(Collectors.toList());
 
