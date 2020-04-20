@@ -1,6 +1,9 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableDoubleValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -23,9 +26,11 @@ import java.util.Map;
 
 public class SpaceSubScene extends SubScene implements SelectionListener {
 
-    private final long[] frameTimes = new long[100];
-    private int frameTimeIndex = 0;
-    private boolean arrayFilled = false;
+    private final static long[] frameTimes = new long[100];
+    private static int frameTimeIndex = 0;
+    private static boolean arrayFilled = false;
+    private static AnimationTimer frameRateMeter;
+    private static DoubleProperty fpsValue;
 
     private ThreeDimSpace threeDimSpace;
     private PointsGroup pointsGroup;
@@ -36,7 +41,27 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
     private Map<String, Animation> animationMap;
     private Animation currentAnimation;
 
-    private AnimationTimer frameRateMeter;
+    static {
+        fpsValue = new SimpleDoubleProperty();
+        frameRateMeter = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                long oldFrameTime = frameTimes[frameTimeIndex];
+                frameTimes[frameTimeIndex] = now;
+                frameTimeIndex = (frameTimeIndex + 1) % frameTimes.length;
+                if (frameTimeIndex == 0) {
+                    arrayFilled = true;
+                }
+                if (arrayFilled) {
+                    long elapsedNanos = now - oldFrameTime;
+                    long elapsedNanosPerFrame = elapsedNanos / frameTimes.length;
+                    double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame;
+                    fpsValue.set(frameRate);
+                }
+            }
+        };
+        frameRateMeter.start();
+    }
 
     public SpaceSubScene(double v, double v1) {
         super(new Group(), v, v1, true, SceneAntialiasing.DISABLED);
@@ -64,24 +89,6 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
         super.setCamera(camera);
         super.setFill(Paint.valueOf("#343030"));
-        this.frameRateMeter = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                long oldFrameTime = frameTimes[frameTimeIndex];
-                frameTimes[frameTimeIndex] = now;
-                frameTimeIndex = (frameTimeIndex + 1) % frameTimes.length;
-                if (frameTimeIndex == 0) {
-                    arrayFilled = true;
-                }
-                if (arrayFilled) {
-                    long elapsedNanos = now - oldFrameTime;
-                    long elapsedNanosPerFrame = elapsedNanos / frameTimes.length;
-                    double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame;
-                    System.out.println(frameRate);
-                }
-            }
-        };
-        this.frameRateMeter.start();
 
         FunctionValueStorage.getInstance().addListener(this);
     }
@@ -179,5 +186,9 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
     public void receive(List<FunctionPoint> selectedPoints) {
         this.pointsGroup.setUp();
         this.setUp();
+    }
+
+    public static DoubleProperty getFpsProperty() {
+        return fpsValue;
     }
 }

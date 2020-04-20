@@ -7,6 +7,7 @@ import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.enums.SceneType;
+import ru.hse.paramfunc.engine.SpaceSubScene;
 
 public class MainSceneController {
 
@@ -61,6 +62,9 @@ public class MainSceneController {
     @FXML
     private ColorPicker linesColorPicker;
 
+    @FXML
+    private Label fpsLabel;
+
     public void initialize() {
         AnimationStorage.getAnimations().forEach(animation -> {
             animationChoiceBox.getItems().add(animation.getName());
@@ -85,6 +89,8 @@ public class MainSceneController {
                 ex.printStackTrace();
             }
         });
+
+        fpsLabel.textProperty().bind(SpaceSubScene.getFpsProperty().asString("%.1f"));
     }
 
 }
