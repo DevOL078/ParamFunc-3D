@@ -65,6 +65,15 @@ public class MainSceneController {
     @FXML
     private Label fpsLabel;
 
+    @FXML
+    private Button playButton;
+
+    @FXML
+    private Button pauseButton;
+
+    @FXML
+    private Button stopButton;
+
     public void initialize() {
         AnimationStorage.getAnimations().forEach(animation -> {
             animationChoiceBox.getItems().add(animation.getName());
@@ -91,6 +100,10 @@ public class MainSceneController {
         });
 
         fpsLabel.textProperty().bind(SpaceSubScene.getFpsProperty().asString("%.1f"));
+
+        playButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().startCurrentAnimation());
+        pauseButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().pauseCurrentAnimation());
+        stopButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().stopCurrentAnimation());
     }
 
 }

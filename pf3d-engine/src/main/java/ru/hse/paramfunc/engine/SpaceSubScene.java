@@ -91,16 +91,19 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         super.setFill(Paint.valueOf("#343030"));
 
         FunctionValueStorage.getInstance().addListener(this);
+
+        AnimationStorage.getAnimations()
+                .forEach(animation -> animationMap.put(animation.getName(), animation));
     }
 
     public void setUp() {
         this.pointsGroup.setUp();
+        this.animationGroup.getChildren().clear();
 
         this.animationMap.values().forEach(Animation::reset);
-        this.animationMap.clear();
-        AnimationStorage.getAnimations()
-                .forEach(animation -> animationMap.put(animation.getName(), animation));
-
+        if(this.currentAnimation != null) {
+            this.currentAnimation.init();
+        }
         addAdditionalLinesForPoints();
     }
 
@@ -184,7 +187,6 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     @Override
     public void receive(List<FunctionPoint> selectedPoints) {
-        this.pointsGroup.setUp();
         this.setUp();
     }
 
