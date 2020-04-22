@@ -60,6 +60,10 @@ public class SceneRunner {
         }
     }
 
+    public Stage getMainStage() {
+        return mainStage;
+    }
+
     public void setMainStage(Stage stage) {
         this.mainStage = stage;
     }
@@ -68,7 +72,6 @@ public class SceneRunner {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         Scene scene = new Scene(root, 1024, 700, true);
         scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
-        SubSceneEngine.start(scene);
         mainStage.setScene(scene);
         mainStage.show();
     }

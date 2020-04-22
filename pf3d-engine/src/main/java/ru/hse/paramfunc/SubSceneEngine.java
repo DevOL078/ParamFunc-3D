@@ -19,8 +19,6 @@ public class SubSceneEngine {
     private static SpaceSubScene subScene;
 
     public static void start(Scene scene) throws Exception {
-        loadPoints();
-
         Group root = new Group();
         subScene = new SpaceSubScene(1024, 726);
         subScene.setUp();
@@ -43,6 +41,10 @@ public class SubSceneEngine {
 
     public static SpaceSubScene getSpaceSubScene() {
         return subScene;
+    }
+
+    public static void loadPoints(String filePath) throws IOException {
+        FunctionValues3DParser.getInstance().parse(filePath);
     }
 
     private static Pane findSpacePane(Scene scene) {
@@ -68,9 +70,6 @@ public class SubSceneEngine {
         pane.getChildren().add(root);
     }
 
-    private static void loadPoints() throws IOException {
-        FunctionValues3DParser.getInstance().parse(TEST_FILE_PATH);
-    }
 
     private static void setAnimationControls(Scene scene) {
         scene.setOnKeyPressed(event -> {
