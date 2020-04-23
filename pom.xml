@@ -13,6 +13,7 @@
         <module>pf3d-animation</module>
         <module>pf3d-engine</module>
         <module>pf3d-ui</module>
+        <module>pf3d-interpolation</module>
     </modules>
 
     <properties>

@@ -34,6 +34,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     private ThreeDimSpace threeDimSpace;
     private PointsGroup pointsGroup;
+    private SplineGroup splineGroup;
     private Group additionalLinesGroup;
     private Group animationGroup;
     private PerspectiveCamera camera;
@@ -69,6 +70,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         this.threeDimSpace = new ThreeDimSpace();
         this.threeDimSpace.setUp();
         this.pointsGroup = new PointsGroup();
+        this.splineGroup = new SplineGroup();
         this.additionalLinesGroup = new Group();
         this.animationGroup = new Group();
         this.animationMap = new HashMap<>();
@@ -76,6 +78,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         sceneGroup.getChildren().addAll(
                 this.threeDimSpace,
                 this.pointsGroup,
+                this.splineGroup,
                 this.additionalLinesGroup,
                 this.animationGroup);
         this.camera = new PerspectiveCamera(true);
@@ -98,6 +101,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     public void setUp() {
         this.pointsGroup.setUp();
+        this.splineGroup.setUp();
         this.animationGroup.getChildren().clear();
 
         this.animationMap.values().forEach(Animation::reset);

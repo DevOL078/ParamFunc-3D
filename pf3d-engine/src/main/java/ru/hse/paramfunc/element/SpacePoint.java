@@ -29,6 +29,13 @@ public class SpacePoint extends Point3D {
         initSphere();
     }
 
+    public void setSphere(Sphere sphere) {
+        this.sphere = sphere;
+        this.sphere.setTranslateX(super.x);
+        this.sphere.setTranslateY(super.y);
+        this.sphere.setTranslateZ(super.z);
+    }
+
     public Sphere getSphere() {
         return sphere;
     }

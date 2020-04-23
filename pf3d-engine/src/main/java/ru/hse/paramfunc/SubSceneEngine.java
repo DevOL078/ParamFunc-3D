@@ -32,7 +32,7 @@ public class SubSceneEngine {
 
         Pane spacePane = findSpacePane(scene);
 
-        if(spacePane != null) {
+        if (spacePane != null) {
             subScene.widthProperty().bind(spacePane.widthProperty());
             subScene.heightProperty().bind(spacePane.heightProperty());
             addRootToSpacePane(root, spacePane);
