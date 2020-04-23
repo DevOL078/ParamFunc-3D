@@ -47,10 +47,10 @@ public class DynamicLinesAnimation extends Animation {
                 TranslateTransition pointAnimation = new TranslateTransition(Duration.millis(TRANSITION_DURATION));
                 pointAnimation.setFromX(startPoint.getSystemX());
                 pointAnimation.setFromY(-startPoint.getSystemZ());
-                pointAnimation.setFromZ(-startPoint.getSystemY());
+                pointAnimation.setFromZ(startPoint.getSystemY());
                 pointAnimation.setToX(endPoint.getSystemX());
                 pointAnimation.setToY(-endPoint.getSystemZ());
-                pointAnimation.setToZ(-endPoint.getSystemY());
+                pointAnimation.setToZ(endPoint.getSystemY());
                 pointAnimation.setNode(sphere);
                 pointAnimation.setDelay(Duration.millis(TRANSITION_DELAY * j));
                 pointAnimation.setCycleCount(Timeline.INDEFINITE);

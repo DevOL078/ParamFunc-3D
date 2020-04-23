@@ -44,7 +44,8 @@ public class CameraBuilder {
         // Устанавливаем камеры в центр пространства
         cameraGroup2.setTranslateX(50);
         cameraGroup2.setTranslateY(-50);
-        cameraGroup2.setTranslateZ(-50);
+        cameraGroup2.setTranslateZ(50);
+        QuaternionUtil.rotateGroup(cameraGroup2, new Quaternion(new Point3D(0, 1, 0), -90));
 
         Group sceneRoot = (Group) scene.getRoot();
         sceneRoot.getChildren().add(cameraGroup2);

@@ -41,8 +41,8 @@ public class ThreeDimSpace extends Group {
                 Color.AQUA,
                 2);
         Text3DMesh textX = addLabel("X", oX, 0, -6, 0, 0);
-        Text3DMesh textY = addLabel("Y", oY, 90, -5, 0, 3);
-        Text3DMesh textZ = addLabel("Z", oZ, 0, 0, 0, 0);
+        Text3DMesh textY = addLabel("Y", oY, 90, -4, 0, -2);
+        Text3DMesh textZ = addLabel("Z", oZ, 180, 0, 0, 0);
         super.getChildren().addAll(oX, oY, oZ, textX, textY, textZ);
     }
 
@@ -68,15 +68,6 @@ public class ThreeDimSpace extends Group {
         Line3D l17 = new Line3D(new SpacePoint(0, 0, 70), new SpacePoint(0, 100, 70));
         Line3D l18 = new Line3D(new SpacePoint(0, 0, 80), new SpacePoint(0, 100, 80));
         Line3D l19 = new Line3D(new SpacePoint(0, 0, 90), new SpacePoint(0, 100, 90));
-//        oyz.addLabel("0.1", l11, -90, -7, 1, 8);
-//        oyz.addLabel("0.2", l12, -90, -7, 1, 8);
-//        oyz.addLabel("0.3", l13, -90, -7, 1, 8);
-//        oyz.addLabel("0.4", l14, -90, -7, 1, 8);
-//        oyz.addLabel("0.5", l15, -90, -7, 1, 8);
-//        oyz.addLabel("0.6", l16, -90, -7, 1, 8);
-//        oyz.addLabel("0.7", l17, -90, -7, 1, 8);
-//        oyz.addLabel("0.8", l18, -90, -7, 1, 8);
-//        oyz.addLabel("0.9", l19, -90, -7, 1, 8);
         oyz.addAllNodes(l11, l12, l13, l14, l15, l16, l17, l18, l19);
         ozx = new Rectangle3D(
                 new SpacePoint(100, 0, 0),
@@ -117,15 +108,6 @@ public class ThreeDimSpace extends Group {
         Line3D l17D = new Line3D(new SpacePoint(100, 100, 70), new SpacePoint(100, 0, 70));
         Line3D l18D = new Line3D(new SpacePoint(100, 100, 80), new SpacePoint(100, 0, 80));
         Line3D l19D = new Line3D(new SpacePoint(100, 100, 90), new SpacePoint(100, 0, 90));
-//        oyzD.addLabel("0.1", l11D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.2", l12D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.3", l13D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.4", l14D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.5", l15D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.6", l16D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.7", l17D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.8", l18D, 90, -7, 1, -8);
-//        oyzD.addLabel("0.9", l19D, 90, -7, 1, -8);
         oyzD.addAllNodes(l11D, l12D, l13D, l14D, l15D, l16D, l17D, l18D, l19D);
         ozxD = new Rectangle3D(
                 new SpacePoint(100, 100, 0),
@@ -161,10 +143,10 @@ public class ThreeDimSpace extends Group {
             oyz.setVisible(true);
             oyzD.setVisible(false);
         }
-        if (z > 0) {
+        if (z < 0) {
             ozx.setVisible(false);
             ozxD.setVisible(true);
-        } else if (z < -100) {
+        } else if (z > 100) {
             ozx.setVisible(true);
             ozxD.setVisible(false);
         }
@@ -186,7 +168,7 @@ public class ThreeDimSpace extends Group {
     }
 
     public float getVisibleOZXCoordinate() {
-        return ozx.isVisible() ? 0 : -100;
+        return ozx.isVisible() ? 0 : 100;
     }
 
     private Text3DMesh addLabel(String text, Line3D line, double rotate, double deltaX, double deltaY, double deltaZ) {

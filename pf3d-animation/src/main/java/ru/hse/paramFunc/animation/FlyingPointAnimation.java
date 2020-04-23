@@ -43,10 +43,10 @@ public class FlyingPointAnimation extends Animation {
             TranslateTransition translateTransition = new TranslateTransition(Duration.millis(TRANSITION_DURATION));
             translateTransition.setFromX(startPoint.getSystemX());
             translateTransition.setFromY(-startPoint.getSystemZ());
-            translateTransition.setFromZ(-startPoint.getSystemY());
+            translateTransition.setFromZ(startPoint.getSystemY());
             translateTransition.setToX(endPoint.getSystemX());
             translateTransition.setToY(-endPoint.getSystemZ());
-            translateTransition.setToZ(-endPoint.getSystemY());
+            translateTransition.setToZ(endPoint.getSystemY());
             translateTransition.setNode(flyingSphere);
 
             animation.getChildren().add(translateTransition);

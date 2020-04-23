@@ -15,17 +15,17 @@ public class SpacePoint extends Point3D {
     private Sphere sphere;
 
     public SpacePoint(float x, float y, float z) {
-        super(x, -z, -y);
+        super(x, -z, y);
         initSphere();
     }
 
     public SpacePoint(double x, double y, double z) {
-        super(x, -z, -y);
+        super(x, -z, y);
         initSphere();
     }
 
     public SpacePoint(FunctionPoint point) {
-        super(point.getSystemX(), -point.getSystemZ(), -point.getSystemY());
+        super(point.getSystemX(), -point.getSystemZ(), point.getSystemY());
         initSphere();
     }
 
