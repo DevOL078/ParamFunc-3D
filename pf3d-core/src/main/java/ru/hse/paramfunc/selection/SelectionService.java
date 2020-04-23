@@ -20,22 +20,14 @@ public class SelectionService {
         selectorMap.put(SelectionType.FUNCTIONAL, new FunctionalSelector());
     }
 
-    public static List<FunctionPoint> selectPoints(SelectionType selectionType, String rule) {
+    public static List<FunctionPoint> selectPoints(SelectionType selectionType, String expression) {
         List<FunctionPoint> selectedPoints;
         try {
-            switch (selectionType) {
-                case INTERVAL: {
-                    selectedPoints = selectorMap.get(selectionType)
-                            .selectPoints(FunctionValueStorage.getInstance().getAllPoints(), rule);
-                    break;
-                }
-                default: {
-                    throw new UnsupportedOperationException();
-                }
-            }
+            selectedPoints = selectorMap.get(selectionType)
+                    .selectPoints(FunctionValueStorage.getInstance().getAllPoints(), expression);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new IllegalStateException("Selection error");
+            throw new IllegalStateException("Selection error: " + e.getMessage());
         }
 
         return selectedPoints.stream()

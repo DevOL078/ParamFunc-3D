@@ -5,10 +5,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramfunc.domain.FunctionPoint;
@@ -23,7 +20,19 @@ import java.util.List;
 public class SelectionController {
 
     @FXML
+    private TabPane selectionTabPane;
+
+    @FXML
+    private Tab selectionIntervalTab;
+
+    @FXML
+    private Tab selectionFunctionalTab;
+
+    @FXML
     private TextArea intervalSelectionTextArea;
+
+    @FXML
+    private TextArea functionalSelectionTextArea;
 
     @FXML
     private Button selectButton;
@@ -75,10 +84,12 @@ public class SelectionController {
         selectionTableView.itemsProperty().bind(selectedPointsProperty);
 
         selectButton.setOnAction(e -> {
-            List<FunctionPoint> selectedPoints = SelectionService
-                    .selectPoints(SelectionType.INTERVAL, intervalSelectionTextArea.getText());
-            this.selectedPoints.clear();
-            this.selectedPoints.addAll(selectedPoints);
+            Tab selectedTab = selectionTabPane.getSelectionModel().getSelectedItem();
+            if(selectedTab.equals(selectionIntervalTab)) {
+                selectPoints(SelectionType.INTERVAL, intervalSelectionTextArea.getText());
+            } else if (selectedTab.equals(selectionFunctionalTab)) {
+                selectPoints(SelectionType.FUNCTIONAL, functionalSelectionTextArea.getText());
+            }
         });
 
         saveButton.setOnAction(e -> {
@@ -93,6 +104,13 @@ public class SelectionController {
         closeButton.setOnAction(e -> {
             SceneRunner.getInstance().stop(SceneType.SELECTION);
         });
+    }
+
+    private void selectPoints(SelectionType selectionType, String expression) {
+        List<FunctionPoint> selectedPoints = SelectionService
+                .selectPoints(selectionType, expression);
+        this.selectedPoints.clear();
+        this.selectedPoints.addAll(selectedPoints);
     }
 
 }
