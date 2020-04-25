@@ -1,7 +1,6 @@
 package ru.hse.paramfunc.parser;
 
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,7 +21,7 @@ public class FunctionValues3DParser implements Parser {
     }
 
     @Override
-    public void parse(String filePath) throws IOException {
+    public List<FunctionPoint> parse(String filePath) throws IOException {
         Path path = Paths.get(filePath);
 
         List<FunctionPoint> points = new ArrayList<>();
@@ -49,7 +48,7 @@ public class FunctionValues3DParser implements Parser {
                             .build());
                 });
         points.forEach(System.out::println);
-        FunctionValueStorage.getInstance().setAllPoints(points);
+        return points;
     }
 
 }

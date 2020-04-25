@@ -5,12 +5,17 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import ru.hse.paramFunc.interpolation.spline.CatmullRomSpline;
+import ru.hse.paramFunc.interpolation.spline.Spline;
+import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.engine.CameraBuilder;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.parser.FunctionValues3DParser;
+import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SubSceneEngine {
 
@@ -44,7 +49,11 @@ public class SubSceneEngine {
     }
 
     public static void loadPoints(String filePath) throws IOException {
-        FunctionValues3DParser.getInstance().parse(filePath);
+        List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(filePath);
+        FunctionValueStorage.getInstance().setAllPoints(allPoints);
+        Spline spline = new CatmullRomSpline();
+        List<FunctionPoint> splinePoints = spline.calculate(allPoints);
+        FunctionValueStorage.getInstance().createCumulativeFile(allPoints, splinePoints);
     }
 
     private static Pane findSpacePane(Scene scene) {

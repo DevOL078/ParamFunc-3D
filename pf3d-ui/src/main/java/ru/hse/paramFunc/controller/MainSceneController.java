@@ -123,6 +123,10 @@ public class MainSceneController {
         playButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().startCurrentAnimation());
         pauseButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().pauseCurrentAnimation());
         stopButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().stopCurrentAnimation());
+
+        interpolationCheckBox.setOnAction(e -> {
+            SubSceneEngine.getSpaceSubScene().setSplinePointsVisible(interpolationCheckBox.isSelected());
+        });
     }
 
     private void resetScene() {

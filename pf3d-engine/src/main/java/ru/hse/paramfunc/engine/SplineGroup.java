@@ -24,11 +24,9 @@ public class SplineGroup extends Group {
         spline = new CatmullRomSpline();
     }
 
-    public void setUp() {
+    public void setUp(List<FunctionPoint> splinePoints) {
         super.getChildren().clear();
-        List<FunctionPoint> allPoints = FunctionValueStorage.getInstance().getAllPoints();
-        List<FunctionPoint> interpolationPoints = spline.calculate(allPoints);
-        List<SpacePoint> interpolationSpacePoints = interpolationPoints.stream()
+        List<SpacePoint> splineSpacePoints = splinePoints.stream()
                 .map(p -> {
                     SpacePoint spacePoint = new SpacePoint(p);
                     Sphere sphere = new Sphere();
@@ -38,7 +36,7 @@ public class SplineGroup extends Group {
                     return spacePoint;
                 })
                 .collect(Collectors.toList());
-        super.getChildren().addAll(interpolationSpacePoints.stream()
+        super.getChildren().addAll(splineSpacePoints.stream()
                 .map(SpacePoint::getSphere)
                 .collect(Collectors.toList()));
     }

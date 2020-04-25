@@ -1,8 +1,11 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
@@ -34,13 +37,14 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     private ThreeDimSpace threeDimSpace;
     private PointsGroup pointsGroup;
-    private SplineGroup splineGroup;
     private Group additionalLinesGroup;
     private Group animationGroup;
     private PerspectiveCamera camera;
 
     private Map<String, Animation> animationMap;
     private Animation currentAnimation;
+
+    private BooleanProperty splinePointsVisibility = new SimpleBooleanProperty(false);
 
     static {
         fpsValue = new SimpleDoubleProperty();
@@ -70,7 +74,6 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         this.threeDimSpace = new ThreeDimSpace();
         this.threeDimSpace.setUp();
         this.pointsGroup = new PointsGroup();
-        this.splineGroup = new SplineGroup();
         this.additionalLinesGroup = new Group();
         this.animationGroup = new Group();
         this.animationMap = new HashMap<>();
@@ -78,7 +81,6 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         sceneGroup.getChildren().addAll(
                 this.threeDimSpace,
                 this.pointsGroup,
-                this.splineGroup,
                 this.additionalLinesGroup,
                 this.animationGroup);
         this.camera = new PerspectiveCamera(true);
@@ -101,7 +103,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     public void setUp() {
         this.pointsGroup.setUp();
-        this.splineGroup.setUp();
+        this.pointsGroup.getSplineGroup().visibleProperty().bind(splinePointsVisibility);
         this.animationGroup.getChildren().clear();
 
         this.animationMap.values().forEach(Animation::reset);
@@ -109,6 +111,10 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
             this.currentAnimation.init();
         }
         addAdditionalLinesForPoints();
+    }
+
+    public void setSplinePointsVisible(boolean isVisible) {
+        this.splinePointsVisibility.setValue(isVisible);
     }
 
     public void onCameraMove(Bounds bounds) {
@@ -163,6 +169,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     private void addAdditionalLinesForPoints() {
         pointsGroup.getChildren().forEach(node -> {
+            if(!(node instanceof Sphere)) return;
             Sphere point = (Sphere) node;
             point.setOnMouseEntered(e -> {
                 double pointX = point.getTranslateX();

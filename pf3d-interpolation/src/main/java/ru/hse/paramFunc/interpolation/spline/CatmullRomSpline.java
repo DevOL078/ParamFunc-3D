@@ -31,12 +31,12 @@ public class CatmullRomSpline implements Spline {
             FunctionPoint third = controlPoints.get(2);
             FunctionPoint preFirst = FunctionPoint.builder()
                     .t(-1)
-                    .systemX(2 * first.getSystemX() - second.getSystemX())
-                    .systemY(2 * first.getSystemY() - second.getSystemY())
-                    .systemZ(2 * first.getSystemZ() - second.getSystemZ())
-                    .originalX(2 * first.getSystemX() - second.getSystemX())
-                    .originalY(2 * first.getSystemY() - second.getSystemY())
-                    .originalZ(2 * first.getSystemZ() - second.getSystemZ())
+                    .systemX(2 * first.getOriginalX() - second.getOriginalX())
+                    .systemY(2 * first.getOriginalY() - second.getOriginalY())
+                    .systemZ(2 * first.getOriginalZ() - second.getOriginalZ())
+                    .originalX(2 * first.getOriginalX() - second.getOriginalX())
+                    .originalY(2 * first.getOriginalY() - second.getOriginalY())
+                    .originalZ(2 * first.getOriginalZ() - second.getOriginalZ())
                     .build();
             List<FunctionPoint> firstSplinePoints = calculateSplinePart(
                     preFirst,
@@ -50,12 +50,12 @@ public class CatmullRomSpline implements Spline {
             FunctionPoint last = controlPoints.get(controlPoints.size() - 1);
             FunctionPoint afterLast = FunctionPoint.builder()
                     .t(last.getT())
-                    .systemX(2 * last.getSystemX() - preLast.getSystemX())
-                    .systemY(2 * last.getSystemY() - preLast.getSystemY())
-                    .systemZ(2 * last.getSystemZ() - preLast.getSystemZ())
-                    .originalX(2 * last.getSystemX() - preLast.getSystemX())
-                    .originalY(2 * last.getSystemY() - preLast.getSystemY())
-                    .originalZ(2 * last.getSystemZ() - preLast.getSystemZ())
+                    .systemX(2 * last.getOriginalX() - preLast.getOriginalX())
+                    .systemY(2 * last.getOriginalY() - preLast.getOriginalY())
+                    .systemZ(2 * last.getOriginalZ() - preLast.getOriginalZ())
+                    .originalX(2 * last.getOriginalX() - preLast.getOriginalX())
+                    .originalY(2 * last.getOriginalY() - preLast.getOriginalY())
+                    .originalZ(2 * last.getOriginalZ() - preLast.getOriginalZ())
                     .build();
             List<FunctionPoint> lastSplinePoints = calculateSplinePart(
                     beforePreLast,
@@ -111,7 +111,7 @@ public class CatmullRomSpline implements Spline {
 
     private double[][] convertToMatrix(FunctionPoint point) {
         return new double[][]{
-                {point.getSystemX(), point.getSystemY(), point.getSystemZ()}
+                {point.getOriginalX(), point.getOriginalY(), point.getOriginalZ()}
         };
     }
 

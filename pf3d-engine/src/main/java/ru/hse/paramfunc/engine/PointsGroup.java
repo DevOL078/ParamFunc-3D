@@ -12,10 +12,17 @@ import java.util.stream.Collectors;
 public class PointsGroup extends Group {
 
     private List<SpacePoint> spacePoints;
+    private SplineGroup splineGroup;
+
+    public PointsGroup() {
+        splineGroup = new SplineGroup();
+    }
 
     public void setUp() {
         List<FunctionPoint> points = FunctionValueStorage.getInstance().getSelectedPoints();
-        normalizePoints(points);
+        List<FunctionPoint> splinePoints = FunctionValueStorage.getInstance().getSplinePointsForSelectedPoints();
+        normalizePoints(points, splinePoints);
+
         this.spacePoints = points.stream()
                 .map(SpacePoint::new)
                 .collect(Collectors.toList());
@@ -24,9 +31,16 @@ public class PointsGroup extends Group {
                 .collect(Collectors.toList());
         super.getChildren().clear();
         super.getChildren().addAll(spheres);
+
+        splineGroup.setUp(splinePoints);
+        super.getChildren().add(splineGroup);
     }
 
-    private void normalizePoints(List<FunctionPoint> points) {
+    public Group getSplineGroup() {
+        return this.splineGroup;
+    }
+
+    private void normalizePoints(List<FunctionPoint> points, List<FunctionPoint> splinePoints) {
         Float minX = null, maxX = null;
         Float minY = null, maxY = null;
         Float minZ = null, maxZ = null;
@@ -51,6 +65,15 @@ public class PointsGroup extends Group {
             }
         }
         for (FunctionPoint point : points) {
+            float x = (maxX - minX) != 0 ? (point.getOriginalX() - minX) / (maxX - minX) * 100 : 0;
+            float y = (maxY - minY) != 0 ? (point.getOriginalY() - minY) / (maxY - minY) * 100 : 0;
+            float z = (maxZ - minZ) != 0 ? (point.getOriginalZ() - minZ) / (maxZ - minZ) * 100 : 0;
+
+            point.setSystemX(x);
+            point.setSystemY(y);
+            point.setSystemZ(z);
+        }
+        for (FunctionPoint point : splinePoints) {
             float x = (maxX - minX) != 0 ? (point.getOriginalX() - minX) / (maxX - minX) * 100 : 0;
             float y = (maxY - minY) != 0 ? (point.getOriginalY() - minY) / (maxY - minY) * 100 : 0;
             float z = (maxZ - minZ) != 0 ? (point.getOriginalZ() - minZ) / (maxZ - minZ) * 100 : 0;
