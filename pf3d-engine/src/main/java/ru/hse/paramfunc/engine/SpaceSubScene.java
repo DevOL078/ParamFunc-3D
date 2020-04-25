@@ -5,24 +5,30 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableDoubleValue;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Sphere;
 import org.fxyz3d.geometry.Point3D;
 import ru.hse.paramFunc.animation.Animation;
 import ru.hse.paramFunc.animation.AnimationStorage;
+import ru.hse.paramfunc.contract.MouseEventListener;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.Line3D;
 import ru.hse.paramfunc.selection.SelectionListener;
 import ru.hse.paramfunc.storage.FunctionValueStorage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +49,8 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     private Map<String, Animation> animationMap;
     private Animation currentAnimation;
+
+    private List<MouseEventListener> listeners = new ArrayList<>();
 
     private BooleanProperty splinePointsVisibility = new SimpleBooleanProperty(false);
 
@@ -171,7 +179,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         pointsGroup.getChildren().forEach(node -> {
             if(!(node instanceof Sphere)) return;
             Sphere point = (Sphere) node;
-            point.setOnMouseEntered(e -> {
+            point.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
                 double pointX = point.getTranslateX();
                 double pointY = point.getTranslateY();
                 double pointZ = point.getTranslateZ();
@@ -190,7 +198,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
                 Line3D line3 = new Line3D(targetPoint, line3End, Color.YELLOW, 0.3f);
                 this.additionalLinesGroup.getChildren().addAll(line1, line2, line3);
             });
-            point.setOnMouseExited(e -> {
+            point.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
                 this.additionalLinesGroup.getChildren().clear();
             });
         });
@@ -203,5 +211,13 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     public static DoubleProperty getFpsProperty() {
         return fpsValue;
+    }
+
+    public void addMouseEventListener(MouseEventListener listener) {
+        this.listeners.add(listener);
+    }
+
+    public void notifyAll(MouseEvent event, FunctionPoint target) {
+        this.listeners.forEach(l -> l.receive(event, target));
     }
 }

@@ -2,17 +2,20 @@ package ru.hse.paramFunc.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.SubSceneEngine;
+import ru.hse.paramfunc.contract.MouseEventListener;
+import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.enums.SceneType;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 
 import java.io.File;
 
-public class MainSceneController {
+public class MainSceneController implements MouseEventListener {
 
     @FXML
     private MenuItem loadFileMenuItem;
@@ -80,6 +83,9 @@ public class MainSceneController {
     @FXML
     private Button stopButton;
 
+    @FXML
+    private Label pointInfoLabel;
+
     public void initialize() {
         AnimationStorage.getAnimations().forEach(animation -> {
             animationChoiceBox.getItems().add(animation.getName());
@@ -97,6 +103,7 @@ public class MainSceneController {
                     SubSceneEngine.loadPoints(loadedFile.getAbsolutePath());
                     resetScene();
                     SubSceneEngine.start(SceneRunner.getInstance().getMainStage().getScene());
+                    SubSceneEngine.getSpaceSubScene().addMouseEventListener(this);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -133,4 +140,18 @@ public class MainSceneController {
         animationChoiceBox.setValue(null);
     }
 
+    @Override
+    public void receive(MouseEvent event, FunctionPoint target) {
+        if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
+            pointInfoLabel.setText(String.format("T: %d\nX: %.3f\nY: %.3f\nZ: %.3f",
+                    target.getT(),
+                    target.getOriginalX(),
+                    target.getOriginalY(),
+                    target.getOriginalZ()));
+            pointInfoLabel.setVisible(true);
+        } else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
+            pointInfoLabel.setText("");
+            pointInfoLabel.setVisible(false);
+        }
+    }
 }

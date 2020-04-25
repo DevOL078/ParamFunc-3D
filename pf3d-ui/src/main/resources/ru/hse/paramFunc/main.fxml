@@ -309,7 +309,7 @@
                                           <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Label styleClass="inspector-label" text="Turn on">
+                                          <Label styleClass="inspector-label" text="Show">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
@@ -346,7 +346,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label styleClass="inspector-label" text="Control ponts color" wrapText="true">
+                                          <Label styleClass="inspector-label" text="Function ponts color" wrapText="true">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
@@ -356,7 +356,7 @@
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <Label styleClass="inspector-label" text="Lines color" wrapText="true" GridPane.rowIndex="2">
+                                          <Label styleClass="inspector-label" text="Animation points color" wrapText="true" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
@@ -389,6 +389,14 @@
                   </Accordion>
                </children>
             </VBox>
+            <Label fx:id="pointInfoLabel" style="-fx-text-fill: white;" text="Point info" visible="false" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" />
+               </GridPane.margin>
+            </Label>
          </children>
       </GridPane>
    </children>

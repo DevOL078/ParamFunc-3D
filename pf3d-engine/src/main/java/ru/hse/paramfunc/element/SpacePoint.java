@@ -12,6 +12,7 @@ public class SpacePoint extends Point3D {
     private final static double DEFAULT_RADIUS = 2;
     private final static Material DEFAULT_MATERIAL = new PhongMaterial(Color.CHOCOLATE);
 
+    private FunctionPoint functionPoint;
     private Sphere sphere;
 
     public SpacePoint(float x, float y, float z) {
@@ -26,6 +27,7 @@ public class SpacePoint extends Point3D {
 
     public SpacePoint(FunctionPoint point) {
         super(point.getSystemX(), -point.getSystemZ(), point.getSystemY());
+        this.functionPoint = point;
         initSphere();
     }
 
@@ -34,6 +36,10 @@ public class SpacePoint extends Point3D {
         this.sphere.setTranslateX(super.x);
         this.sphere.setTranslateY(super.y);
         this.sphere.setTranslateZ(super.z);
+    }
+
+    public FunctionPoint getFunctionPoint() {
+        return this.functionPoint;
     }
 
     public Sphere getSphere() {

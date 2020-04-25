@@ -1,7 +1,9 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Sphere;
+import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.SpacePoint;
 import ru.hse.paramfunc.storage.FunctionValueStorage;
@@ -26,6 +28,14 @@ public class PointsGroup extends Group {
         this.spacePoints = points.stream()
                 .map(SpacePoint::new)
                 .collect(Collectors.toList());
+        this.spacePoints.forEach(p -> {
+            p.getSphere().addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
+            });
+            p.getSphere().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
+            });
+        });
         List<Sphere> spheres = this.spacePoints.stream()
                 .map(SpacePoint::getSphere)
                 .collect(Collectors.toList());
