@@ -1,15 +1,8 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableDoubleValue;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -25,7 +18,9 @@ import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.contract.MouseEventListener;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.Line3D;
+import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.selection.SelectionListener;
+import ru.hse.paramfunc.storage.FunctionStorage;
 import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.util.ArrayList;
@@ -33,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SpaceSubScene extends SubScene implements SelectionListener {
+public class SpaceSubScene extends SubScene implements Listener {
 
     private final static long[] frameTimes = new long[100];
     private static int frameTimeIndex = 0;
@@ -52,8 +47,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     private List<MouseEventListener> listeners = new ArrayList<>();
 
-    private BooleanProperty splinePointsVisibility = new SimpleBooleanProperty(false);
-
+    // Включается счетчик FPS
     static {
         fpsValue = new SimpleDoubleProperty();
         frameRateMeter = new AnimationTimer() {
@@ -103,26 +97,21 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         super.setCamera(camera);
         super.setFill(Paint.valueOf("#343030"));
 
-        FunctionValueStorage.getInstance().addListener(this);
+        FunctionStorage.getInstance().addListener(this);
 
         AnimationStorage.getAnimations()
                 .forEach(animation -> animationMap.put(animation.getName(), animation));
     }
 
-    public void setUp() {
-        this.pointsGroup.setUp();
-        this.pointsGroup.getSplineGroup().visibleProperty().bind(splinePointsVisibility);
-        this.animationGroup.getChildren().clear();
-
-        this.animationMap.values().forEach(Animation::reset);
-        if(this.currentAnimation != null) {
-            this.currentAnimation.init();
-        }
-        addAdditionalLinesForPoints();
-    }
-
-    public void setSplinePointsVisible(boolean isVisible) {
-        this.splinePointsVisibility.setValue(isVisible);
+    public void update() {
+        this.pointsGroup.update();
+//        this.animationGroup.getChildren().clear();
+//
+//        this.animationMap.values().forEach(Animation::reset);
+//        if (this.currentAnimation != null) {
+//            this.currentAnimation.init();
+//        }
+//        addAdditionalLinesForPoints();
     }
 
     public void onCameraMove(Bounds bounds) {
@@ -140,7 +129,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         if (animation == null) {
             throw new IllegalStateException("Animation with name " + name + " was not found");
         }
-        animation.init();
+//        animation.init();
         this.currentAnimation = animation;
 
         System.out.println("Set current animation: " + name);
@@ -177,7 +166,7 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     private void addAdditionalLinesForPoints() {
         pointsGroup.getChildren().forEach(node -> {
-            if(!(node instanceof Sphere)) return;
+            if (!(node instanceof Sphere)) return;
             Sphere point = (Sphere) node;
             point.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
                 double pointX = point.getTranslateX();
@@ -204,11 +193,6 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
         });
     }
 
-    @Override
-    public void receive(List<FunctionPoint> selectedPoints) {
-        this.setUp();
-    }
-
     public static DoubleProperty getFpsProperty() {
         return fpsValue;
     }
@@ -219,5 +203,10 @@ public class SpaceSubScene extends SubScene implements SelectionListener {
 
     public void notifyAll(MouseEvent event, FunctionPoint target) {
         this.listeners.forEach(l -> l.receive(event, target));
+    }
+
+    @Override
+    public void receive() {
+        update();
     }
 }

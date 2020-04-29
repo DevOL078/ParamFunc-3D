@@ -1,6 +1,6 @@
 package ru.hse.paramfunc.selection;
 
 @FunctionalInterface
-public interface Function {
+public interface IFunction {
     int calculate(int value);
 }

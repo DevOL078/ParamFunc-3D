@@ -1,9 +1,9 @@
 package ru.hse.paramfunc.selection;
 
-public class SelectionFunction implements Function {
+public class SelectionFunction implements IFunction {
 
     private String expression;
-    private Function function;
+    private IFunction function;
 
     public SelectionFunction(String expression) {
         this.expression = expression;
@@ -22,8 +22,8 @@ public class SelectionFunction implements Function {
             String rightOperandExpr = expression.substring(index + 1);
             if(checkParentheses(leftOperandExpr) &&
                     checkParentheses(rightOperandExpr)) {
-                Function leftOperand = new SelectionFunction(leftOperandExpr);
-                Function rightOperand = new SelectionFunction(rightOperandExpr);
+                IFunction leftOperand = new SelectionFunction(leftOperandExpr);
+                IFunction rightOperand = new SelectionFunction(rightOperandExpr);
                 this.function = (value) -> leftOperand.calculate(value) + rightOperand.calculate(value);
                 return;
             }
@@ -37,8 +37,8 @@ public class SelectionFunction implements Function {
             String rightOperandExpr = expression.substring(index + 1);
             if(checkParentheses(leftOperandExpr) &&
                     checkParentheses(rightOperandExpr)) {
-                Function leftOperand = new SelectionFunction(leftOperandExpr);
-                Function rightOperand = new SelectionFunction(rightOperandExpr);
+                IFunction leftOperand = new SelectionFunction(leftOperandExpr);
+                IFunction rightOperand = new SelectionFunction(rightOperandExpr);
                 this.function = (value) -> leftOperand.calculate(value) - rightOperand.calculate(value);
                 return;
             }
@@ -52,8 +52,8 @@ public class SelectionFunction implements Function {
             String rightOperandExpr = expression.substring(index + 1);
             if(checkParentheses(leftOperandExpr) &&
                     checkParentheses(rightOperandExpr)) {
-                Function leftOperand = new SelectionFunction(leftOperandExpr);
-                Function rightOperand = new SelectionFunction(rightOperandExpr);
+                IFunction leftOperand = new SelectionFunction(leftOperandExpr);
+                IFunction rightOperand = new SelectionFunction(rightOperandExpr);
                 this.function = (value) -> leftOperand.calculate(value) * rightOperand.calculate(value);
                 return;
             }
@@ -67,8 +67,8 @@ public class SelectionFunction implements Function {
             String rightOperandExpr = expression.substring(index + 1);
             if(checkParentheses(leftOperandExpr) &&
                     checkParentheses(rightOperandExpr)) {
-                Function leftOperand = new SelectionFunction(leftOperandExpr);
-                Function rightOperand = new SelectionFunction(rightOperandExpr);
+                IFunction leftOperand = new SelectionFunction(leftOperandExpr);
+                IFunction rightOperand = new SelectionFunction(rightOperandExpr);
                 this.function = (value) -> (int)Math.pow(leftOperand.calculate(value), rightOperand.calculate(value));
                 return;
             }
@@ -78,7 +78,7 @@ public class SelectionFunction implements Function {
         //Find ()
         if(expression.charAt(0) == '(' && expression.charAt(expression.length() - 1) == ')') {
             String expr = expression.substring(1, expression.length() - 1);
-            Function operand = new SelectionFunction(expr);
+            IFunction operand = new SelectionFunction(expr);
             this.function = operand::calculate;
             return;
         }

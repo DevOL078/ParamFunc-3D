@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
+import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.storage.FunctionValueStorage;
 
@@ -25,8 +26,8 @@ public class FlyingPointAnimation extends Animation {
     }
 
     @Override
-    public void init() {
-        List<FunctionPoint> points = FunctionValueStorage.getInstance().getSelectedPoints().stream()
+    public void init(Function function) {
+        List<FunctionPoint> points = function.getSelectedPoints().stream()
                 .sorted(Comparator.comparing(FunctionPoint::getT))
                 .collect(Collectors.toList());
 

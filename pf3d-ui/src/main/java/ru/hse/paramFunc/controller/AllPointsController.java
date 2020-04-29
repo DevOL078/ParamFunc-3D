@@ -44,7 +44,7 @@ public class AllPointsController {
         yColumn.prefWidthProperty().bind(tableView.widthProperty().divide(4));
         zColumn.prefWidthProperty().bind(tableView.widthProperty().divide(4));
 
-        tableView.getItems().addAll(FunctionValueStorage.getInstance().getAllPoints());
+//        tableView.getItems().addAll(FunctionValueStorage.getInstance().getAllPoints());
 
         exitButton.setOnAction(e -> {
             SceneRunner.getInstance().stop(SceneType.ALL_POINTS);

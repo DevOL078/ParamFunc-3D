@@ -1,8 +1,8 @@
 package ru.hse.paramfunc.selection;
 
+import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.enums.SelectionType;
-import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -20,11 +20,11 @@ public class SelectionService {
         selectorMap.put(SelectionType.FUNCTIONAL, new FunctionalSelector());
     }
 
-    public static List<FunctionPoint> selectPoints(SelectionType selectionType, String expression) {
+    public static List<FunctionPoint> selectPoints(Function function, SelectionType selectionType, String expression) {
         List<FunctionPoint> selectedPoints;
         try {
             selectedPoints = selectorMap.get(selectionType)
-                    .selectPoints(FunctionValueStorage.getInstance().getAllPoints(), expression);
+                    .selectPoints(function.getAllPoints(), expression);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("Selection error: " + e.getMessage());

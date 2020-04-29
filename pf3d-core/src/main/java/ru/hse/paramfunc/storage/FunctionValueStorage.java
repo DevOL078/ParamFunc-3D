@@ -32,74 +32,74 @@ public class FunctionValueStorage {
         return instance;
     }
 
-    public List<FunctionPoint> getAllPoints() {
-        return List.copyOf(this.allPoints);
-    }
+//    public List<FunctionPoint> getAllPoints() {
+//        return List.copyOf(this.allPoints);
+//    }
+//
+//    public List<FunctionPoint> getSelectedPoints() {
+//        return List.copyOf(this.selectedPoints);
+//    }
 
-    public List<FunctionPoint> getSelectedPoints() {
-        return List.copyOf(this.selectedPoints);
-    }
+//    public List<FunctionPoint> getSplinePointsForSelectedPoints() {
+//        List<FunctionPoint> sortedSelectedPoints = this.selectedPoints.stream()
+//                .sorted(Comparator.comparing(FunctionPoint::getT))
+//                .collect(Collectors.toList());
+//        if(sortedSelectedPoints.size() > 1) {
+//            int firstT = sortedSelectedPoints.get(0).getT();
+//            int lastT = sortedSelectedPoints.get(sortedSelectedPoints.size() - 1).getT();
+//            try {
+//                List<FunctionPoint> splinePoints = Files.lines(CUMULATIVE_FILE_PATH)
+//                        .filter(s -> {
+//                            String[] parts = s.split(" ");
+//                            String tStr = parts[0];
+//                            if (tStr.contains("s")) {
+//                                int t = Integer.parseInt(tStr.replaceAll("s", ""));
+//                                return t >= firstT && t < lastT;
+//                            }
+//                            return false;
+//                        })
+//                        .map(s -> {
+//                            String[] parts = s.split(" ");
+//                            int t = Integer.parseInt(parts[0].replaceAll("s", ""));
+//                            float x = Float.parseFloat(parts[1]);
+//                            float y = Float.parseFloat(parts[2]);
+//                            float z = Float.parseFloat(parts[3]);
+//                            return FunctionPoint.builder()
+//                                    .t(t)
+//                                    .originalX(x)
+//                                    .originalY(y)
+//                                    .originalZ(z)
+//                                    .systemX(x)
+//                                    .systemY(y)
+//                                    .systemZ(z)
+//                                    .build();
+//                        })
+//                        .collect(Collectors.toList());
+//                return splinePoints;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            return Collections.emptyList();
+//        }
+//
+//        return null;
+//    }
 
-    public List<FunctionPoint> getSplinePointsForSelectedPoints() {
-        List<FunctionPoint> sortedSelectedPoints = this.selectedPoints.stream()
-                .sorted(Comparator.comparing(FunctionPoint::getT))
-                .collect(Collectors.toList());
-        if(sortedSelectedPoints.size() > 1) {
-            int firstT = sortedSelectedPoints.get(0).getT();
-            int lastT = sortedSelectedPoints.get(sortedSelectedPoints.size() - 1).getT();
-            try {
-                List<FunctionPoint> splinePoints = Files.lines(CUMULATIVE_FILE_PATH)
-                        .filter(s -> {
-                            String[] parts = s.split(" ");
-                            String tStr = parts[0];
-                            if (tStr.contains("s")) {
-                                int t = Integer.parseInt(tStr.replaceAll("s", ""));
-                                return t >= firstT && t < lastT;
-                            }
-                            return false;
-                        })
-                        .map(s -> {
-                            String[] parts = s.split(" ");
-                            int t = Integer.parseInt(parts[0].replaceAll("s", ""));
-                            float x = Float.parseFloat(parts[1]);
-                            float y = Float.parseFloat(parts[2]);
-                            float z = Float.parseFloat(parts[3]);
-                            return FunctionPoint.builder()
-                                    .t(t)
-                                    .originalX(x)
-                                    .originalY(y)
-                                    .originalZ(z)
-                                    .systemX(x)
-                                    .systemY(y)
-                                    .systemZ(z)
-                                    .build();
-                        })
-                        .collect(Collectors.toList());
-                return splinePoints;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            return Collections.emptyList();
-        }
+//    public void setAllPoints(List<FunctionPoint> points) {
+//        this.allPoints = List.copyOf(points);
+//        if (this.allPoints.size() > 50) {
+//            this.selectedPoints = this.allPoints.subList(0, 50);
+//        } else {
+//            this.selectedPoints = List.copyOf(this.allPoints);
+//        }
+//        this.notifyAllListeners();
+//    }
 
-        return null;
-    }
-
-    public void setAllPoints(List<FunctionPoint> points) {
-        this.allPoints = List.copyOf(points);
-        if (this.allPoints.size() > 50) {
-            this.selectedPoints = this.allPoints.subList(0, 50);
-        } else {
-            this.selectedPoints = List.copyOf(this.allPoints);
-        }
-        this.notifyAllListeners();
-    }
-
-    public void setSelectedPoints(List<FunctionPoint> points) {
-        this.selectedPoints = List.copyOf(points);
-        this.notifyAllListeners();
-    }
+//    public void setSelectedPoints(List<FunctionPoint> points) {
+//        this.selectedPoints = List.copyOf(points);
+//        this.notifyAllListeners();
+//    }
 
 //    public void addAll(FunctionPoint... points) {
 //        this.allPoints.addAll(List.of(points));

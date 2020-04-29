@@ -1,53 +1,67 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Sphere;
-import ru.hse.paramfunc.SubSceneEngine;
+import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.element.SpacePoint;
-import ru.hse.paramfunc.storage.FunctionValueStorage;
+import ru.hse.paramfunc.element.FunctionHolder;
+import ru.hse.paramfunc.storage.FunctionStorage;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PointsGroup extends Group {
 
-    private List<SpacePoint> spacePoints;
-    private SplineGroup splineGroup;
+    private static final List<FunctionPointsGroup> functionPointsGroups;
 
-    public PointsGroup() {
-        splineGroup = new SplineGroup();
+    static {
+        functionPointsGroups = new ArrayList<>();
     }
 
-    public void setUp() {
-        List<FunctionPoint> points = FunctionValueStorage.getInstance().getSelectedPoints();
-        List<FunctionPoint> splinePoints = FunctionValueStorage.getInstance().getSplinePointsForSelectedPoints();
-        normalizePoints(points, splinePoints);
+    public void update() {
+        List<Function> functions = FunctionStorage.getInstance().getFunctions();
+        List<FunctionPointsGroup> updatedGroups = new ArrayList<>();
+        for (Function function : functions) {
+            FunctionPointsGroup functionPointsGroup = functionPointsGroups.stream()
+                    .filter(g -> g.getFunctionHolder().getFunction().equals(function))
+                    .findAny()
+                    .orElse(new FunctionPointsGroup(new FunctionHolder(function)));
+            updatedGroups.add(functionPointsGroup);
+        }
+        //Нормализуем все точки
+        Map<FunctionHolder, List<FunctionPoint>> valuesPointsMap = updatedGroups.stream()
+                .collect(Collectors.toMap(
+                        FunctionPointsGroup::getFunctionHolder,
+                        g -> g.getFunctionHolder().getFunction().getSelectedPoints()
+                ));
+        Map<FunctionHolder, List<FunctionPoint>> splinePointsMap = updatedGroups.stream()
+                .collect(Collectors.toMap(
+                        FunctionPointsGroup::getFunctionHolder,
+                        g -> g.getFunctionHolder().getFunction().getSplinePoints()
+                ));
+        normalizePoints(
+                valuesPointsMap.values().stream()
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList()),
+                splinePointsMap.values().stream()
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList()));
+        for (FunctionPointsGroup updatedGroup : updatedGroups) {
+            updatedGroup.setValuePoints(valuesPointsMap.get(updatedGroup.getFunctionHolder()));
+            updatedGroup.setSplinePoints(splinePointsMap.get(updatedGroup.getFunctionHolder()));
+            updatedGroup.update();
+        }
+        //Уничтожаем старые группы
+        functionPointsGroups.stream()
+                .filter(g -> !updatedGroups.contains(g))
+                .forEach(FunctionPointsGroup::destroy);
+        functionPointsGroups.clear();
+        functionPointsGroups.addAll(updatedGroups);
 
-        this.spacePoints = points.stream()
-                .map(SpacePoint::new)
-                .collect(Collectors.toList());
-        this.spacePoints.forEach(p -> {
-            p.getSphere().addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
-            });
-            p.getSphere().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
-            });
-        });
-        List<Sphere> spheres = this.spacePoints.stream()
-                .map(SpacePoint::getSphere)
-                .collect(Collectors.toList());
         super.getChildren().clear();
-        super.getChildren().addAll(spheres);
-
-        splineGroup.setUp(splinePoints);
-        super.getChildren().add(splineGroup);
-    }
-
-    public Group getSplineGroup() {
-        return this.splineGroup;
+        super.getChildren().addAll(functionPointsGroups);
     }
 
     private void normalizePoints(List<FunctionPoint> points, List<FunctionPoint> splinePoints) {

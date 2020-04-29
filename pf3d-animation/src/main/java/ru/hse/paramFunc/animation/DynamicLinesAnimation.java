@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
+import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.storage.FunctionValueStorage;
 
@@ -29,11 +30,11 @@ public class DynamicLinesAnimation extends Animation {
     }
 
     @Override
-    public void init() {
+    public void init(Function function) {
         this.pointsGroup = new Group();
         this.animation = new ParallelTransition();
 
-        List<FunctionPoint> points = FunctionValueStorage.getInstance().getSelectedPoints().stream()
+        List<FunctionPoint> points = function.getSelectedPoints().stream()
                 .sorted(Comparator.comparing(FunctionPoint::getT))
                 .collect(Collectors.toList());
 

@@ -1,9 +1,10 @@
 package ru.hse.paramFunc.controller;
 
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramFunc.animation.AnimationStorage;
@@ -86,6 +87,9 @@ public class MainSceneController implements MouseEventListener {
     @FXML
     private Label pointInfoLabel;
 
+    @FXML
+    private VBox functionsVBox;
+
     public void initialize() {
         AnimationStorage.getAnimations().forEach(animation -> {
             animationChoiceBox.getItems().add(animation.getName());
@@ -100,7 +104,7 @@ public class MainSceneController implements MouseEventListener {
             File loadedFile = fileChooser.showOpenDialog(SceneRunner.getInstance().getMainStage());
             if (loadedFile != null) {
                 try {
-                    SubSceneEngine.loadPoints(loadedFile.getAbsolutePath());
+                    SubSceneEngine.loadFunction(loadedFile.getAbsolutePath());
                     resetScene();
                     SubSceneEngine.start(SceneRunner.getInstance().getMainStage().getScene());
                     SubSceneEngine.getSpaceSubScene().addMouseEventListener(this);
@@ -132,8 +136,40 @@ public class MainSceneController implements MouseEventListener {
         stopButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().stopCurrentAnimation());
 
         interpolationCheckBox.setOnAction(e -> {
-            SubSceneEngine.getSpaceSubScene().setSplinePointsVisible(interpolationCheckBox.isSelected());
+//            SubSceneEngine.getSpaceSubScene().setSplinePointsVisible(interpolationCheckBox.isSelected());
         });
+
+        // Пример создания меню Functions
+        Accordion functionsAccordion = new Accordion();
+        TitledPane modelTitledPane = new TitledPane();
+        modelTitledPane.setText("Model Data");
+        modelTitledPane.getStyleClass().add("custom-titled-pane");
+        VBox modelVBox = new VBox();
+        GridPane modelGridPane = new GridPane();
+        RowConstraints r0 = new RowConstraints();
+        RowConstraints r1 = new RowConstraints();
+        RowConstraints r2 = new RowConstraints();
+        r0.setVgrow(Priority.SOMETIMES);
+        r1.setVgrow(Priority.SOMETIMES);
+        r2.setVgrow(Priority.SOMETIMES);
+        ColumnConstraints c0 = new ColumnConstraints();
+        ColumnConstraints c1 = new ColumnConstraints();
+        c0.setHgrow(Priority.SOMETIMES);
+        c1.setHgrow(Priority.SOMETIMES);
+        modelGridPane.getRowConstraints().clear();
+        modelGridPane.getColumnConstraints().clear();
+        modelGridPane.getRowConstraints().addAll(r0, r1, r2);
+        modelGridPane.getColumnConstraints().addAll(c0, c1);
+        Label label = new Label("Animation");
+        label.getStyleClass().add("inspector-label");
+        modelGridPane.getChildren().add(label);
+        GridPane.setColumnIndex(label, 0);
+        GridPane.setHalignment(label, HPos.LEFT);
+
+        modelVBox.getChildren().add(modelGridPane);
+        modelTitledPane.setContent(modelVBox);
+        functionsAccordion.getPanes().add(modelTitledPane);
+        functionsVBox.getChildren().add(functionsAccordion);
     }
 
     private void resetScene() {

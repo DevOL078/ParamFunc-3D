@@ -7,11 +7,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import ru.hse.paramFunc.interpolation.spline.CatmullRomSpline;
 import ru.hse.paramFunc.interpolation.spline.Spline;
+import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.engine.CameraBuilder;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.parser.FunctionValues3DParser;
-import ru.hse.paramfunc.storage.FunctionValueStorage;
+import ru.hse.paramfunc.storage.FunctionFileProvider;
+import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -26,7 +28,7 @@ public class SubSceneEngine {
     public static void start(Scene scene) throws Exception {
         Group root = new Group();
         subScene = new SpaceSubScene(1024, 726);
-        subScene.setUp();
+        subScene.update();
 
         setAnimationControls(scene);
 
@@ -48,12 +50,15 @@ public class SubSceneEngine {
         return subScene;
     }
 
-    public static void loadPoints(String filePath) throws IOException {
+    public static void loadFunction(String filePath) throws IOException {
         List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(filePath);
-        FunctionValueStorage.getInstance().setAllPoints(allPoints);
         Spline spline = new CatmullRomSpline();
         List<FunctionPoint> splinePoints = spline.calculate(allPoints);
-        FunctionValueStorage.getInstance().createCumulativeFile(allPoints, splinePoints);
+        Function function = new Function("123");    //TODO generate name
+        function.setAllPoints(allPoints);
+        function.setSelectedPoints(allPoints);
+        FunctionFileProvider.saveTmpFile(function, splinePoints);
+        FunctionStorage.getInstance().addFunction(function);
     }
 
     private static Pane findSpacePane(Scene scene) {

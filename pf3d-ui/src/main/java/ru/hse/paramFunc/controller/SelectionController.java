@@ -77,7 +77,7 @@ public class SelectionController {
         yColumn.prefWidthProperty().bind(selectionTableView.widthProperty().divide(4));
         zColumn.prefWidthProperty().bind(selectionTableView.widthProperty().divide(4));
 
-        this.selectedPoints = FXCollections.observableArrayList(FunctionValueStorage.getInstance().getSelectedPoints());
+//        this.selectedPoints = FXCollections.observableArrayList(FunctionValueStorage.getInstance().getSelectedPoints());
 
         ListProperty<FunctionPoint> selectedPointsProperty = new SimpleListProperty<>(this.selectedPoints);
 
@@ -93,7 +93,7 @@ public class SelectionController {
         });
 
         saveButton.setOnAction(e -> {
-            FunctionValueStorage.getInstance().setSelectedPoints(new ArrayList<>(this.selectedPoints));
+//            FunctionValueStorage.getInstance().setSelectedPoints(new ArrayList<>(this.selectedPoints));
             SceneRunner.getInstance().stop(SceneType.SELECTION);
         });
 
@@ -107,10 +107,10 @@ public class SelectionController {
     }
 
     private void selectPoints(SelectionType selectionType, String expression) {
-        List<FunctionPoint> selectedPoints = SelectionService
-                .selectPoints(selectionType, expression);
-        this.selectedPoints.clear();
-        this.selectedPoints.addAll(selectedPoints);
+//        List<FunctionPoint> selectedPoints = SelectionService
+//                .selectPoints(selectionType, expression);
+//        this.selectedPoints.clear();
+//        this.selectedPoints.addAll(selectedPoints);
     }
 
 }
