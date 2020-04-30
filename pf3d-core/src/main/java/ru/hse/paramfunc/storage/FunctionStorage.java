@@ -22,10 +22,12 @@ public class FunctionStorage implements Notifier {
 
     public void addFunction(Function function) {
         functionList.add(function);
+        notifyListeners();
     }
 
     public void removeFunction(Function function) {
         functionList.remove(function);
+        notifyListeners();
     }
 
     public List<Function> getFunctions() {

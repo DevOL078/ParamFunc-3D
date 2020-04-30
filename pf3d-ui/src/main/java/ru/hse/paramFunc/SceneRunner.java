@@ -73,6 +73,7 @@ public class SceneRunner {
         Scene scene = new Scene(root, 1024, 700, true);
         scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
         mainStage.setScene(scene);
+        SubSceneEngine.start(scene);
         mainStage.show();
     }
 

@@ -19,9 +19,7 @@ import ru.hse.paramfunc.contract.MouseEventListener;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.Line3D;
 import ru.hse.paramfunc.listener.Listener;
-import ru.hse.paramfunc.selection.SelectionListener;
 import ru.hse.paramfunc.storage.FunctionStorage;
-import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
