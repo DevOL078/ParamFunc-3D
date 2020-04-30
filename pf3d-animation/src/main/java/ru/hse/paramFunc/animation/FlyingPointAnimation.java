@@ -95,4 +95,9 @@ public class FlyingPointAnimation extends Animation {
         }
     }
 
+    @Override
+    public Animation copy() {
+        return new FlyingPointAnimation(getName());
+    }
+
 }

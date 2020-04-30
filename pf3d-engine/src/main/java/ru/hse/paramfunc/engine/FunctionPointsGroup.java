@@ -1,8 +1,11 @@
 package ru.hse.paramfunc.engine;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Sphere;
+import ru.hse.paramFunc.animation.Animation;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.FunctionHolder;
@@ -18,13 +21,15 @@ public class FunctionPointsGroup extends Group {
     private List<FunctionPoint> splinePoints;
     private Group valueGroup;
     private SplineGroup splineGroup;
+    private Group animationGroup;
 
     public FunctionPointsGroup(FunctionHolder functionHolder) {
         super();
         this.functionHolder = functionHolder;
         this.valueGroup = new Group();
         this.splineGroup = new SplineGroup();
-        super.getChildren().addAll(this.valueGroup, this.splineGroup);
+        this.animationGroup = new Group();
+        super.getChildren().addAll(this.valueGroup, this.splineGroup, this.animationGroup);
     }
 
     public void update() {
@@ -50,6 +55,25 @@ public class FunctionPointsGroup extends Group {
         this.valueGroup.getChildren().addAll(spheres);
 
         splineGroup.setUp(splinePoints);
+        splineGroup.visibleProperty().bind(functionHolder.interpolationShownProperty());
+
+        //При изменении анимации очищаем старую анимацию и инициализируем новую
+        this.functionHolder.animationProperty().addListener((observableValue, animation, t1) -> {
+            // animation - старое значение
+            // t1 - новое значение
+            this.animationGroup.getChildren().clear();
+            if(animation != null) {
+                animation.reset();
+            }
+            if(t1 != null) {
+                t1.init(functionHolder.getFunction());
+                this.animationGroup.getChildren().add(t1.getGroup());
+            }
+        });
+        //Настрока колбэков для запуска, паузы и остановки анимаций
+        this.functionHolder.setStartAnimationCallback(() -> this.functionHolder.animationProperty().get().start());
+        this.functionHolder.setPauseAnimationCallback(() -> this.functionHolder.animationProperty().get().pause());
+        this.functionHolder.setStopAnimationCallback(() -> this.functionHolder.animationProperty().get().stop());
     }
 
     public void destroy() {

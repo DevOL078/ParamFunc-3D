@@ -27,7 +27,7 @@ public class PointsGroup extends Group {
             FunctionPointsGroup functionPointsGroup = functionPointsGroups.stream()
                     .filter(g -> g.getFunctionHolder().getFunction().equals(function))
                     .findAny()
-                    .orElse(new FunctionPointsGroup(new FunctionHolder(function)));
+                    .orElseGet(() -> new FunctionPointsGroup(new FunctionHolder(function)));
             updatedGroups.add(functionPointsGroup);
         }
         //Нормализуем все точки
@@ -62,6 +62,14 @@ public class PointsGroup extends Group {
 
         super.getChildren().clear();
         super.getChildren().addAll(functionPointsGroups);
+    }
+
+    public FunctionHolder getFunctionHolderByFunction(Function function) {
+        return functionPointsGroups.stream()
+                .filter(g -> g.getFunctionHolder().getFunction().equals(function))
+                .findFirst()
+                .map(FunctionPointsGroup::getFunctionHolder)
+                .orElse(null);
     }
 
     private void normalizePoints(List<FunctionPoint> points, List<FunctionPoint> splinePoints) {

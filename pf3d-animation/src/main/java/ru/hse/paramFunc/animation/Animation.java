@@ -26,5 +26,6 @@ public abstract class Animation {
     public abstract void pause();
     public abstract void stop();
     public abstract void reset();
+    public abstract Animation copy();
 
 }

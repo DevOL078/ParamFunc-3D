@@ -105,6 +105,11 @@ public class DynamicLinesAnimation extends Animation {
         }
     }
 
+    @Override
+    public Animation copy() {
+        return new DynamicLinesAnimation(this.getName());
+    }
+
     private Sphere createSphere() {
         Sphere sphere = new Sphere();
         sphere.setRadius(0.5);

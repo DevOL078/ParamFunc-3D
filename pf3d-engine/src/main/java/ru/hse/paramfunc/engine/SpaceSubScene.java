@@ -16,7 +16,9 @@ import org.fxyz3d.geometry.Point3D;
 import ru.hse.paramFunc.animation.Animation;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.contract.MouseEventListener;
+import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
+import ru.hse.paramfunc.element.FunctionHolder;
 import ru.hse.paramfunc.element.Line3D;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.storage.FunctionStorage;
@@ -189,6 +191,10 @@ public class SpaceSubScene extends SubScene implements Listener {
                 this.additionalLinesGroup.getChildren().clear();
             });
         });
+    }
+
+    public FunctionHolder getFunctionHolderByFunction(Function function) {
+        return this.pointsGroup.getFunctionHolderByFunction(function);
     }
 
     public static DoubleProperty getFpsProperty() {

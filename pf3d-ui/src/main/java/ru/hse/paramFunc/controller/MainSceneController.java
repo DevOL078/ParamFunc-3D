@@ -10,14 +10,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
 import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramFunc.SceneRunner;
+import ru.hse.paramFunc.animation.Animation;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.contract.MouseEventListener;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.enums.SceneType;
+import ru.hse.paramfunc.element.FunctionHolder;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.storage.FunctionStorage;
@@ -183,6 +186,9 @@ public class MainSceneController implements MouseEventListener, Listener {
     }
 
     private TitledPane createTitledPaneForFunction(Function function) {
+        FunctionHolder functionHolder = SubSceneEngine.getSpaceSubScene().getFunctionHolderByFunction(function);
+        List<Animation> functionAnimations = AnimationStorage.getCopyAnimations();
+
         TitledPane functionTitledPane = new TitledPane();
         functionTitledPane.setText(function.getName());
         functionTitledPane.getStyleClass().add("custom-titled-pane");
@@ -219,10 +225,23 @@ public class MainSceneController implements MouseEventListener, Listener {
         GridPane.setHalignment(animationLabel, HPos.LEFT);
 
         //Animation choiceBox
-        ChoiceBox<String> animationChoiceBox = new ChoiceBox<>();
-        AnimationStorage.getAnimations().forEach(a -> {
-            animationChoiceBox.getItems().add(a.getName());
+        ChoiceBox<Animation> animationChoiceBox = new ChoiceBox<>();
+        animationChoiceBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Animation animation) {
+                return animation.getName();
+            }
+
+            @Override
+            public Animation fromString(String s) {
+                return functionAnimations.stream()
+                        .filter(a -> a.getName().equals(s))
+                        .findFirst()
+                        .orElseThrow();
+            }
         });
+        functionAnimations.forEach(a -> animationChoiceBox.getItems().add(a));
+        functionHolder.animationProperty().bind(animationChoiceBox.valueProperty());
         animationChoiceBox.getStyleClass().add("inspector-button");
         animationChoiceBox.setPrefWidth(150);
         animationChoiceBox.maxWidth(Integer.MAX_VALUE);
@@ -256,6 +275,7 @@ public class MainSceneController implements MouseEventListener, Listener {
 
         // Play animation button
         Button playButton = new Button();
+        playButton.setOnAction(e -> functionHolder.startAnimationCallback().call());
         ImageView playImageView = new ImageView(FxApplication.class.getResource("play.png").toString());
         playImageView.setViewport(new Rectangle2D(20.0, 20.0, 25.0, 25.0));
         playImageView.setFitHeight(10);
@@ -273,6 +293,7 @@ public class MainSceneController implements MouseEventListener, Listener {
 
         // Pause animation button
         Button pauseButton = new Button();
+        pauseButton.setOnAction(e -> functionHolder.pauseAnimationCallback().call());
         ImageView pauseImageView = new ImageView(FxApplication.class.getResource("pause.png").toString());
         pauseImageView.setViewport(new Rectangle2D(20.0, 20.0, 25.0, 25.0));
         pauseImageView.setFitHeight(10);
@@ -289,6 +310,7 @@ public class MainSceneController implements MouseEventListener, Listener {
 
         //Stop animation button
         Button stopButton = new Button();
+        stopButton.setOnAction(e -> functionHolder.stopAnimationCallback().call());
         ImageView stopImageView = new ImageView(FxApplication.class.getResource("stop.png").toString());
         stopImageView.setViewport(new Rectangle2D(20.0, 20.0, 25.0, 25.0));
         stopImageView.setFitHeight(10);
@@ -315,6 +337,7 @@ public class MainSceneController implements MouseEventListener, Listener {
         //Interpolation checkBox
         CheckBox interpolationCheckBox = new CheckBox();
         interpolationCheckBox.getStyleClass().add("inspector-checkbox");
+        functionHolder.interpolationShownProperty().bind(interpolationCheckBox.selectedProperty());
         GridPane.setRowIndex(interpolationCheckBox, 2);
         GridPane.setColumnIndex(interpolationCheckBox, 1);
         gridPane.getChildren().add(interpolationCheckBox);
