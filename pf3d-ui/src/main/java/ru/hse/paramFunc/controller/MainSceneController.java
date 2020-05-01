@@ -35,10 +35,7 @@ import java.util.List;
 public class MainSceneController implements MouseEventListener, Listener {
 
     @FXML private MenuItem loadFileMenuItem;
-    @FXML private MenuItem allPointsMenuItem;
-    @FXML private MenuItem selectPointsMenuItem;
     @FXML private Pane spacePane;
-    @FXML private ChoiceBox<String> animationChoiceBox;
     @FXML private Button cameraXButton;
     @FXML private Button cameraYButton;
     @FXML private Button cameraZButton;
@@ -48,14 +45,7 @@ public class MainSceneController implements MouseEventListener, Listener {
     @FXML private TextField searchZTextField;
     @FXML private TextField searchTTextField;
     @FXML private Button searchButton;
-    @FXML private CheckBox interpolationCheckBox;
-    @FXML private ColorPicker controlPointsColorPicker;
-    @FXML private ColorPicker interpolationPointsColorPicker;
-    @FXML private ColorPicker linesColorPicker;
     @FXML private Label fpsLabel;
-    @FXML private Button playButton;
-    @FXML private Button pauseButton;
-    @FXML private Button stopButton;
     @FXML private Label pointInfoLabel;
     @FXML private VBox functionsVBox;
 
@@ -85,14 +75,6 @@ public class MainSceneController implements MouseEventListener, Listener {
     public void initialize() {
         FunctionStorage.getInstance().addListener(this);
 
-        AnimationStorage.getAnimations().forEach(animation -> {
-            animationChoiceBox.getItems().add(animation.getName());
-        });
-        animationChoiceBox.setOnAction(e -> {
-            String name = animationChoiceBox.getSelectionModel().getSelectedItem();
-            SubSceneEngine.getSpaceSubScene().setCurrentAnimation(name);
-        });
-
         loadFileMenuItem.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             File loadedFile = fileChooser.showOpenDialog(SceneRunner.getInstance().getMainStage());
@@ -111,30 +93,8 @@ public class MainSceneController implements MouseEventListener, Listener {
 
             }
         });
-        allPointsMenuItem.setOnAction(e -> {
-//            try {
-//                SceneRunner.getInstance().run(SceneType.ALL_POINTS);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-        });
-        selectPointsMenuItem.setOnAction(e -> {
-//            try {
-//                SceneRunner.getInstance().run(SceneType.SELECTION);
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-        });
 
         fpsLabel.textProperty().bind(SpaceSubScene.getFpsProperty().asString("%.1f"));
-
-        playButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().startCurrentAnimation());
-        pauseButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().pauseCurrentAnimation());
-        stopButton.setOnAction(e -> SubSceneEngine.getSpaceSubScene().stopCurrentAnimation());
-
-        interpolationCheckBox.setOnAction(e -> {
-//            SubSceneEngine.getSpaceSubScene().setSplinePointsVisible(interpolationCheckBox.isSelected());
-        });
     }
 
     private void showDialogWindow() {
@@ -220,7 +180,7 @@ public class MainSceneController implements MouseEventListener, Listener {
     }
 
     private void resetScene() {
-        animationChoiceBox.setValue(null);
+
     }
 
     @Override
@@ -241,14 +201,13 @@ public class MainSceneController implements MouseEventListener, Listener {
     @Override
     public void receive() {
         //Обновление меню Functions
-        functionsVBox.getChildren().clear();
+        this.functionsVBox.getChildren().clear();
         List<Function> functions = FunctionStorage.getInstance().getFunctions();
         Accordion functionsAccordion = new Accordion();
         for (Function function : functions) {
             functionsAccordion.getPanes().add(createTitledPaneForFunction(function));
         }
-        functionsVBox.getChildren().add(functionsAccordion);
-
+        this.functionsVBox.getChildren().add(functionsAccordion);
     }
 
     private TitledPane createTitledPaneForFunction(Function function) {

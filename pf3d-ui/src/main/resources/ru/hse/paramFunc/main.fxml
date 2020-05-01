@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -41,19 +35,11 @@
                 <Menu mnemonicParsing="false" text="File">
                   <items>
                     <MenuItem fx:id="loadFileMenuItem" mnemonicParsing="false" text="Load file..." />
+                        <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Exit" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Points">
-                  <items>
-                    <MenuItem fx:id="allPointsMenuItem" mnemonicParsing="false" text="All points" />
-                        <MenuItem fx:id="selectPointsMenuItem" mnemonicParsing="false" text="Select points" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Settings">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
+                  <Menu fx:id="functionsMenu" mnemonicParsing="false" text="Functions" />
+                <Menu mnemonicParsing="false" text="Settings" />
                   <Menu mnemonicParsing="false" text="Help">
                      <items>
                         <MenuItem mnemonicParsing="false" text="About" />
@@ -85,85 +71,9 @@
                <children>
                   <Accordion styleClass="custom-accordion" VBox.vgrow="NEVER">
                     <panes>
-                      <TitledPane styleClass="custom-titled-pane" text="Animation">
+                        <TitledPane layoutX="10.0" layoutY="134.0" styleClass="custom-titled-pane" text="Functions">
                            <content>
-                              <VBox prefHeight="120.0" prefWidth="100.0">
-                                 <children>
-                                    <GridPane prefHeight="80.0" prefWidth="294.0" VBox.vgrow="ALWAYS">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Label styleClass="inspector-label" text="Type">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <ChoiceBox fx:id="animationChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="inspector-button" GridPane.columnIndex="1">
-                                             <GridPane.margin>
-                                                <Insets right="10.0" />
-                                             </GridPane.margin>
-                                          </ChoiceBox>
-                                          <GridPane GridPane.columnSpan="2" GridPane.rowIndex="1">
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="50.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <Button fx:id="playButton" mnemonicParsing="false" styleClass="inspector-button" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-                                                   <graphic>
-                                                      <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@play.png" />
-                                                         </image>
-                                                         <viewport>
-                                                            <Rectangle2D height="25.0" minX="20.0" minY="20.0" width="25.0" />
-                                                         </viewport>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button fx:id="pauseButton" mnemonicParsing="false" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                                   <graphic>
-                                                      <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@pause.png" />
-                                                         </image>
-                                                         <viewport>
-                                                            <Rectangle2D height="25.0" minX="20.0" minY="20.0" width="25.0" />
-                                                         </viewport>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button fx:id="stopButton" mnemonicParsing="false" styleClass="inspector-button" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-                                                   <graphic>
-                                                      <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@stop.png" />
-                                                         </image>
-                                                         <viewport>
-                                                            <Rectangle2D height="25.0" minX="20.0" minY="20.0" width="25.0" />
-                                                         </viewport>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </GridPane>
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
+                              <VBox fx:id="functionsVBox" />
                            </content>
                            <font>
                               <Font size="15.0" />
@@ -291,103 +201,6 @@
                                     </GridPane>
                                  </children>
                               </VBox>
-                           </content>
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </TitledPane>
-                        <TitledPane layoutX="10.0" layoutY="41.0" styleClass="custom-titled-pane" text="Interpolation">
-                           <content>
-                              <VBox prefHeight="60.0" prefWidth="100.0">
-                                 <children>
-                                    <GridPane VBox.vgrow="ALWAYS">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label styleClass="inspector-label" text="Show">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <CheckBox fx:id="interpolationCheckBox" mnemonicParsing="false" styleClass="inspector-checkbox" GridPane.columnIndex="1">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </CheckBox>
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
-                           </content>
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </TitledPane>
-                        <TitledPane layoutX="10.0" layoutY="60.0" styleClass="custom-titled-pane" text="Style">
-                           <content>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
-                                 <children>
-                                    <GridPane VBox.vgrow="ALWAYS">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="80.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Label styleClass="inspector-label" text="Function ponts color" wrapText="true">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label styleClass="inspector-label" text="Interpolation points color" wrapText="true" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label styleClass="inspector-label" text="Animation points color" wrapText="true" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <ColorPicker fx:id="controlPointsColorPicker" maxWidth="1.7976931348623157E308" styleClass="inspector-button" GridPane.columnIndex="1">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" right="10.0" />
-                                             </GridPane.margin>
-                                          </ColorPicker>
-                                          <ColorPicker fx:id="interpolationPointsColorPicker" maxWidth="1.7976931348623157E308" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" right="10.0" />
-                                             </GridPane.margin>
-                                          </ColorPicker>
-                                          <ColorPicker fx:id="linesColorPicker" maxWidth="1.7976931348623157E308" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" right="10.0" />
-                                             </GridPane.margin>
-                                          </ColorPicker>
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
-                           </content>
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </TitledPane>
-                        <TitledPane layoutX="10.0" layoutY="134.0" styleClass="custom-titled-pane" text="Functions">
-                           <content>
-                              <VBox fx:id="functionsVBox" />
                            </content>
                            <font>
                               <Font size="15.0" />
