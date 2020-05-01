@@ -38,7 +38,7 @@
                         <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Exit" />
                   </items>
                 </Menu>
-                  <Menu fx:id="functionsMenu" mnemonicParsing="false" text="Functions" />
+                  <Menu fx:id="functionsMenu" mnemonicParsing="false" />
                 <Menu mnemonicParsing="false" text="Settings" />
                   <Menu mnemonicParsing="false" text="Help">
                      <items>

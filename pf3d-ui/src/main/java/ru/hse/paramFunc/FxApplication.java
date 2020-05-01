@@ -2,9 +2,10 @@ package ru.hse.paramFunc;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import ru.hse.paramfunc.domain.enums.SceneType;
 
 public class FxApplication extends Application {
+
+    private final static String STYLESHEET_PATH = "ru/hse/paramFunc/";
 
     @Override
     public void start(Stage stage) {
@@ -14,6 +15,10 @@ public class FxApplication extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static String getStylesheetPath() {
+        return STYLESHEET_PATH;
     }
 
 }

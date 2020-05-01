@@ -35,6 +35,7 @@ import java.util.List;
 public class MainSceneController implements MouseEventListener, Listener {
 
     @FXML private MenuItem loadFileMenuItem;
+    @FXML private Menu functionsMenu;
     @FXML private Pane spacePane;
     @FXML private Button cameraXButton;
     @FXML private Button cameraYButton;
@@ -49,8 +50,6 @@ public class MainSceneController implements MouseEventListener, Listener {
     @FXML private Label pointInfoLabel;
     @FXML private VBox functionsVBox;
 
-    private final static String STYLESHEET_PATH = "ru/hse/paramFunc/";
-
     private Stage stage;
     private String functionName;
 
@@ -60,7 +59,7 @@ public class MainSceneController implements MouseEventListener, Listener {
             FXMLLoader loader = new FXMLLoader(FxApplication.class.getResource("main.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 1024, 700, true);
-            scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
+            scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
             this.stage.setScene(scene);
             SubSceneEngine.start(scene);
         } catch (Exception e) {
@@ -92,6 +91,13 @@ public class MainSceneController implements MouseEventListener, Listener {
                 }
 
             }
+        });
+        Label label = new Label("Functions");
+        label.setOnMouseClicked(e -> SceneRunner.getInstance().runFunctionsScene());
+        functionsMenu.setGraphic(label);
+        functionsMenu.setOnShowing(e -> {
+            System.out.println("Action");
+            SceneRunner.getInstance().runFunctionsScene();
         });
 
         fpsLabel.textProperty().bind(SpaceSubScene.getFpsProperty().asString("%.1f"));
@@ -174,7 +180,7 @@ public class MainSceneController implements MouseEventListener, Listener {
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(this.stage);
         Scene scene = new Scene(root, 300, 130);
-        scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
+        scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
     }
