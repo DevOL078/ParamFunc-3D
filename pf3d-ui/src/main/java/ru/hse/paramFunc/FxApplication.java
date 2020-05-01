@@ -9,7 +9,7 @@ public class FxApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         SceneRunner.getInstance().setMainStage(stage);
-        SceneRunner.getInstance().run(SceneType.MAIN);
+        SceneRunner.getInstance().runMainScene();
     }
 
     public static void main(String[] args) {

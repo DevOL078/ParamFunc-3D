@@ -47,7 +47,6 @@ public class AllPointsController {
 //        tableView.getItems().addAll(FunctionValueStorage.getInstance().getAllPoints());
 
         exitButton.setOnAction(e -> {
-            SceneRunner.getInstance().stop(SceneType.ALL_POINTS);
         });
     }
 

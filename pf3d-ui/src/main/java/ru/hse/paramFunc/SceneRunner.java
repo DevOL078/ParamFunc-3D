@@ -5,7 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import ru.hse.paramFunc.controller.SelectionController;
 import ru.hse.paramfunc.SubSceneEngine;
+import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.enums.SceneType;
 
 import java.io.IOException;
@@ -27,39 +29,6 @@ public class SceneRunner {
     private Stage searchStage;
     private Stage selectionStage;
 
-    public void run(SceneType sceneType) throws Exception {
-        switch (sceneType) {
-            case MAIN: {
-                runMainScene();
-                break;
-            }
-            case ALL_POINTS: {
-                runAllPointsScene();
-                break;
-            }
-            case SELECTION: {
-                runSelectionScene();
-                break;
-            }
-            default: {
-
-            }
-        }
-    }
-
-    public void stop(SceneType sceneType) {
-        switch (sceneType) {
-            case ALL_POINTS: {
-                stopAllPointsScene();
-                break;
-            }
-            case SELECTION: {
-                stopSelectionScene();
-                break;
-            }
-        }
-    }
-
     public Stage getMainStage() {
         return mainStage;
     }
@@ -68,7 +37,7 @@ public class SceneRunner {
         this.mainStage = stage;
     }
 
-    private void runMainScene() throws Exception {
+    public void runMainScene() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         Scene scene = new Scene(root, 1024, 700, true);
         scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
@@ -77,7 +46,7 @@ public class SceneRunner {
         mainStage.show();
     }
 
-    private void runAllPointsScene() throws IOException {
+    public void runAllPointsScene() throws IOException {
         searchStage = new Stage();
         searchStage.initModality(Modality.WINDOW_MODAL);
         searchStage.initOwner(mainStage);
@@ -87,22 +56,9 @@ public class SceneRunner {
         searchStage.show();
     }
 
-    private void runSelectionScene() throws IOException {
-        selectionStage = new Stage();
-        selectionStage.initModality(Modality.WINDOW_MODAL);
-        selectionStage.initOwner(mainStage);
-        Parent root = FXMLLoader.load(getClass().getResource("selection.fxml"));
-        Scene scene = new Scene(root, 600, 400);
-        selectionStage.setScene(scene);
-        selectionStage.show();
-    }
-
-    private void stopAllPointsScene() {
-        searchStage.close();
-    }
-
-    private void stopSelectionScene() {
-        selectionStage.close();
+    public void runSelectionScene(Function function) {
+        SelectionController controller = new SelectionController(this.mainStage, function);
+        controller.showStage();
     }
 
 }

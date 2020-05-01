@@ -1,6 +1,7 @@
 package ru.hse.paramfunc.storage;
 
 import ru.hse.paramfunc.domain.Function;
+import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.listener.Notifier;
 
@@ -29,6 +30,11 @@ public class FunctionStorage implements Notifier {
 
     public void removeFunction(Function function) {
         functionList.remove(function);
+        notifyListeners();
+    }
+
+    public void setSelectedPoints(Function function, List<FunctionPoint> functionPoints) {
+        function.setSelectedPoints(functionPoints);
         notifyListeners();
     }
 

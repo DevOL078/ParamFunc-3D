@@ -30,77 +30,30 @@ import java.util.List;
 
 public class MainSceneController implements MouseEventListener, Listener {
 
-    @FXML
-    private MenuItem loadFileMenuItem;
-
-    @FXML
-    private MenuItem allPointsMenuItem;
-
-    @FXML
-    private MenuItem selectPointsMenuItem;
-
-    @FXML
-    private Pane spacePane;
-
-    @FXML
-    private ChoiceBox<String> animationChoiceBox;
-
-    @FXML
-    private Button cameraXButton;
-
-    @FXML
-    private Button cameraYButton;
-
-    @FXML
-    private Button cameraZButton;
-
-    @FXML
-    private Button cameraIsometricButton;
-
-    @FXML
-    private TextField searchXTextField;
-
-    @FXML
-    private TextField searchYTextField;
-
-    @FXML
-    private TextField searchZTextField;
-
-    @FXML
-    private TextField searchTTextField;
-
-    @FXML
-    private Button searchButton;
-
-    @FXML
-    private CheckBox interpolationCheckBox;
-
-    @FXML
-    private ColorPicker controlPointsColorPicker;
-
-    @FXML
-    private ColorPicker interpolationPointsColorPicker;
-
-    @FXML
-    private ColorPicker linesColorPicker;
-
-    @FXML
-    private Label fpsLabel;
-
-    @FXML
-    private Button playButton;
-
-    @FXML
-    private Button pauseButton;
-
-    @FXML
-    private Button stopButton;
-
-    @FXML
-    private Label pointInfoLabel;
-
-    @FXML
-    private VBox functionsVBox;
+    @FXML private MenuItem loadFileMenuItem;
+    @FXML private MenuItem allPointsMenuItem;
+    @FXML private MenuItem selectPointsMenuItem;
+    @FXML private Pane spacePane;
+    @FXML private ChoiceBox<String> animationChoiceBox;
+    @FXML private Button cameraXButton;
+    @FXML private Button cameraYButton;
+    @FXML private Button cameraZButton;
+    @FXML private Button cameraIsometricButton;
+    @FXML private TextField searchXTextField;
+    @FXML private TextField searchYTextField;
+    @FXML private TextField searchZTextField;
+    @FXML private TextField searchTTextField;
+    @FXML private Button searchButton;
+    @FXML private CheckBox interpolationCheckBox;
+    @FXML private ColorPicker controlPointsColorPicker;
+    @FXML private ColorPicker interpolationPointsColorPicker;
+    @FXML private ColorPicker linesColorPicker;
+    @FXML private Label fpsLabel;
+    @FXML private Button playButton;
+    @FXML private Button pauseButton;
+    @FXML private Button stopButton;
+    @FXML private Label pointInfoLabel;
+    @FXML private VBox functionsVBox;
 
     public void initialize() {
         FunctionStorage.getInstance().addListener(this);
@@ -128,18 +81,18 @@ public class MainSceneController implements MouseEventListener, Listener {
             }
         });
         allPointsMenuItem.setOnAction(e -> {
-            try {
-                SceneRunner.getInstance().run(SceneType.ALL_POINTS);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+//            try {
+//                SceneRunner.getInstance().run(SceneType.ALL_POINTS);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
         });
         selectPointsMenuItem.setOnAction(e -> {
-            try {
-                SceneRunner.getInstance().run(SceneType.SELECTION);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+//            try {
+//                SceneRunner.getInstance().run(SceneType.SELECTION);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
         });
 
         fpsLabel.textProperty().bind(SpaceSubScene.getFpsProperty().asString("%.1f"));
@@ -346,6 +299,7 @@ public class MainSceneController implements MouseEventListener, Listener {
         //Select points button
         Button selectPointsButton = new Button("Select points");
         selectPointsButton.getStyleClass().add("inspector-button");
+        selectPointsButton.setOnAction(e -> SceneRunner.getInstance().runSelectionScene(function));
         GridPane.setRowIndex(selectPointsButton, 3);
         GridPane.setColumnIndex(selectPointsButton, 0);
         GridPane.setColumnSpan(selectPointsButton, 2);
