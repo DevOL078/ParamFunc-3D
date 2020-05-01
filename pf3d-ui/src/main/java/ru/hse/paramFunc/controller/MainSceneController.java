@@ -1,15 +1,20 @@
 package ru.hse.paramFunc.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramFunc.SceneRunner;
@@ -19,7 +24,6 @@ import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.contract.MouseEventListener;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.domain.enums.SceneType;
 import ru.hse.paramfunc.element.FunctionHolder;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.listener.Listener;
@@ -55,6 +59,29 @@ public class MainSceneController implements MouseEventListener, Listener {
     @FXML private Label pointInfoLabel;
     @FXML private VBox functionsVBox;
 
+    private final static String STYLESHEET_PATH = "ru/hse/paramFunc/";
+
+    private Stage stage;
+    private String functionName;
+
+    public MainSceneController(Stage primaryStage) {
+        this.stage = primaryStage;
+        try {
+            FXMLLoader loader = new FXMLLoader(FxApplication.class.getResource("main.fxml"));
+            loader.setController(this);
+            Scene scene = new Scene(loader.load(), 1024, 700, true);
+            scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
+            this.stage.setScene(scene);
+            SubSceneEngine.start(scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showStage() {
+        this.stage.show();
+    }
+
     public void initialize() {
         FunctionStorage.getInstance().addListener(this);
 
@@ -70,12 +97,16 @@ public class MainSceneController implements MouseEventListener, Listener {
             FileChooser fileChooser = new FileChooser();
             File loadedFile = fileChooser.showOpenDialog(SceneRunner.getInstance().getMainStage());
             if (loadedFile != null) {
-                try {
-                    SubSceneEngine.loadFunction(loadedFile.getAbsolutePath());
-                    resetScene();
-                    SubSceneEngine.getSpaceSubScene().addMouseEventListener(this);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                showDialogWindow();
+                if(this.functionName != null) {
+                    try {
+                        SubSceneEngine.loadFunction(loadedFile.getAbsolutePath(), this.functionName);
+                        resetScene();
+                        SubSceneEngine.getSpaceSubScene().addMouseEventListener(this);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    this.functionName = null;
                 }
 
             }
@@ -104,6 +135,88 @@ public class MainSceneController implements MouseEventListener, Listener {
         interpolationCheckBox.setOnAction(e -> {
 //            SubSceneEngine.getSpaceSubScene().setSplinePointsVisible(interpolationCheckBox.isSelected());
         });
+    }
+
+    private void showDialogWindow() {
+        Stage dialogStage = new Stage();
+
+        GridPane root = new GridPane();
+        root.setStyle("-fx-background-color: #57575C;");
+        RowConstraints r0 = new RowConstraints();
+        RowConstraints r1 = new RowConstraints();
+        r0.setPercentHeight(50);
+        r1.setPercentHeight(50);
+        ColumnConstraints c0 = new ColumnConstraints();
+        ColumnConstraints c1 = new ColumnConstraints();
+        c0.setPercentWidth(30);
+        c1.setPercentWidth(70);
+        root.getRowConstraints().clear();
+        root.getColumnConstraints().clear();
+        root.getRowConstraints().addAll(r0, r1);
+        root.getColumnConstraints().addAll(c0, c1);
+
+        Label label = new Label("Function name");
+        label.getStyleClass().add("inspector-label");
+        GridPane.setValignment(label, VPos.CENTER);
+        GridPane.setHalignment(label, HPos.RIGHT);
+        GridPane.setRowIndex(label, 0);
+        GridPane.setColumnIndex(label, 0);
+
+        TextField textField = new TextField();
+        GridPane.setMargin(textField, new Insets(10));
+        GridPane.setValignment(textField, VPos.CENTER);
+        GridPane.setHalignment(textField, HPos.LEFT);
+        GridPane.setRowIndex(textField, 0);
+        GridPane.setColumnIndex(textField, 1);
+
+        GridPane buttonGridPane = new GridPane();
+        RowConstraints r0B = new RowConstraints();
+        ColumnConstraints c0B = new ColumnConstraints();
+        ColumnConstraints c1B = new ColumnConstraints();
+        c0B.setPercentWidth(50);
+        c1B.setPercentWidth(50);
+        buttonGridPane.getRowConstraints().clear();
+        buttonGridPane.getColumnConstraints().clear();
+        buttonGridPane.getRowConstraints().addAll(r0B);
+        buttonGridPane.getColumnConstraints().addAll(c0B, c1B);
+        GridPane.setRowIndex(buttonGridPane, 1);
+        GridPane.setColumnSpan(buttonGridPane, 2);
+
+        Button loadButton = new Button("Load");
+        loadButton.setFont(Font.font(15));
+        loadButton.setPrefHeight(30);
+        loadButton.setPrefWidth(67);
+        loadButton.getStyleClass().add("inspector-button");
+        loadButton.setOnAction(e -> {
+            this.functionName = textField.getText();
+            dialogStage.close();
+        });
+        GridPane.setValignment(loadButton, VPos.CENTER);
+        GridPane.setHalignment(loadButton, HPos.RIGHT);
+        GridPane.setColumnIndex(loadButton, 0);
+        GridPane.setMargin(loadButton, new Insets(0, 10, 0, 0));
+
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setFont(Font.font(15));
+        cancelButton.setPrefHeight(30);
+        cancelButton.setPrefWidth(67);
+        cancelButton.getStyleClass().add("inspector-button");
+        cancelButton.setOnAction(e -> dialogStage.close());
+        GridPane.setValignment(cancelButton, VPos.CENTER);
+        GridPane.setHalignment(cancelButton, HPos.LEFT);
+        GridPane.setColumnIndex(cancelButton, 1);
+        GridPane.setMargin(cancelButton, new Insets(0, 0, 0, 10));
+
+        buttonGridPane.getChildren().addAll(loadButton, cancelButton);
+        root.getChildren().addAll(label, textField, buttonGridPane);
+
+        dialogStage.setTitle("Input function name");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(this.stage);
+        Scene scene = new Scene(root, 300, 130);
+        scene.getStylesheets().add(STYLESHEET_PATH + "main.css");
+        dialogStage.setScene(scene);
+        dialogStage.showAndWait();
     }
 
     private void resetScene() {

@@ -7,7 +7,7 @@ import ru.hse.paramfunc.domain.enums.SceneType;
 public class FxApplication extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         SceneRunner.getInstance().setMainStage(stage);
         SceneRunner.getInstance().runMainScene();
     }

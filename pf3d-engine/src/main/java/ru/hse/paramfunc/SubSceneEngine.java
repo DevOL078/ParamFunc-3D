@@ -18,12 +18,10 @@ import ru.hse.paramfunc.storage.FunctionStorage;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class SubSceneEngine {
 
     private final static String TEST_FILE_PATH = "C:\\Users\\Dmitry\\Desktop\\Diploma\\ParamFunc-3D\\etc\\test13-04-2020_23-31-56.txt";
-    private final static Random random = new Random();
 
     private static SpaceSubScene subScene;
 
@@ -52,11 +50,11 @@ public class SubSceneEngine {
         return subScene;
     }
 
-    public static void loadFunction(String filePath) throws IOException {
+    public static void loadFunction(String filePath, String functionName) throws IOException {
         List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(filePath);
         Spline spline = new CatmullRomSpline();
         List<FunctionPoint> splinePoints = spline.calculate(allPoints);
-        Function function = new Function(String.valueOf(random.nextInt(100)));    //TODO generate name
+        Function function = new Function(functionName);
         function.setAllPoints(allPoints);
         function.setSelectedPoints(allPoints);
         FunctionFileProvider.saveTmpFile(function, splinePoints);

@@ -1,9 +1,8 @@
 package ru.hse.paramFunc.controller;
 
-import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,7 +20,6 @@ import ru.hse.paramfunc.selection.SelectionService;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,7 +122,7 @@ public class SelectionController {
                 .collect(Collectors.toList());
         selectionTableView.getItems().addAll(this.functionValues);
         this.functionValues.forEach(v -> v.selectedProperty.addListener((observableValue, aBoolean, t1) -> {
-            if(t1) {
+            if (t1) {
                 selectedFunctionValues.add(v);
             } else {
                 selectedFunctionValues.remove(v);
