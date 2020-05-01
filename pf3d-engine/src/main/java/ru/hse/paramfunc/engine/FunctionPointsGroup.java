@@ -1,11 +1,10 @@
 package ru.hse.paramfunc.engine;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
-import ru.hse.paramFunc.animation.Animation;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.FunctionHolder;
@@ -47,12 +46,12 @@ public class FunctionPointsGroup extends Group {
                 SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
             });
         });
-        List<Sphere> spheres = functionPoints.stream()
+        List<Sphere> valuesSpheres = functionPoints.stream()
                 .map(SpacePoint::getSphere)
                 .collect(Collectors.toList());
 
         this.valueGroup.getChildren().clear();
-        this.valueGroup.getChildren().addAll(spheres);
+        this.valueGroup.getChildren().addAll(valuesSpheres);
 
         splineGroup.setUp(splinePoints);
         splineGroup.visibleProperty().bind(functionHolder.interpolationShownProperty());
@@ -62,10 +61,10 @@ public class FunctionPointsGroup extends Group {
             // animation - старое значение
             // t1 - новое значение
             this.animationGroup.getChildren().clear();
-            if(animation != null) {
+            if (animation != null) {
                 animation.reset();
             }
-            if(t1 != null) {
+            if (t1 != null) {
                 t1.init(functionHolder.getFunction());
                 this.animationGroup.getChildren().add(t1.getGroup());
             }
@@ -74,6 +73,21 @@ public class FunctionPointsGroup extends Group {
         this.functionHolder.setStartAnimationCallback(() -> this.functionHolder.animationProperty().get().start());
         this.functionHolder.setPauseAnimationCallback(() -> this.functionHolder.animationProperty().get().pause());
         this.functionHolder.setStopAnimationCallback(() -> this.functionHolder.animationProperty().get().stop());
+
+        this.functionHolder.focusProperty().unbind();
+        this.functionHolder.focusProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) {
+                valuesSpheres.forEach(sphere -> {
+                    PhongMaterial material = (PhongMaterial) sphere.getMaterial();
+                    material.diffuseColorProperty().unbind();
+                    material.setDiffuseColor(Color.YELLOW);
+                });
+            } else {
+                valuesSpheres.forEach(sphere -> ((PhongMaterial) sphere.getMaterial())
+                        .diffuseColorProperty()
+                        .bind(this.functionHolder.valuesColorProperty()));
+            }
+        });
     }
 
     public void destroy() {
@@ -91,6 +105,10 @@ public class FunctionPointsGroup extends Group {
 
     public void setSplinePoints(List<FunctionPoint> splinePoints) {
         this.splinePoints = splinePoints;
+    }
+
+    public Group getValueGroup() {
+        return this.valueGroup;
     }
 
 }

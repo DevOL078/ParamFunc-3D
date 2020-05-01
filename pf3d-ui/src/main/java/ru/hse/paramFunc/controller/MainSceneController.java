@@ -192,6 +192,13 @@ public class MainSceneController implements MouseEventListener, Listener {
         TitledPane functionTitledPane = new TitledPane();
         functionTitledPane.setText(function.getName());
         functionTitledPane.getStyleClass().add("custom-titled-pane");
+        functionTitledPane.expandedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) {
+                functionHolder.focusProperty().set(true);
+            } else {
+                functionHolder.focusProperty().set(false);
+            }
+        });
         VBox vBox = new VBox();
 
         //Создание Grid-контейнера
@@ -200,17 +207,11 @@ public class MainSceneController implements MouseEventListener, Listener {
         RowConstraints r1 = new RowConstraints();
         RowConstraints r2 = new RowConstraints();
         RowConstraints r3 = new RowConstraints();
-//        r0.setVgrow(Priority.SOMETIMES);
-//        r1.setVgrow(Priority.SOMETIMES);
-//        r2.setVgrow(Priority.SOMETIMES);
-//        r3.setVgrow(Priority.SOMETIMES);
         ColumnConstraints c0 = new ColumnConstraints();
         c0.setMinWidth(10);
         c0.setPrefWidth(80);
         c0.maxWidthProperty().bind(c0.prefWidthProperty());
         ColumnConstraints c1 = new ColumnConstraints();
-//        c0.setHgrow(Priority.SOMETIMES);
-//        c1.setHgrow(Priority.SOMETIMES);
         gridPane.getRowConstraints().clear();
         gridPane.getColumnConstraints().clear();
         gridPane.getRowConstraints().addAll(r0, r1, r2, r3);

@@ -105,13 +105,13 @@ public class SpaceSubScene extends SubScene implements Listener {
 
     public void update() {
         this.pointsGroup.update();
+        addAdditionalLinesForPoints();
 //        this.animationGroup.getChildren().clear();
 //
 //        this.animationMap.values().forEach(Animation::reset);
 //        if (this.currentAnimation != null) {
 //            this.currentAnimation.init();
 //        }
-//        addAdditionalLinesForPoints();
     }
 
     public void onCameraMove(Bounds bounds) {
@@ -166,35 +166,44 @@ public class SpaceSubScene extends SubScene implements Listener {
 
     private void addAdditionalLinesForPoints() {
         pointsGroup.getChildren().forEach(node -> {
-            if (!(node instanceof Sphere)) return;
-            Sphere point = (Sphere) node;
-            point.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                double pointX = point.getTranslateX();
-                double pointY = point.getTranslateY();
-                double pointZ = point.getTranslateZ();
+            if (!(node instanceof FunctionPointsGroup)) return;
+            FunctionPointsGroup functionPointsGroup = (FunctionPointsGroup) node;
+            Group valueGroup = functionPointsGroup.getValueGroup();
+            valueGroup.getChildren().forEach(valueNode -> {
+                if(!(valueNode instanceof Sphere)) return;
+                Sphere point = (Sphere) valueNode;
+                point.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+                    double pointX = point.getTranslateX();
+                    double pointY = point.getTranslateY();
+                    double pointZ = point.getTranslateZ();
 
-                float visibleX = this.threeDimSpace.getVisibleOYZCoordinate();
-                float visibleY = this.threeDimSpace.getVisibleOXYCoordinate();
-                float visibleZ = this.threeDimSpace.getVisibleOZXCoordinate();
+                    float visibleX = this.threeDimSpace.getVisibleOYZCoordinate();
+                    float visibleY = this.threeDimSpace.getVisibleOXYCoordinate();
+                    float visibleZ = this.threeDimSpace.getVisibleOZXCoordinate();
 
-                Point3D targetPoint = new Point3D(pointX, pointY, pointZ);
-                Point3D line1End = new Point3D(pointX, pointY, visibleZ);
-                Point3D line2End = new Point3D(pointX, visibleY, pointZ);
-                Point3D line3End = new Point3D(visibleX, pointY, pointZ);
+                    Point3D targetPoint = new Point3D(pointX, pointY, pointZ);
+                    Point3D line1End = new Point3D(pointX, pointY, visibleZ);
+                    Point3D line2End = new Point3D(pointX, visibleY, pointZ);
+                    Point3D line3End = new Point3D(visibleX, pointY, pointZ);
 
-                Line3D line1 = new Line3D(targetPoint, line1End, Color.YELLOW, 0.3f);
-                Line3D line2 = new Line3D(targetPoint, line2End, Color.YELLOW, 0.3f);
-                Line3D line3 = new Line3D(targetPoint, line3End, Color.YELLOW, 0.3f);
-                this.additionalLinesGroup.getChildren().addAll(line1, line2, line3);
-            });
-            point.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                this.additionalLinesGroup.getChildren().clear();
+                    Line3D line1 = new Line3D(targetPoint, line1End, Color.YELLOW, 0.3f);
+                    Line3D line2 = new Line3D(targetPoint, line2End, Color.YELLOW, 0.3f);
+                    Line3D line3 = new Line3D(targetPoint, line3End, Color.YELLOW, 0.3f);
+                    this.additionalLinesGroup.getChildren().addAll(line1, line2, line3);
+                });
+                point.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+                    this.additionalLinesGroup.getChildren().clear();
+                });
             });
         });
     }
 
     public FunctionHolder getFunctionHolderByFunction(Function function) {
         return this.pointsGroup.getFunctionHolderByFunction(function);
+    }
+
+    public List<FunctionHolder> getAllFunctionHolders() {
+        return this.pointsGroup.getAllFunctionHolders();
     }
 
     public static DoubleProperty getFpsProperty() {

@@ -72,6 +72,12 @@ public class PointsGroup extends Group {
                 .orElse(null);
     }
 
+    public List<FunctionHolder> getAllFunctionHolders() {
+        return functionPointsGroups.stream()
+                .map(FunctionPointsGroup::getFunctionHolder)
+                .collect(Collectors.toList());
+    }
+
     private void normalizePoints(List<FunctionPoint> points, List<FunctionPoint> splinePoints) {
         Float minX = null, maxX = null;
         Float minY = null, maxY = null;
