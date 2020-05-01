@@ -1,11 +1,10 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import ru.hse.paramfunc.domain.FunctionPoint;
+import ru.hse.paramfunc.element.FunctionHolder;
 import ru.hse.paramfunc.element.SpacePoint;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.stream.Collectors;
 
 public class SplineGroup extends Group {
 
-    private final static Material pointMaterial = new PhongMaterial(Color.GOLD);
-    private final static float pointRadius = 0.5f;
+    private FunctionHolder functionHolder;
+
+    public SplineGroup(FunctionHolder functionHolder) {
+        this.functionHolder = functionHolder;
+    }
 
     public void setUp(List<FunctionPoint> splinePoints) {
         super.getChildren().clear();
@@ -22,8 +24,10 @@ public class SplineGroup extends Group {
                 .map(p -> {
                     SpacePoint spacePoint = new SpacePoint(p);
                     Sphere sphere = new Sphere();
-                    sphere.setRadius(pointRadius);
-                    sphere.setMaterial(pointMaterial);
+                    PhongMaterial material = new PhongMaterial();
+                    material.diffuseColorProperty().bind(this.functionHolder.interpolationColorProperty());
+                    sphere.setMaterial(material);
+                    sphere.radiusProperty().bind(this.functionHolder.interpolationRadiusProperty());
                     spacePoint.setSphere(sphere);
                     return spacePoint;
                 })

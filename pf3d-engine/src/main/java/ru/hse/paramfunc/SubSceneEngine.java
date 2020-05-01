@@ -21,8 +21,6 @@ import java.util.List;
 
 public class SubSceneEngine {
 
-    private final static String TEST_FILE_PATH = "C:\\Users\\Dmitry\\Desktop\\Diploma\\ParamFunc-3D\\etc\\test13-04-2020_23-31-56.txt";
-
     private static SpaceSubScene subScene;
 
     public static void start(Scene scene) throws Exception {
@@ -52,12 +50,9 @@ public class SubSceneEngine {
 
     public static void loadFunction(String filePath, String functionName) throws IOException {
         List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(filePath);
-        Spline spline = new CatmullRomSpline();
-        List<FunctionPoint> splinePoints = spline.calculate(allPoints);
         Function function = new Function(functionName);
         function.setAllPoints(allPoints);
         function.setSelectedPoints(allPoints);
-        FunctionFileProvider.saveTmpFile(function, splinePoints);
         FunctionStorage.getInstance().addFunction(function);
     }
 

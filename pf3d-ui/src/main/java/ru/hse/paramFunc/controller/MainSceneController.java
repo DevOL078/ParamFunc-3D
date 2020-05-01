@@ -79,7 +79,7 @@ public class MainSceneController implements MouseEventListener, Listener {
             File loadedFile = fileChooser.showOpenDialog(SceneRunner.getInstance().getMainStage());
             if (loadedFile != null) {
                 showDialogWindow();
-                if(this.functionName != null) {
+                if (this.functionName != null) {
                     try {
                         SubSceneEngine.loadFunction(loadedFile.getAbsolutePath(), this.functionName);
                         resetScene();
@@ -377,7 +377,7 @@ public class MainSceneController implements MouseEventListener, Listener {
         //Select points button
         Button selectPointsButton = new Button("Select points");
         selectPointsButton.getStyleClass().add("inspector-button");
-        selectPointsButton.setOnAction(e -> SceneRunner.getInstance().runSelectionScene(function));
+        selectPointsButton.setOnAction(e -> SceneRunner.getInstance().runSelectionScene(this.stage, function));
         GridPane.setRowIndex(selectPointsButton, 3);
         GridPane.setColumnIndex(selectPointsButton, 0);
         GridPane.setColumnSpan(selectPointsButton, 2);

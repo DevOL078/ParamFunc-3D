@@ -81,7 +81,8 @@ public class FunctionFileProvider {
             Path filePath = getFilePath(function);
             Files.write(filePath, lines,
                     StandardOpenOption.CREATE,
-                    StandardOpenOption.WRITE);
+                    StandardOpenOption.WRITE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }

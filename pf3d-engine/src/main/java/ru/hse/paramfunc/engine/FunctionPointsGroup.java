@@ -26,7 +26,7 @@ public class FunctionPointsGroup extends Group {
         super();
         this.functionHolder = functionHolder;
         this.valueGroup = new Group();
-        this.splineGroup = new SplineGroup();
+        this.splineGroup = new SplineGroup(functionHolder);
         this.animationGroup = new Group();
         super.getChildren().addAll(this.valueGroup, this.splineGroup, this.animationGroup);
     }
@@ -45,6 +45,10 @@ public class FunctionPointsGroup extends Group {
             p.getSphere().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
                 SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
             });
+
+            PhongMaterial material = (PhongMaterial) (p.getSphere().getMaterial());
+            material.diffuseColorProperty().bind(this.functionHolder.valuesColorProperty());
+            p.getSphere().radiusProperty().bind(this.functionHolder.valuesRadiusProperty());
         });
         List<Sphere> valuesSpheres = functionPoints.stream()
                 .map(SpacePoint::getSphere)

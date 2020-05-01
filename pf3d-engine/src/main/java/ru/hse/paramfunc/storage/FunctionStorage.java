@@ -1,5 +1,6 @@
 package ru.hse.paramfunc.storage;
 
+import ru.hse.paramFunc.interpolation.SplineProcessor;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.listener.Listener;
@@ -12,6 +13,7 @@ import java.util.List;
 public class FunctionStorage implements Notifier {
 
     private static final FunctionStorage instance = new FunctionStorage();
+    private final static int DEFAULT_SPLINE_POINTS_NUMBER = 10;
 
     private final List<Function> functionList;
 
@@ -25,6 +27,7 @@ public class FunctionStorage implements Notifier {
 
     public void addFunction(Function function) {
         functionList.add(function);
+        SplineProcessor.calculateAndSaveSpline(function, DEFAULT_SPLINE_POINTS_NUMBER);
         notifyListeners();
     }
 
@@ -40,6 +43,15 @@ public class FunctionStorage implements Notifier {
 
     public List<Function> getFunctions() {
         return List.copyOf(functionList);
+    }
+
+    public int getDefaultSplinePointsNumber() {
+        return DEFAULT_SPLINE_POINTS_NUMBER;
+    }
+
+    public void updateSpline(Function function, int pointsNumber) {
+        SplineProcessor.calculateAndSaveSpline(function, pointsNumber);
+        notifyListeners();
     }
 
     @Override

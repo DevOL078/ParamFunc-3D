@@ -25,7 +25,7 @@ public class PointsGroup extends Group {
         List<FunctionPointsGroup> updatedGroups = new ArrayList<>();
         for (Function function : functions) {
             FunctionPointsGroup functionPointsGroup = functionPointsGroups.stream()
-                    .filter(g -> g.getFunctionHolder().getFunction().equals(function))
+                    .filter(g -> g.getFunctionHolder().getFunction().getName().equals(function.getName()))
                     .findAny()
                     .orElseGet(() -> new FunctionPointsGroup(new FunctionHolder(function)));
             updatedGroups.add(functionPointsGroup);

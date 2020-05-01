@@ -10,7 +10,6 @@ import ru.hse.paramfunc.domain.FunctionPoint;
 public class SpacePoint extends Point3D {
 
     private final static double DEFAULT_RADIUS = 2;
-    private final static Color DEFAULT_SPHERE_COLOR = Color.CHOCOLATE;
 
     private FunctionPoint functionPoint;
     private Sphere sphere;
@@ -49,7 +48,7 @@ public class SpacePoint extends Point3D {
     private void initSphere() {
         sphere = new Sphere();
         sphere.setRadius(DEFAULT_RADIUS);
-        sphere.setMaterial(new PhongMaterial(DEFAULT_SPHERE_COLOR));
+        sphere.setMaterial(new PhongMaterial());
         sphere.setTranslateX(super.x);
         sphere.setTranslateY(super.y);
         sphere.setTranslateZ(super.z);

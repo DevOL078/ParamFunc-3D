@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.hse.paramFunc.FxApplication;
+import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.storage.FunctionStorage;
@@ -77,7 +78,7 @@ public class FunctionsController implements Listener {
             imageView.setFitWidth(15);
             imageView.setFitHeight(15);
             button.setGraphic(imageView);
-            //TODO callback
+            button.setOnAction(e -> SceneRunner.getInstance().runSelectionScene(this.stage, f.getValue()));
             return new SimpleObjectProperty<>(button);
         });
         settingsActionColumn.setCellValueFactory(f -> {
@@ -90,7 +91,7 @@ public class FunctionsController implements Listener {
             imageView.setFitWidth(15);
             imageView.setFitHeight(15);
             button.setGraphic(imageView);
-            //TODO callback
+            button.setOnAction(e -> SceneRunner.getInstance().runFunctionSettingsScene(this.stage, f.getValue()));
             return new SimpleObjectProperty<>(button);
         });
         removeActionColumn.setCellValueFactory(f -> {

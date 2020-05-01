@@ -11,17 +11,17 @@ import static ru.hse.paramFunc.interpolation.util.MatrixUtils.sum;
 public class CatmullRomSpline implements Spline {
 
     private final static double KNOT_PARAMETRIZATION_POWER = 0.5;
-    private final static int POINTS_NUMBER = 10;
 
     @Override
-    public List<FunctionPoint> calculate(List<FunctionPoint> controlPoints) {
+    public List<FunctionPoint> calculate(List<FunctionPoint> controlPoints, int pointsNumber) {
         List<FunctionPoint> splinePoints = new ArrayList<>();
         for (int i = 0; i < controlPoints.size() - 3; ++i) {
             List<FunctionPoint> partSplinePoints = calculateSplinePart(
                     controlPoints.get(i),
                     controlPoints.get(i + 1),
                     controlPoints.get(i + 2),
-                    controlPoints.get(i + 3));
+                    controlPoints.get(i + 3),
+                    pointsNumber);
             splinePoints.addAll(partSplinePoints);
         }
         if(controlPoints.size() > 2) {
@@ -42,7 +42,8 @@ public class CatmullRomSpline implements Spline {
                     preFirst,
                     first,
                     second,
-                    third);
+                    third,
+                    pointsNumber);
             splinePoints.addAll(firstSplinePoints);
 
             FunctionPoint beforePreLast = controlPoints.get(controlPoints.size() - 3);
@@ -61,7 +62,8 @@ public class CatmullRomSpline implements Spline {
                     beforePreLast,
                     preLast,
                     last,
-                    afterLast);
+                    afterLast,
+                    pointsNumber);
             splinePoints.addAll(lastSplinePoints);
         }
 
@@ -73,7 +75,8 @@ public class CatmullRomSpline implements Spline {
     private List<FunctionPoint> calculateSplinePart(FunctionPoint p0,
                                                     FunctionPoint p1,
                                                     FunctionPoint p2,
-                                                    FunctionPoint p3) {
+                                                    FunctionPoint p3,
+                                                    int pointsNumber) {
         double[][] m0 = convertToMatrix(p0);
         double[][] m1 = convertToMatrix(p1);
         double[][] m2 = convertToMatrix(p2);
@@ -85,7 +88,7 @@ public class CatmullRomSpline implements Spline {
         double t3 = calculateT(t2, m2[0], m3[0]);
 
         List<FunctionPoint> splinePoints = new ArrayList<>();
-        for (double t = t1; t < t2; t += ((t2 - t1) / POINTS_NUMBER)) {
+        for (double t = t1; t < t2; t += ((t2 - t1) / pointsNumber)) {
             double[][] a1 = sum(multiplyByNumber(m0, (t1 - t) / (t1 - t0)), multiplyByNumber(m1, (t - t0) / (t1 - t0)));
             double[][] a2 = sum(multiplyByNumber(m1, (t2 - t) / (t2 - t1)), multiplyByNumber(m2, (t - t1) / (t2 - t1)));
             double[][] a3 = sum(multiplyByNumber(m2, (t3 - t) / (t3 - t2)), multiplyByNumber(m3, (t - t2) / (t3 - t2)));

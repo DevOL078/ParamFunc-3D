@@ -1,6 +1,7 @@
 package ru.hse.paramFunc;
 
 import javafx.stage.Stage;
+import ru.hse.paramFunc.controller.FunctionSettingsController;
 import ru.hse.paramFunc.controller.FunctionsController;
 import ru.hse.paramFunc.controller.MainSceneController;
 import ru.hse.paramFunc.controller.SelectionController;
@@ -29,18 +30,23 @@ public class SceneRunner {
     }
 
     public void runMainScene() {
-        MainSceneController mainSceneController = new MainSceneController(this.mainStage);
-        mainSceneController.showStage();
+        MainSceneController controller = new MainSceneController(this.mainStage);
+        controller.showStage();
     }
 
-    public void runSelectionScene(Function function) {
-        SelectionController controller = new SelectionController(this.mainStage, function);
+    public void runSelectionScene(Stage ownerStage, Function function) {
+        SelectionController controller = new SelectionController(ownerStage, function);
         controller.showStage();
     }
 
     public void runFunctionsScene() {
-        FunctionsController functionsController = new FunctionsController(this.mainStage);
-        functionsController.showStage();
+        FunctionsController controller = new FunctionsController(this.mainStage);
+        controller.showStage();
+    }
+
+    public void runFunctionSettingsScene(Stage ownerStage, Function function) {
+        FunctionSettingsController controller = new FunctionSettingsController(ownerStage, function);
+        controller.showStage();
     }
 
 }
