@@ -1,8 +1,6 @@
 package ru.hse.paramfunc.element;
 
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.paint.Color;
 import ru.hse.paramFunc.animation.Animation;
 import ru.hse.paramfunc.domain.Function;
@@ -21,11 +19,15 @@ public class FunctionHolder {
     private DoubleProperty interpolationRadiusProperty;
     private IntegerProperty interpolationPointsNumberProperty;
     private ObjectProperty<Color> animationColorProperty;
+    private DoubleProperty animationRadiusProperty;
+    private IntegerProperty animationTimeProperty;
     private BooleanProperty focusProperty;
 
     private Callback startAnimationCallback;
     private Callback pauseAnimationCallback;
     private Callback stopAnimationCallback;
+
+    private boolean isAnimationStarted;
 
     public FunctionHolder(Function function) {
         this.function = function;
@@ -38,7 +40,28 @@ public class FunctionHolder {
         this.interpolationPointsNumberProperty = new SimpleIntegerProperty(
                 FunctionStorage.getInstance().getDefaultSplinePointsNumber());
         this.interpolationPointsNumberProperty.addListener((observableValue, number, t1) ->
-                FunctionStorage.getInstance().updateSpline(this.function, (int)t1));
+                FunctionStorage.getInstance().updateSpline(this.function, (int) t1));
+        this.animationColorProperty = new SimpleObjectProperty<>(Color.LIGHTCORAL);
+        this.animationRadiusProperty = new SimpleDoubleProperty(1.0);
+        this.animationTimeProperty = new SimpleIntegerProperty(2000);
+        this.animationColorProperty.addListener((observableValue, color, t1) -> {
+            initAnimation(this.currentAnimationProperty.get());
+            if(this.isAnimationStarted) {
+                this.currentAnimationProperty.get().start();
+            }
+        });
+        this.animationRadiusProperty.addListener((observableValue, color, t1) -> {
+            initAnimation(this.currentAnimationProperty.get());
+            if(this.isAnimationStarted) {
+                this.currentAnimationProperty.get().start();
+            }
+        });
+        this.animationTimeProperty.addListener((observableValue, color, t1) -> {
+            initAnimation(this.currentAnimationProperty.get());
+            if(this.isAnimationStarted) {
+                this.currentAnimationProperty.get().start();
+            }
+        });
         this.focusProperty = new SimpleBooleanProperty(false);
     }
 
@@ -54,18 +77,32 @@ public class FunctionHolder {
         return valuesColorProperty;
     }
 
-    public DoubleProperty valuesRadiusProperty() { return valuesRadiusProperty; }
+    public DoubleProperty valuesRadiusProperty() {
+        return valuesRadiusProperty;
+    }
 
     public ObjectProperty<Color> interpolationColorProperty() {
         return interpolationColorProperty;
     }
 
-    public DoubleProperty interpolationRadiusProperty() { return interpolationRadiusProperty; }
+    public DoubleProperty interpolationRadiusProperty() {
+        return interpolationRadiusProperty;
+    }
 
-    public IntegerProperty interpolationPointsNumberProperty() { return interpolationPointsNumberProperty; }
+    public IntegerProperty interpolationPointsNumberProperty() {
+        return interpolationPointsNumberProperty;
+    }
 
     public ObjectProperty<Color> animationColorProperty() {
         return animationColorProperty;
+    }
+
+    public DoubleProperty animationRadiusProperty() {
+        return animationRadiusProperty;
+    }
+
+    public IntegerProperty animationTimeProperty() {
+        return animationTimeProperty;
     }
 
     public BooleanProperty focusProperty() {
@@ -89,7 +126,10 @@ public class FunctionHolder {
     }
 
     public Callback startAnimationCallback() {
-        return startAnimationCallback;
+        return () -> {
+            this.isAnimationStarted = true;
+            startAnimationCallback.call();
+        };
     }
 
     public Callback pauseAnimationCallback() {
@@ -97,6 +137,20 @@ public class FunctionHolder {
     }
 
     public Callback stopAnimationCallback() {
-        return stopAnimationCallback;
+        return () -> {
+            this.isAnimationStarted = false;
+            stopAnimationCallback.call();
+        };
+    }
+
+    private void initAnimation(Animation animation) {
+        if(animation != null) {
+            animation.reset();
+            animation.init(
+                    function,
+                    animationColorProperty.get(),
+                    animationRadiusProperty.get(),
+                    animationTimeProperty.get());
+        }
     }
 }

@@ -20,7 +20,6 @@ public class DynamicLinesAnimation extends Animation {
 
     private final double TRANSITION_DURATION = 3000;
     private final int LINE_POINTS_COUNT = 3;
-    private final double TRANSITION_DELAY = TRANSITION_DURATION / LINE_POINTS_COUNT;
 
     private Group pointsGroup;
     private ParallelTransition animation;
@@ -30,7 +29,7 @@ public class DynamicLinesAnimation extends Animation {
     }
 
     @Override
-    public void init(Function function) {
+    public void init(Function function, Color sphereColor, double sphereRadius, int animationTime) {
         this.pointsGroup = new Group();
         this.animation = new ParallelTransition();
 
@@ -38,14 +37,17 @@ public class DynamicLinesAnimation extends Animation {
                 .sorted(Comparator.comparing(FunctionPoint::getT))
                 .collect(Collectors.toList());
 
+        PhongMaterial material = new PhongMaterial(sphereColor);
         for(int i = 0; i < points.size() - 1; ++i) {
             FunctionPoint startPoint = points.get(i);
             FunctionPoint endPoint = points.get(i + 1);
 
             ParallelTransition parallelTransition = new ParallelTransition();
             for(int j = 0; j < LINE_POINTS_COUNT; ++j) {
-                Sphere sphere = createSphere();
-                TranslateTransition pointAnimation = new TranslateTransition(Duration.millis(TRANSITION_DURATION));
+                Sphere sphere = new Sphere();
+                sphere.setMaterial(material);
+                sphere.setRadius(sphereRadius);
+                TranslateTransition pointAnimation = new TranslateTransition(Duration.millis(animationTime));
                 pointAnimation.setFromX(startPoint.getSystemX());
                 pointAnimation.setFromY(-startPoint.getSystemZ());
                 pointAnimation.setFromZ(startPoint.getSystemY());
@@ -53,7 +55,7 @@ public class DynamicLinesAnimation extends Animation {
                 pointAnimation.setToY(-endPoint.getSystemZ());
                 pointAnimation.setToZ(endPoint.getSystemY());
                 pointAnimation.setNode(sphere);
-                pointAnimation.setDelay(Duration.millis(TRANSITION_DELAY * j));
+                pointAnimation.setDelay(Duration.millis((double) animationTime / LINE_POINTS_COUNT * j));
                 pointAnimation.setCycleCount(Timeline.INDEFINITE);
                 parallelTransition.getChildren().add(pointAnimation);
                 this.pointsGroup.getChildren().add(sphere);
@@ -108,13 +110,6 @@ public class DynamicLinesAnimation extends Animation {
     @Override
     public Animation copy() {
         return new DynamicLinesAnimation(this.getName());
-    }
-
-    private Sphere createSphere() {
-        Sphere sphere = new Sphere();
-        sphere.setRadius(0.5);
-        sphere.setMaterial(new PhongMaterial(Color.LIGHTCORAL));
-        return sphere;
     }
 
 }

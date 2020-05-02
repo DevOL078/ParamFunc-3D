@@ -69,7 +69,12 @@ public class FunctionPointsGroup extends Group {
                 animation.reset();
             }
             if (t1 != null) {
-                t1.init(functionHolder.getFunction());
+                t1.init(
+                        functionHolder.getFunction(),
+                        functionHolder.animationColorProperty().get(),
+                        functionHolder.animationRadiusProperty().get(),
+                        functionHolder.animationTimeProperty().get()
+                );
                 this.animationGroup.getChildren().add(t1.getGroup());
             }
         });

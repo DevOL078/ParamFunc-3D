@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 
 public class FlyingPointAnimation extends Animation {
 
-    private final double TRANSITION_DURATION = 2000;
-
     private Sphere flyingSphere;
     private SequentialTransition animation;
 
@@ -26,14 +24,14 @@ public class FlyingPointAnimation extends Animation {
     }
 
     @Override
-    public void init(Function function) {
+    public void init(Function function, Color sphereColor, double sphereRadius, int animationTime) {
         List<FunctionPoint> points = function.getSelectedPoints().stream()
                 .sorted(Comparator.comparing(FunctionPoint::getT))
                 .collect(Collectors.toList());
 
         this.flyingSphere = new Sphere();
-        flyingSphere.setRadius(1);
-        flyingSphere.setMaterial(new PhongMaterial(Color.LIGHTCORAL));
+        flyingSphere.setRadius(sphereRadius);
+        flyingSphere.setMaterial(new PhongMaterial(sphereColor));
 
         this.animation = new SequentialTransition();
 
@@ -41,7 +39,7 @@ public class FlyingPointAnimation extends Animation {
             FunctionPoint startPoint = points.get(i);
             FunctionPoint endPoint = points.get(i + 1);
 
-            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(TRANSITION_DURATION));
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(animationTime));
             translateTransition.setFromX(startPoint.getSystemX());
             translateTransition.setFromY(-startPoint.getSystemZ());
             translateTransition.setFromZ(startPoint.getSystemY());

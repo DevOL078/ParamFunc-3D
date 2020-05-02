@@ -14,7 +14,6 @@ import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.element.FunctionHolder;
-import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
 
@@ -29,7 +28,7 @@ public class FunctionSettingsController {
     @FXML private TextField interpolationPointsNumberTextField;
     @FXML private ColorPicker animationColorPicker;
     @FXML private TextField animationRadiusTextField;
-    @FXML private TextField animationSpeedTextField;
+    @FXML private TextField animationTimeTextField;
 
     private Stage stage;
     private FunctionHolder functionHolder;
@@ -39,6 +38,9 @@ public class FunctionSettingsController {
     private ObjectProperty<Color> interpolationColorProperty;
     private StringProperty interpolationRadiusProperty;
     private StringProperty interpolationPointsNumberProperty;
+    private ObjectProperty<Color> animationColorProperty;
+    private StringProperty animationRadiusProperty;
+    private StringProperty animationTimeProperty;
 
     public FunctionSettingsController(Stage ownerStage, Function function) {
         this.functionHolder = SubSceneEngine.getSpaceSubScene().getFunctionHolderByFunction(function);
@@ -73,20 +75,36 @@ public class FunctionSettingsController {
                 String.valueOf(this.functionHolder.interpolationRadiusProperty().get()));
         interpolationPointsNumberProperty = new SimpleStringProperty(
                 String.valueOf(this.functionHolder.interpolationPointsNumberProperty().get()));
+        animationColorProperty = new SimpleObjectProperty<>(
+                this.functionHolder.animationColorProperty().get());
+        animationRadiusProperty = new SimpleStringProperty(
+                String.valueOf(this.functionHolder.animationRadiusProperty().get()));
+        animationTimeProperty = new SimpleStringProperty(
+                String.valueOf(this.functionHolder.animationTimeProperty().get()));
 
         valuesColorPicker.valueProperty().bindBidirectional(valuesColorProperty);
         valuesRadiusTextField.textProperty().bindBidirectional(valuesRadiusProperty);
         interpolationColorPicker.valueProperty().bindBidirectional(interpolationColorProperty);
         interpolationRadiusTextField.textProperty().bindBidirectional(interpolationRadiusProperty);
         interpolationPointsNumberTextField.textProperty().bindBidirectional(interpolationPointsNumberProperty);
+        animationColorPicker.valueProperty().bindBidirectional(animationColorProperty);
+        animationRadiusTextField.textProperty().bindBidirectional(animationRadiusProperty);
+        animationTimeTextField.textProperty().bindBidirectional(animationTimeProperty);
 
         saveButton.setOnAction(e -> {
             this.functionHolder.valuesColorProperty().set(this.valuesColorProperty.get());
-            this.functionHolder.valuesRadiusProperty().set(Double.parseDouble(this.valuesRadiusProperty.get()));
+            this.functionHolder.valuesRadiusProperty().set(
+                    Double.parseDouble(this.valuesRadiusProperty.get()));
             this.functionHolder.interpolationColorProperty().set(this.interpolationColorProperty.get());
-            this.functionHolder.interpolationRadiusProperty().set(Double.parseDouble(this.interpolationRadiusProperty.get()));
+            this.functionHolder.interpolationRadiusProperty().set(
+                    Double.parseDouble(this.interpolationRadiusProperty.get()));
             this.functionHolder.interpolationPointsNumberProperty().set(
                     Integer.parseInt(this.interpolationPointsNumberProperty.get()));
+            this.functionHolder.animationColorProperty().set(this.animationColorProperty.get());
+            this.functionHolder.animationRadiusProperty().set(
+                    Double.parseDouble(this.animationRadiusProperty.get()));
+            this.functionHolder.animationTimeProperty().set(
+                    Integer.parseInt(this.animationTimeProperty.get()));
             this.stage.close();
         });
         cancelButton.setOnAction(e -> {
