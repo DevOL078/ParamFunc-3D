@@ -1,6 +1,8 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Bounds;
@@ -12,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Sphere;
+import javafx.util.Duration;
 import org.fxyz3d.geometry.Point3D;
 import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramFunc.animation.AnimationStorage;
@@ -20,6 +23,7 @@ import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.element.Line3D;
+import ru.hse.paramfunc.element.SpacePoint;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
@@ -27,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SpaceSubScene extends SubScene implements Listener {
 
@@ -208,6 +213,55 @@ public class SpaceSubScene extends SubScene implements Listener {
 
     public static DoubleProperty getFpsProperty() {
         return fpsValue;
+    }
+
+    public void findPoints(Integer t, Double x, Double y, Double z) {
+        pointsGroup.getChildren().forEach(node -> {
+            if(!(node instanceof FunctionPointsGroup)) return;
+            FunctionPointsGroup functionPointsGroup = (FunctionPointsGroup) node;
+            List<FunctionPoint> searchedPoints = functionPointsGroup.getValuePoints().stream()
+                    .filter(p -> {
+                        boolean result = true;
+                        if (t != null) {
+                            result = t == p.getT();
+                        }
+                        if (x != null) {
+                            result = result && x == p.getOriginalX();
+                        }
+                        if (y != null) {
+                            result = result && y == p.getOriginalY();
+                        }
+                        if (z != null) {
+                            result = result && z == p.getOriginalZ();
+                        }
+                        return result;
+                    })
+                    .collect(Collectors.toList());
+            searchedPoints.forEach(p -> {
+                SpacePoint spacePoint = functionPointsGroup.getSpacePointByFunctionPoint(p);
+                Sphere sphere = spacePoint.getSphere();
+                SequentialTransition sequentialTransition = new SequentialTransition();
+                ScaleTransition increaseScaleTransition = new ScaleTransition(Duration.millis(500));
+                increaseScaleTransition.setFromX(sphere.getScaleX());
+                increaseScaleTransition.setFromY(sphere.getScaleY());
+                increaseScaleTransition.setFromZ(sphere.getScaleZ());
+                increaseScaleTransition.setToX(sphere.getScaleX() * 2);
+                increaseScaleTransition.setToY(sphere.getScaleY() * 2);
+                increaseScaleTransition.setToZ(sphere.getScaleZ() * 2);
+                increaseScaleTransition.setNode(sphere);
+                ScaleTransition decreaseScaleTransition = new ScaleTransition(Duration.millis(500));
+                decreaseScaleTransition.setFromX(sphere.getScaleX() * 2);
+                decreaseScaleTransition.setFromY(sphere.getScaleY() * 2);
+                decreaseScaleTransition.setFromZ(sphere.getScaleZ() * 2);
+                decreaseScaleTransition.setToX(sphere.getScaleX());
+                decreaseScaleTransition.setToY(sphere.getScaleY());
+                decreaseScaleTransition.setToZ(sphere.getScaleZ());
+                decreaseScaleTransition.setNode(sphere);
+                sequentialTransition.getChildren().addAll(increaseScaleTransition, decreaseScaleTransition);
+                sequentialTransition.setCycleCount(5);
+                sequentialTransition.play();
+            });
+        });
     }
 
     public void addMouseEventListener(MouseEventListener listener) {

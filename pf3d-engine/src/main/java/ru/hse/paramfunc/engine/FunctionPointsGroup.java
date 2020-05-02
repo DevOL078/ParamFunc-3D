@@ -12,7 +12,10 @@ import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.element.SpacePoint;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FunctionPointsGroup extends Group {
@@ -23,6 +26,7 @@ public class FunctionPointsGroup extends Group {
     private Group valueGroup;
     private SplineGroup splineGroup;
     private Group animationGroup;
+    private Map<FunctionPoint, SpacePoint> pointsMap;
 
     public FunctionPointsGroup(FunctionHolder functionHolder) {
         super();
@@ -31,22 +35,20 @@ public class FunctionPointsGroup extends Group {
         this.splineGroup = new SplineGroup(functionHolder);
         this.animationGroup = new Group();
         super.getChildren().addAll(this.valueGroup, this.splineGroup, this.animationGroup);
+        this.pointsMap = new HashMap<>();
     }
 
     public void update() {
-//        List<FunctionPoint> points = this.functionHolder.getFunction().getSelectedPoints();
-//        List<FunctionPoint> splinePoints = FunctionFileProvider.getSplinePoints(this.functionHolder.getFunction());
-
-        List<SpacePoint> functionPoints = valuePoints.stream()
-                .map(SpacePoint::new)
-                .collect(Collectors.toList());
+        pointsMap.clear();
+        valuePoints.forEach(p -> {
+            pointsMap.put(p, new SpacePoint(p));
+        });
+        List<SpacePoint> functionPoints = new ArrayList<>(pointsMap.values());
         functionPoints.forEach(p -> {
-            p.getSphere().addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder);
-            });
-            p.getSphere().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder);
-            });
+            p.getSphere().addEventFilter(MouseEvent.MOUSE_ENTERED, e ->
+                    SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder));
+            p.getSphere().addEventFilter(MouseEvent.MOUSE_EXITED, e ->
+                    SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder));
 
             p.getSphere().radiusProperty().bind(this.functionHolder.valuesRadiusProperty());
             PhongMaterial material = (PhongMaterial) (p.getSphere().getMaterial());
@@ -120,6 +122,10 @@ public class FunctionPointsGroup extends Group {
         this.splineGroup.getChildren().clear();
     }
 
+    public SpacePoint getSpacePointByFunctionPoint(FunctionPoint functionPoint) {
+        return this.pointsMap.get(functionPoint);
+    }
+
     public FunctionHolder getFunctionHolder() {
         return functionHolder;
     }
@@ -134,6 +140,10 @@ public class FunctionPointsGroup extends Group {
 
     public Group getValueGroup() {
         return this.valueGroup;
+    }
+
+    public List<FunctionPoint> getValuePoints() {
+        return List.copyOf(this.valuePoints);
     }
 
 }

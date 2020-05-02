@@ -16,16 +16,15 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import lombok.NonNull;
 import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramFunc.SceneRunner;
-import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.contract.MouseEventListener;
+import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.Function;
-import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.FunctionHolder;
+import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.storage.FunctionStorage;
@@ -101,6 +100,21 @@ public class MainSceneController implements MouseEventListener, Listener {
         functionsMenu.setOnShowing(e -> {
             System.out.println("Action");
             SceneRunner.getInstance().runFunctionsScene();
+        });
+        searchButton.setOnAction(e -> {
+            String tSearch = searchTTextField.getText();
+            String xSearch = searchXTextField.getText();
+            String ySearch = searchYTextField.getText();
+            String zSearch = searchZTextField.getText();
+            SubSceneEngine.getSpaceSubScene().findPoints(
+                    tSearch.isEmpty() ? null : Integer.parseInt(tSearch),
+                    xSearch.isEmpty() ? null : Double.parseDouble(xSearch),
+                    ySearch.isEmpty() ? null : Double.parseDouble(ySearch),
+                    zSearch.isEmpty() ? null : Double.parseDouble(zSearch));
+            searchTTextField.setText("");
+            searchXTextField.setText("");
+            searchYTextField.setText("");
+            searchZTextField.setText("");
         });
 
         fpsLabel.textProperty().bind(SpaceSubScene.getFpsProperty().asString("%.1f"));
@@ -213,7 +227,7 @@ public class MainSceneController implements MouseEventListener, Listener {
     public void receive() {
         List<Function> functions = FunctionStorage.getInstance().getFunctions();
         Accordion functionsAccordion;
-        if(this.functionsVBox.getChildren().isEmpty()) {
+        if (this.functionsVBox.getChildren().isEmpty()) {
             functionsAccordion = new Accordion();
             this.functionsVBox.getChildren().add(functionsAccordion);
         } else {
@@ -223,7 +237,7 @@ public class MainSceneController implements MouseEventListener, Listener {
             Optional<TitledPane> paneOpt = functionsAccordion.getPanes().stream()
                     .filter(p -> p.getText().equals(function.getName()))
                     .findFirst();
-            if(paneOpt.isEmpty()) {
+            if (paneOpt.isEmpty()) {
                 functionsAccordion.getPanes().add(createTitledPaneForFunction(function));
             }
         }
