@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import ru.hse.paramfunc.SubSceneEngine;
+import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.element.SpacePoint;
@@ -47,9 +48,13 @@ public class FunctionPointsGroup extends Group {
                 SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
             });
 
-            PhongMaterial material = (PhongMaterial) (p.getSphere().getMaterial());
-            material.diffuseColorProperty().bind(this.functionHolder.valuesColorProperty());
             p.getSphere().radiusProperty().bind(this.functionHolder.valuesRadiusProperty());
+            PhongMaterial material = (PhongMaterial) (p.getSphere().getMaterial());
+            if(this.functionHolder.focusProperty().get()) {
+                material.setDiffuseColor(Color.YELLOW);
+            } else {
+                material.diffuseColorProperty().bind(this.functionHolder.valuesColorProperty());
+            }
         });
         List<Sphere> valuesSpheres = functionPoints.stream()
                 .map(SpacePoint::getSphere)
@@ -74,6 +79,17 @@ public class FunctionPointsGroup extends Group {
                 this.animationGroup.getChildren().add(t1.getGroup());
             }
         });
+        Animation animation = this.functionHolder.animationProperty().get();
+        if(animation != null) {
+            if(animation.isRunning()) {
+                animation.reset();
+                animation.init(this.functionHolder);
+                animation.start();
+            } else {
+                animation.reset();
+                animation.init(this.functionHolder);
+            }
+        }
         //Настрока колбэков для запуска, паузы и остановки анимаций
         this.functionHolder.setStartAnimationCallback(() -> this.functionHolder.animationProperty().get().start());
         this.functionHolder.setPauseAnimationCallback(() -> this.functionHolder.animationProperty().get().pause());

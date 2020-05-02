@@ -25,8 +25,6 @@ public class FunctionHolder {
     private Callback pauseAnimationCallback;
     private Callback stopAnimationCallback;
 
-    private boolean isAnimationStarted;
-
     public FunctionHolder(Function function) {
         this.function = function;
         this.isInterpolationShownProperty = new SimpleBooleanProperty(false);
@@ -39,24 +37,6 @@ public class FunctionHolder {
         this.animationColorProperty = new SimpleObjectProperty<>(Color.LIGHTCORAL);
         this.animationRadiusProperty = new SimpleDoubleProperty(1.0);
         this.animationTimeProperty = new SimpleObjectProperty<>(javafx.util.Duration.millis(2000));
-//        this.animationColorProperty.addListener((observableValue, color, t1) -> {
-//            initAnimation(this.currentAnimationProperty.get());
-//            if (this.isAnimationStarted) {
-//                this.currentAnimationProperty.get().start();
-//            }
-//        });
-//        this.animationRadiusProperty.addListener((observableValue, color, t1) -> {
-//            initAnimation(this.currentAnimationProperty.get());
-//            if (this.isAnimationStarted) {
-//                this.currentAnimationProperty.get().start();
-//            }
-//        });
-//        this.animationTimeProperty.addListener((observableValue, color, t1) -> {
-//            initAnimation(this.currentAnimationProperty.get());
-//            if (this.isAnimationStarted) {
-//                this.currentAnimationProperty.get().start();
-//            }
-//        });
         this.focusProperty = new SimpleBooleanProperty(false);
     }
 
@@ -121,10 +101,7 @@ public class FunctionHolder {
     }
 
     public Callback startAnimationCallback() {
-        return () -> {
-            this.isAnimationStarted = true;
-            startAnimationCallback.call();
-        };
+        return startAnimationCallback;
     }
 
     public Callback pauseAnimationCallback() {
@@ -132,20 +109,6 @@ public class FunctionHolder {
     }
 
     public Callback stopAnimationCallback() {
-        return () -> {
-            this.isAnimationStarted = false;
-            stopAnimationCallback.call();
-        };
+        return stopAnimationCallback;
     }
-
-//    private void initAnimation(Animation animation) {
-//        if (animation != null) {
-//            animation.reset();
-//            animation.init(
-//                    function,
-//                    animationColorProperty.get(),
-//                    animationRadiusProperty.get(),
-//                    animationTimeProperty.get());
-//        }
-//    }
 }

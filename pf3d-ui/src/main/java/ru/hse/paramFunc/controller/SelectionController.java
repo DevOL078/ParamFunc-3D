@@ -21,6 +21,7 @@ import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SelectionController {
@@ -39,7 +40,7 @@ public class SelectionController {
     private Stage stage;
     private Function function;
     private List<FunctionValue> functionValues;
-    private List<FunctionValue> selectedFunctionValues;
+    private Set<FunctionValue> selectedFunctionValues;
 
     public SelectionController(Stage ownerStage, Function function) {
         this.function = function;
@@ -54,10 +55,6 @@ public class SelectionController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Stage getStage() {
-        return this.stage;
     }
 
     public void showStage() {
@@ -119,7 +116,7 @@ public class SelectionController {
                 .collect(Collectors.toList());
         this.selectedFunctionValues = this.functionValues.stream()
                 .filter(v -> selectedTs.contains(v.getT()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         selectionTableView.getItems().addAll(this.functionValues);
         this.functionValues.forEach(v -> v.selectedProperty.addListener((observableValue, aBoolean, t1) -> {
             if (t1) {
@@ -165,7 +162,6 @@ public class SelectionController {
         List<Integer> selectedTs = selectedPoints.stream()
                 .map(FunctionPoint::getT)
                 .collect(Collectors.toList());
-        this.selectedFunctionValues.clear();
         List<FunctionValue> localSelectedValues = this.functionValues.stream()
                 .filter(v -> selectedTs.contains(v.getT()))
                 .collect(Collectors.toList());

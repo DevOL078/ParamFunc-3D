@@ -63,6 +63,7 @@ public class FlyingPointAnimation extends Animation {
         }
         if(this.animation != null) {
             this.animation.play();
+            this.isRunning = true;
         }
     }
 
@@ -70,6 +71,7 @@ public class FlyingPointAnimation extends Animation {
     public void pause() {
         if(this.animation != null) {
             this.animation.pause();
+            this.isRunning = false;
         }
     }
 
@@ -80,6 +82,7 @@ public class FlyingPointAnimation extends Animation {
         }
         if(this.animation != null) {
             this.animation.stop();
+            this.isRunning = false;
         }
     }
 
@@ -93,6 +96,7 @@ public class FlyingPointAnimation extends Animation {
         }
         if(this.animation != null) {
             this.animation.stop();
+            this.isRunning = false;
             this.animation = null;
         }
     }

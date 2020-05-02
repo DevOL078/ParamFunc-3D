@@ -7,6 +7,7 @@ public abstract class Animation {
 
     private String name;
     protected Group group;
+    protected boolean isRunning;
 
     public Animation(String name) {
         this.name = name;
@@ -19,6 +20,10 @@ public abstract class Animation {
 
     public Group getGroup() {
         return group;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 
     public abstract void init(FunctionHolder functionHolder);

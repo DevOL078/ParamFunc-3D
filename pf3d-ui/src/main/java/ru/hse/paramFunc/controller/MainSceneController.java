@@ -258,6 +258,7 @@ public class MainSceneController implements MouseEventListener, Listener {
         RowConstraints r1 = new RowConstraints();
         RowConstraints r2 = new RowConstraints();
         RowConstraints r3 = new RowConstraints();
+        RowConstraints r4 = new RowConstraints();
         ColumnConstraints c0 = new ColumnConstraints();
         c0.setMinWidth(10);
         c0.setPrefWidth(80);
@@ -265,7 +266,7 @@ public class MainSceneController implements MouseEventListener, Listener {
         ColumnConstraints c1 = new ColumnConstraints();
         gridPane.getRowConstraints().clear();
         gridPane.getColumnConstraints().clear();
-        gridPane.getRowConstraints().addAll(r0, r1, r2, r3);
+        gridPane.getRowConstraints().addAll(r0, r1, r2, r3, r4);
         gridPane.getColumnConstraints().addAll(c0, c1);
 
         //Animation label
@@ -394,11 +395,28 @@ public class MainSceneController implements MouseEventListener, Listener {
         GridPane.setColumnIndex(interpolationCheckBox, 1);
         gridPane.getChildren().add(interpolationCheckBox);
 
+        //Visible label
+        Label visibleLabel = new Label("Visible");
+        visibleLabel.getStyleClass().add("inspector-label");
+        GridPane.setRowIndex(visibleLabel, 3);
+        GridPane.setColumnIndex(visibleLabel, 0);
+        GridPane.setHalignment(visibleLabel, HPos.LEFT);
+        GridPane.setMargin(visibleLabel, new Insets(10, 0, 0, 0));
+        gridPane.getChildren().add(visibleLabel);
+
+        //Visible checkbox
+        CheckBox visibleCheckBox = new CheckBox();
+        visibleCheckBox.getStyleClass().add("inspector-checkbox");
+        GridPane.setRowIndex(visibleCheckBox, 3);
+        GridPane.setColumnIndex(visibleCheckBox, 1);
+        GridPane.setMargin(visibleCheckBox, new Insets(10, 0, 0, 0));
+        gridPane.getChildren().add(visibleCheckBox);
+
         //Select points button
         Button selectPointsButton = new Button("Select points");
         selectPointsButton.getStyleClass().add("inspector-button");
         selectPointsButton.setOnAction(e -> SceneRunner.getInstance().runSelectionScene(this.stage, function));
-        GridPane.setRowIndex(selectPointsButton, 3);
+        GridPane.setRowIndex(selectPointsButton, 4);
         GridPane.setColumnIndex(selectPointsButton, 0);
         GridPane.setColumnSpan(selectPointsButton, 2);
         GridPane.setHalignment(selectPointsButton, HPos.CENTER);
