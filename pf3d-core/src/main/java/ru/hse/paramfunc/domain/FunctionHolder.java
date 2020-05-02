@@ -20,6 +20,7 @@ public class FunctionHolder {
     private DoubleProperty animationRadiusProperty;
     private ObjectProperty<Duration> animationTimeProperty;
     private BooleanProperty focusProperty;
+    private BooleanProperty visibleProperty;
 
     private Callback startAnimationCallback;
     private Callback pauseAnimationCallback;
@@ -38,6 +39,7 @@ public class FunctionHolder {
         this.animationRadiusProperty = new SimpleDoubleProperty(1.0);
         this.animationTimeProperty = new SimpleObjectProperty<>(javafx.util.Duration.millis(2000));
         this.focusProperty = new SimpleBooleanProperty(false);
+        this.visibleProperty = new SimpleBooleanProperty(true);
     }
 
     public ObjectProperty<Animation> animationProperty() {
@@ -82,6 +84,10 @@ public class FunctionHolder {
 
     public BooleanProperty focusProperty() {
         return focusProperty;
+    }
+
+    public BooleanProperty visibleProperty() {
+        return visibleProperty;
     }
 
     public Function getFunction() {

@@ -112,6 +112,7 @@ public class FunctionPointsGroup extends Group {
                         .bind(this.functionHolder.valuesColorProperty()));
             }
         });
+        super.visibleProperty().bind(functionHolder.visibleProperty());
     }
 
     public void destroy() {

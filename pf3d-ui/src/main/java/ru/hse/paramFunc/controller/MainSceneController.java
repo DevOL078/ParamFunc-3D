@@ -406,7 +406,9 @@ public class MainSceneController implements MouseEventListener, Listener {
 
         //Visible checkbox
         CheckBox visibleCheckBox = new CheckBox();
+        visibleCheckBox.setSelected(true);
         visibleCheckBox.getStyleClass().add("inspector-checkbox");
+        functionHolder.visibleProperty().bind(visibleCheckBox.selectedProperty());
         GridPane.setRowIndex(visibleCheckBox, 3);
         GridPane.setColumnIndex(visibleCheckBox, 1);
         GridPane.setMargin(visibleCheckBox, new Insets(10, 0, 0, 0));
