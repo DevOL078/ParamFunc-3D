@@ -1,10 +1,11 @@
 package ru.hse.paramfunc.contract;
 
 import javafx.scene.input.MouseEvent;
+import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.domain.FunctionPoint;
 
 public interface MouseEventListener {
 
-    void receive(MouseEvent event, FunctionPoint target);
+    void receive(MouseEvent event, FunctionPoint target, FunctionHolder functionHolder);
 
 }

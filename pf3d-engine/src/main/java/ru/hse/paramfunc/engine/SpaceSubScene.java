@@ -214,8 +214,8 @@ public class SpaceSubScene extends SubScene implements Listener {
         this.listeners.add(listener);
     }
 
-    public void notifyAll(MouseEvent event, FunctionPoint target) {
-        this.listeners.forEach(l -> l.receive(event, target));
+    public void notifyAll(MouseEvent event, FunctionPoint target, FunctionHolder functionHolder) {
+        this.listeners.forEach(l -> l.receive(event, target, functionHolder));
     }
 
     @Override

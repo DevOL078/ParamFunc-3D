@@ -193,13 +193,15 @@ public class MainSceneController implements MouseEventListener, Listener {
     }
 
     @Override
-    public void receive(MouseEvent event, FunctionPoint target) {
+    public void receive(MouseEvent event, FunctionPoint target, FunctionHolder functionHolder) {
         if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
-            pointInfoLabel.setText(String.format("T: %d\nX: %.3f\nY: %.3f\nZ: %.3f",
+            String functionName = functionHolder.getFunction().getName();
+            pointInfoLabel.setText(String.format("T: %d\nX: %.3f\nY: %.3f\nZ: %.3f\nFunction: %s",
                     target.getT(),
                     target.getOriginalX(),
                     target.getOriginalY(),
-                    target.getOriginalZ()));
+                    target.getOriginalZ(),
+                    functionName));
             pointInfoLabel.setVisible(true);
         } else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
             pointInfoLabel.setText("");

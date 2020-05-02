@@ -42,10 +42,10 @@ public class FunctionPointsGroup extends Group {
                 .collect(Collectors.toList());
         functionPoints.forEach(p -> {
             p.getSphere().addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
+                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder);
             });
             p.getSphere().addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
-                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint());
+                SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder);
             });
 
             p.getSphere().radiusProperty().bind(this.functionHolder.valuesRadiusProperty());
