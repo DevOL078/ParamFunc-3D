@@ -7,8 +7,9 @@ import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.element.FunctionHolder;
+import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.element.SpacePoint;
+import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,12 +70,7 @@ public class FunctionPointsGroup extends Group {
                 animation.reset();
             }
             if (t1 != null) {
-                t1.init(
-                        functionHolder.getFunction(),
-                        functionHolder.animationColorProperty().get(),
-                        functionHolder.animationRadiusProperty().get(),
-                        functionHolder.animationTimeProperty().get()
-                );
+                t1.init(functionHolder);
                 this.animationGroup.getChildren().add(t1.getGroup());
             }
         });
@@ -82,6 +78,9 @@ public class FunctionPointsGroup extends Group {
         this.functionHolder.setStartAnimationCallback(() -> this.functionHolder.animationProperty().get().start());
         this.functionHolder.setPauseAnimationCallback(() -> this.functionHolder.animationProperty().get().pause());
         this.functionHolder.setStopAnimationCallback(() -> this.functionHolder.animationProperty().get().stop());
+
+        this.functionHolder.interpolationPointsNumberProperty().addListener((observableValue, number, t1) ->
+                FunctionStorage.getInstance().updateSpline(functionHolder.getFunction(), (int) t1));
 
         this.functionHolder.focusProperty().unbind();
         this.functionHolder.focusProperty().addListener((observableValue, aBoolean, t1) -> {

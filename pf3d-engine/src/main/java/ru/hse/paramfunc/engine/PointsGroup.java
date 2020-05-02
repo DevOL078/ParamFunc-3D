@@ -3,7 +3,7 @@ package ru.hse.paramfunc.engine;
 import javafx.scene.Group;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.element.FunctionHolder;
+import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.util.ArrayList;

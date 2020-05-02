@@ -6,9 +6,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
+import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.Function;
+import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.storage.FunctionValueStorage;
 
 import java.util.Comparator;
 import java.util.List;
@@ -24,14 +25,16 @@ public class FlyingPointAnimation extends Animation {
     }
 
     @Override
-    public void init(Function function, Color sphereColor, double sphereRadius, int animationTime) {
-        List<FunctionPoint> points = function.getSelectedPoints().stream()
+    public void init(FunctionHolder functionHolder) {
+        List<FunctionPoint> points = functionHolder.getFunction().getSelectedPoints().stream()
                 .sorted(Comparator.comparing(FunctionPoint::getT))
                 .collect(Collectors.toList());
 
         this.flyingSphere = new Sphere();
-        flyingSphere.setRadius(sphereRadius);
-        flyingSphere.setMaterial(new PhongMaterial(sphereColor));
+        flyingSphere.radiusProperty().bind(functionHolder.animationRadiusProperty());
+        PhongMaterial material = new PhongMaterial();
+        material.diffuseColorProperty().bind(functionHolder.animationColorProperty());
+        flyingSphere.setMaterial(material);
 
         this.animation = new SequentialTransition();
 
@@ -39,7 +42,8 @@ public class FlyingPointAnimation extends Animation {
             FunctionPoint startPoint = points.get(i);
             FunctionPoint endPoint = points.get(i + 1);
 
-            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(animationTime));
+            TranslateTransition translateTransition = new TranslateTransition();
+            translateTransition.durationProperty().bind(functionHolder.animationTimeProperty());
             translateTransition.setFromX(startPoint.getSystemX());
             translateTransition.setFromY(-startPoint.getSystemZ());
             translateTransition.setFromZ(startPoint.getSystemY());

@@ -1,10 +1,8 @@
-package ru.hse.paramfunc.element;
+package ru.hse.paramfunc.domain;
 
 import javafx.beans.property.*;
 import javafx.scene.paint.Color;
-import ru.hse.paramFunc.animation.Animation;
-import ru.hse.paramfunc.domain.Function;
-import ru.hse.paramfunc.storage.FunctionStorage;
+import javafx.util.Duration;
 import ru.hse.paramfunc.util.Callback;
 
 public class FunctionHolder {
@@ -20,7 +18,7 @@ public class FunctionHolder {
     private IntegerProperty interpolationPointsNumberProperty;
     private ObjectProperty<Color> animationColorProperty;
     private DoubleProperty animationRadiusProperty;
-    private IntegerProperty animationTimeProperty;
+    private ObjectProperty<Duration> animationTimeProperty;
     private BooleanProperty focusProperty;
 
     private Callback startAnimationCallback;
@@ -37,31 +35,28 @@ public class FunctionHolder {
         this.valuesRadiusProperty = new SimpleDoubleProperty(2.0);
         this.interpolationColorProperty = new SimpleObjectProperty<>(Color.GOLD);
         this.interpolationRadiusProperty = new SimpleDoubleProperty(0.5);
-        this.interpolationPointsNumberProperty = new SimpleIntegerProperty(
-                FunctionStorage.getInstance().getDefaultSplinePointsNumber());
-        this.interpolationPointsNumberProperty.addListener((observableValue, number, t1) ->
-                FunctionStorage.getInstance().updateSpline(this.function, (int) t1));
+        this.interpolationPointsNumberProperty = new SimpleIntegerProperty(10);
         this.animationColorProperty = new SimpleObjectProperty<>(Color.LIGHTCORAL);
         this.animationRadiusProperty = new SimpleDoubleProperty(1.0);
-        this.animationTimeProperty = new SimpleIntegerProperty(2000);
-        this.animationColorProperty.addListener((observableValue, color, t1) -> {
-            initAnimation(this.currentAnimationProperty.get());
-            if(this.isAnimationStarted) {
-                this.currentAnimationProperty.get().start();
-            }
-        });
-        this.animationRadiusProperty.addListener((observableValue, color, t1) -> {
-            initAnimation(this.currentAnimationProperty.get());
-            if(this.isAnimationStarted) {
-                this.currentAnimationProperty.get().start();
-            }
-        });
-        this.animationTimeProperty.addListener((observableValue, color, t1) -> {
-            initAnimation(this.currentAnimationProperty.get());
-            if(this.isAnimationStarted) {
-                this.currentAnimationProperty.get().start();
-            }
-        });
+        this.animationTimeProperty = new SimpleObjectProperty<>(javafx.util.Duration.millis(2000));
+//        this.animationColorProperty.addListener((observableValue, color, t1) -> {
+//            initAnimation(this.currentAnimationProperty.get());
+//            if (this.isAnimationStarted) {
+//                this.currentAnimationProperty.get().start();
+//            }
+//        });
+//        this.animationRadiusProperty.addListener((observableValue, color, t1) -> {
+//            initAnimation(this.currentAnimationProperty.get());
+//            if (this.isAnimationStarted) {
+//                this.currentAnimationProperty.get().start();
+//            }
+//        });
+//        this.animationTimeProperty.addListener((observableValue, color, t1) -> {
+//            initAnimation(this.currentAnimationProperty.get());
+//            if (this.isAnimationStarted) {
+//                this.currentAnimationProperty.get().start();
+//            }
+//        });
         this.focusProperty = new SimpleBooleanProperty(false);
     }
 
@@ -101,7 +96,7 @@ public class FunctionHolder {
         return animationRadiusProperty;
     }
 
-    public IntegerProperty animationTimeProperty() {
+    public ObjectProperty<Duration> animationTimeProperty() {
         return animationTimeProperty;
     }
 
@@ -143,14 +138,14 @@ public class FunctionHolder {
         };
     }
 
-    private void initAnimation(Animation animation) {
-        if(animation != null) {
-            animation.reset();
-            animation.init(
-                    function,
-                    animationColorProperty.get(),
-                    animationRadiusProperty.get(),
-                    animationTimeProperty.get());
-        }
-    }
+//    private void initAnimation(Animation animation) {
+//        if (animation != null) {
+//            animation.reset();
+//            animation.init(
+//                    function,
+//                    animationColorProperty.get(),
+//                    animationRadiusProperty.get(),
+//                    animationTimeProperty.get());
+//        }
+//    }
 }

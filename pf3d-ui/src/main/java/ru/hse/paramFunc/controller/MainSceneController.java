@@ -16,21 +16,24 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import lombok.NonNull;
 import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramFunc.SceneRunner;
-import ru.hse.paramFunc.animation.Animation;
+import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.contract.MouseEventListener;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.element.FunctionHolder;
+import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MainSceneController implements MouseEventListener, Listener {
 
@@ -206,14 +209,31 @@ public class MainSceneController implements MouseEventListener, Listener {
 
     @Override
     public void receive() {
-        //Обновление меню Functions
-        this.functionsVBox.getChildren().clear();
         List<Function> functions = FunctionStorage.getInstance().getFunctions();
-        Accordion functionsAccordion = new Accordion();
-        for (Function function : functions) {
-            functionsAccordion.getPanes().add(createTitledPaneForFunction(function));
+        Accordion functionsAccordion;
+        if(this.functionsVBox.getChildren().isEmpty()) {
+            functionsAccordion = new Accordion();
+            this.functionsVBox.getChildren().add(functionsAccordion);
+        } else {
+            functionsAccordion = (Accordion) this.functionsVBox.getChildren().get(0);
         }
-        this.functionsVBox.getChildren().add(functionsAccordion);
+        for (Function function : functions) {
+            Optional<TitledPane> paneOpt = functionsAccordion.getPanes().stream()
+                    .filter(p -> p.getText().equals(function.getName()))
+                    .findFirst();
+            if(paneOpt.isEmpty()) {
+                functionsAccordion.getPanes().add(createTitledPaneForFunction(function));
+            }
+        }
+        //Удаляем старые TitledPane
+        List<String> functionNames = functions.stream()
+                .map(Function::getName)
+                .collect(Collectors.toList());
+        List<TitledPane> deletedPanes = functionsAccordion.getPanes().stream()
+                .filter(p -> !functionNames.contains(p.getText()))
+                .collect(Collectors.toList());
+        functionsAccordion.getPanes().removeAll(deletedPanes);
+        this.functionsVBox.setFillWidth(true);
     }
 
     private TitledPane createTitledPaneForFunction(Function function) {

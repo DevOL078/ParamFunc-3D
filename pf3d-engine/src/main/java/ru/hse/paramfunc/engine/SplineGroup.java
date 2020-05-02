@@ -4,7 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.element.FunctionHolder;
+import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.element.SpacePoint;
 
 import java.util.List;

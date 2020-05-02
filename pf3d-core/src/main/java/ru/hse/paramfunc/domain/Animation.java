@@ -1,8 +1,7 @@
-package ru.hse.paramFunc.animation;
+package ru.hse.paramfunc.domain;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import ru.hse.paramfunc.domain.Function;
 
 public abstract class Animation {
 
@@ -22,7 +21,7 @@ public abstract class Animation {
         return group;
     }
 
-    public abstract void init(Function function, Color sphereColor, double sphereRadius, int animationTime);
+    public abstract void init(FunctionHolder functionHolder);
     public abstract void start();
     public abstract void pause();
     public abstract void stop();

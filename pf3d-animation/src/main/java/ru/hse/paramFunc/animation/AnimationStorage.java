@@ -1,5 +1,7 @@
 package ru.hse.paramFunc.animation;
 
+import ru.hse.paramfunc.domain.Animation;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

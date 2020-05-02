@@ -10,10 +10,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramfunc.SubSceneEngine;
 import ru.hse.paramfunc.domain.Function;
-import ru.hse.paramfunc.element.FunctionHolder;
+import ru.hse.paramfunc.domain.FunctionHolder;
 
 import java.io.IOException;
 
@@ -80,7 +81,7 @@ public class FunctionSettingsController {
         animationRadiusProperty = new SimpleStringProperty(
                 String.valueOf(this.functionHolder.animationRadiusProperty().get()));
         animationTimeProperty = new SimpleStringProperty(
-                String.valueOf(this.functionHolder.animationTimeProperty().get()));
+                String.valueOf(this.functionHolder.animationTimeProperty().get().toMillis()));
 
         valuesColorPicker.valueProperty().bindBidirectional(valuesColorProperty);
         valuesRadiusTextField.textProperty().bindBidirectional(valuesRadiusProperty);
@@ -104,7 +105,7 @@ public class FunctionSettingsController {
             this.functionHolder.animationRadiusProperty().set(
                     Double.parseDouble(this.animationRadiusProperty.get()));
             this.functionHolder.animationTimeProperty().set(
-                    Integer.parseInt(this.animationTimeProperty.get()));
+                    Duration.millis(Double.parseDouble(this.animationTimeProperty.get())));
             this.stage.close();
         });
         cancelButton.setOnAction(e -> {
