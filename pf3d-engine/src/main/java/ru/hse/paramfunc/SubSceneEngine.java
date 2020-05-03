@@ -5,14 +5,11 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
-import ru.hse.paramFunc.interpolation.spline.CatmullRomSpline;
-import ru.hse.paramFunc.interpolation.spline.Spline;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.engine.CameraBuilder;
+import ru.hse.paramfunc.engine.CameraController;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.parser.FunctionValues3DParser;
-import ru.hse.paramfunc.storage.FunctionFileProvider;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
@@ -30,8 +27,7 @@ public class SubSceneEngine {
 
         setAnimationControls(scene);
 
-        CameraBuilder cameraBuilder = new CameraBuilder();
-        cameraBuilder.setUp(subScene, scene);
+        CameraController.setUp(subScene, scene);
 
         root.getChildren().add(subScene);
 

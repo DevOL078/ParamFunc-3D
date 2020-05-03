@@ -45,7 +45,6 @@ public class SpaceSubScene extends SubScene implements Listener {
     private PointsGroup pointsGroup;
     private Group additionalLinesGroup;
     private Group animationGroup;
-    private PerspectiveCamera camera;
 
     private Map<String, Animation> animationMap;
     private Animation currentAnimation;
@@ -90,16 +89,6 @@ public class SpaceSubScene extends SubScene implements Listener {
                 this.pointsGroup,
                 this.additionalLinesGroup,
                 this.animationGroup);
-        this.camera = new PerspectiveCamera(true);
-
-        camera.setTranslateX(0);
-        camera.setTranslateY(0);
-        camera.setTranslateZ(0);
-        camera.setNearClip(0.1);
-        camera.setFarClip(10000.0);
-        camera.setTranslateZ(-100);
-
-        super.setCamera(camera);
         super.setFill(Paint.valueOf("#343030"));
 
         FunctionStorage.getInstance().addListener(this);
@@ -111,12 +100,6 @@ public class SpaceSubScene extends SubScene implements Listener {
     public void update() {
         this.pointsGroup.update();
         addAdditionalLinesForPoints();
-//        this.animationGroup.getChildren().clear();
-//
-//        this.animationMap.values().forEach(Animation::reset);
-//        if (this.currentAnimation != null) {
-//            this.currentAnimation.init();
-//        }
     }
 
     public void onCameraMove(Bounds bounds) {

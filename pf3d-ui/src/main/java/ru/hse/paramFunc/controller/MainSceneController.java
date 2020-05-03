@@ -25,6 +25,7 @@ import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.domain.FunctionPoint;
+import ru.hse.paramfunc.engine.CameraController;
 import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.listener.Listener;
 import ru.hse.paramfunc.storage.FunctionStorage;
@@ -116,6 +117,10 @@ public class MainSceneController implements MouseEventListener, Listener {
             searchYTextField.setText("");
             searchZTextField.setText("");
         });
+        cameraXButton.setOnAction(e -> CameraController.setTo2DXPosition());
+        cameraYButton.setOnAction(e -> CameraController.setTo2DYPosition());
+        cameraZButton.setOnAction(e -> CameraController.setTo2DZPosition());
+        cameraIsometricButton.setOnAction(e -> CameraController.setToIsometricPosition());
 
         fpsLabel.textProperty().bind(SpaceSubScene.getFpsProperty().asString("%.1f"));
     }
