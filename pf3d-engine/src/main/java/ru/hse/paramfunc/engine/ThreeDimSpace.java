@@ -1,15 +1,16 @@
 package ru.hse.paramfunc.engine;
 
 import javafx.geometry.Bounds;
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import org.fxyz3d.geometry.Point3D;
 import org.fxyz3d.shapes.primitives.Text3DMesh;
+import ru.hse.paramfunc.contract.CoordinateSystem;
 import ru.hse.paramfunc.element.Line3D;
 import ru.hse.paramfunc.element.Rectangle3D;
 import ru.hse.paramfunc.element.SpacePoint;
 
-public class ThreeDimSpace extends Group {
+public class ThreeDimSpace extends CoordinateSystem {
 
     private Group surfaceGroup;
 
@@ -21,7 +22,7 @@ public class ThreeDimSpace extends Group {
     private Rectangle3D ozxD;
 
     public ThreeDimSpace() {
-        //Создание вспомогательных плоскостей OXY, OYZ, OXZ
+        super();
         this.surfaceGroup = new Group();
         super.getChildren().add(this.surfaceGroup);
 
@@ -40,12 +41,13 @@ public class ThreeDimSpace extends Group {
                 new SpacePoint(0, 0, 20),
                 Color.AQUA,
                 2);
-        Text3DMesh textX = addLabel("X", oX, 0, -6, 0, 0);
-        Text3DMesh textY = addLabel("Y", oY, 90, -4, 0, -2);
-        Text3DMesh textZ = addLabel("Z", oZ, 180, 0, 0, 0);
+        Text3DMesh textX = create3DLabel("X", 10, oX, new Point3D(0, 1, 0), 0, -6, 0, 0);
+        Text3DMesh textY = create3DLabel("Y", 10, oY, new Point3D(0, 1, 0),90, -4, 0, -2);
+        Text3DMesh textZ = create3DLabel("Z", 10, oZ, new Point3D(0, 1, 0),180, 0, 0, 0);
         super.getChildren().addAll(oX, oY, oZ, textX, textY, textZ);
     }
 
+    @Override
     public void setUp() {
         oxy = new Rectangle3D(
                 new SpacePoint(100, 0, 0),
@@ -131,7 +133,8 @@ public class ThreeDimSpace extends Group {
         this.surfaceGroup.getChildren().addAll(oxyD, oyzD, ozxD);
     }
 
-    public void updateSurfaceVisibility(Bounds bounds) {
+    @Override
+    public void update(Bounds bounds) {
         double x = bounds.getCenterX();
         double y = bounds.getCenterY();
         double z = bounds.getCenterZ();
@@ -169,26 +172,6 @@ public class ThreeDimSpace extends Group {
 
     public float getVisibleOZXCoordinate() {
         return ozx.isVisible() ? 0 : 100;
-    }
-
-    private Text3DMesh addLabel(String text, Line3D line, double rotate, double deltaX, double deltaY, double deltaZ) {
-        Text3DMesh mesh = new Text3DMesh(text);
-        mesh.setFontSize(10);
-        mesh.setHeight(1);
-        mesh.setTextureModeNone(Color.WHITE);
-
-        mesh.setRotationAxis(new javafx.geometry.Point3D(0, 1, 0));
-        mesh.setRotate(rotate);
-        Point3D vector = line.getEnd();
-        mesh.setTranslateX(vector.getX() + deltaX);
-        mesh.setTranslateY(vector.getY() + deltaY);
-        mesh.setTranslateZ(vector.getZ() + deltaZ);
-
-        mesh.setScaleX(0.7);
-        mesh.setScaleY(0.7);
-        mesh.setScaleZ(0.7);
-
-        return mesh;
     }
 
 }

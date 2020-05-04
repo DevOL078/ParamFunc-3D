@@ -23,9 +23,6 @@ public class SubSceneEngine {
     public static void start(Scene scene) throws Exception {
         Group root = new Group();
         subScene = new SpaceSubScene(1024, 726);
-        subScene.update();
-
-        setAnimationControls(scene);
 
         CameraController.setUp(subScene, scene);
 
@@ -36,7 +33,7 @@ public class SubSceneEngine {
         if (spacePane != null) {
             subScene.widthProperty().bind(spacePane.widthProperty());
             subScene.heightProperty().bind(spacePane.heightProperty());
-            addRootToSpacePane(root, spacePane);
+            spacePane.getChildren().add(root);
         }
     }
 
@@ -71,26 +68,21 @@ public class SubSceneEngine {
         return null;
     }
 
-    private static void addRootToSpacePane(Group root, Pane pane) {
-        pane.getChildren().add(root);
-    }
-
-
-    private static void setAnimationControls(Scene scene) {
-        scene.setOnKeyPressed(event -> {
-            System.out.println(event.getCode());
-            if (event.getCode() == KeyCode.Z) {
-                subScene.startCurrentAnimation();
-            } else if (event.getCode() == KeyCode.X) {
-                subScene.stopCurrentAnimation();
-            } else if (event.getCode() == KeyCode.P) {
-                subScene.pauseCurrentAnimation();
-            } else if (event.getCode() == KeyCode.DIGIT1) {
-                subScene.setCurrentAnimation("Flying point");
-            } else if (event.getCode() == KeyCode.DIGIT2) {
-                subScene.setCurrentAnimation("Dynamic lines");
-            }
-        });
-    }
+//    private static void setAnimationControls(Scene scene) {
+//        scene.setOnKeyPressed(event -> {
+//            System.out.println(event.getCode());
+//            if (event.getCode() == KeyCode.Z) {
+//                subScene.startCurrentAnimation();
+//            } else if (event.getCode() == KeyCode.X) {
+//                subScene.stopCurrentAnimation();
+//            } else if (event.getCode() == KeyCode.P) {
+//                subScene.pauseCurrentAnimation();
+//            } else if (event.getCode() == KeyCode.DIGIT1) {
+//                subScene.setCurrentAnimation("Flying point");
+//            } else if (event.getCode() == KeyCode.DIGIT2) {
+//                subScene.setCurrentAnimation("Dynamic lines");
+//            }
+//        });
+//    }
 
 }
