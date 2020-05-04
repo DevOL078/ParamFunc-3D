@@ -20,13 +20,13 @@ import ru.hse.paramfunc.selection.SelectionService;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SelectionController {
 
-    @FXML private TabPane selectionTabPane;
     @FXML private Tab selectionIntervalTab;
     @FXML private Tab selectionFunctionalTab;
     @FXML private TextArea intervalSelectionTextArea;
@@ -127,11 +127,39 @@ public class SelectionController {
         }));
 
         selectButton.setOnAction(e -> {
-            Tab selectedTab = selectionTabPane.getSelectionModel().getSelectedItem();
-            if (selectedTab.equals(selectionIntervalTab)) {
-                selectPoints(SelectionType.INTERVAL, intervalSelectionTextArea.getText());
-            } else if (selectedTab.equals(selectionFunctionalTab)) {
-                selectPoints(SelectionType.FUNCTIONAL, functionalSelectionTextArea.getText());
+//            Tab selectedTab = selectionTabPane.getSelectionModel().getSelectedItem();
+//            if (selectedTab.equals(selectionIntervalTab)) {
+//                selectPoints(SelectionType.INTERVAL, intervalSelectionTextArea.getText());
+//            } else if (selectedTab.equals(selectionFunctionalTab)) {
+//                selectPoints(SelectionType.FUNCTIONAL, functionalSelectionTextArea.getText());
+//            }
+
+            String intervalText = intervalSelectionTextArea.getText();
+            String functionalText = functionalSelectionTextArea.getText();
+
+            List<FunctionPoint> intervalSelectedPoints = null;
+            List<FunctionPoint> functionalSelectedPoints = null;
+            if (intervalText != null && !intervalText.isEmpty()) {
+                intervalSelectedPoints = SelectionService.selectPoints(this.function, SelectionType.INTERVAL, intervalText);
+            }
+            if (functionalText != null && !functionalText.isEmpty()) {
+                functionalSelectedPoints = SelectionService.selectPoints(this.function, SelectionType.FUNCTIONAL, functionalText);
+            }
+
+            List<FunctionPoint> selectedPoints = null;
+            if (intervalSelectedPoints != null && functionalSelectedPoints != null) {
+                selectedPoints = intervalSelectedPoints.stream()
+                        .filter(functionalSelectedPoints::contains)
+                        .sorted(Comparator.comparing(FunctionPoint::getT))
+                        .collect(Collectors.toList());
+            } else if (intervalSelectedPoints != null) {
+                selectedPoints = intervalSelectedPoints;
+            } else if (functionalSelectedPoints != null) {
+                selectedPoints = functionalSelectedPoints;
+            }
+
+            if (selectedPoints != null) {
+                updateSelectedPoints(selectedPoints);
             }
         });
 
@@ -156,9 +184,7 @@ public class SelectionController {
         });
     }
 
-    private void selectPoints(SelectionType selectionType, String expression) {
-        List<FunctionPoint> selectedPoints = SelectionService
-                .selectPoints(this.function, selectionType, expression);
+    private void updateSelectedPoints(List<FunctionPoint> selectedPoints) {
         List<Integer> selectedTs = selectedPoints.stream()
                 .map(FunctionPoint::getT)
                 .collect(Collectors.toList());

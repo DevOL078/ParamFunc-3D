@@ -116,6 +116,7 @@ public class SpaceSubScene extends SubScene implements Listener {
             this.coordinateSystem.setUp();
             this.rootGroup.getChildren().add(this.coordinateSystem);
             this.is3DCoordinateSystem = false;
+            updateCamera();
         } else if (!isAllZEqualsZero && (!is3DCoordinateSystem || this.coordinateSystem == null)) {
             if (this.coordinateSystem != null) {
                 this.rootGroup.getChildren().remove(this.coordinateSystem);
@@ -124,6 +125,7 @@ public class SpaceSubScene extends SubScene implements Listener {
             this.coordinateSystem.setUp();
             this.rootGroup.getChildren().add(this.coordinateSystem);
             this.is3DCoordinateSystem = true;
+            updateCamera();
         }
     }
 
@@ -264,7 +266,6 @@ public class SpaceSubScene extends SubScene implements Listener {
     @Override
     public void receive() {
         updateCoordinateSystem();
-        updateCamera();
         updatePointsGroup();
     }
 

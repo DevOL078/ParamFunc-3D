@@ -14,12 +14,11 @@ public class FunctionalSelector implements PointSelector {
         int currentSelectedIndex = 0;
         //Чтобы как-то ограничить цикл и не ставить while(true)
         while(currentSelectedIndex < allPoints.size()) {
-            int indexToSelect = function.calculate(currentSelectedIndex + 1) - 1;
+            int indexToSelect = function.calculate(currentSelectedIndex);
             if(indexToSelect >= 0 && indexToSelect < allPoints.size()) {
                 selectedPoints.add(allPoints.get(indexToSelect));
             } else {
                 System.err.println("Point with index " + indexToSelect + " was not found");
-                break;
             }
 
             currentSelectedIndex++;
