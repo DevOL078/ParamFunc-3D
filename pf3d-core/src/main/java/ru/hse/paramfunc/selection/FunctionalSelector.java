@@ -17,8 +17,6 @@ public class FunctionalSelector implements PointSelector {
             int indexToSelect = function.calculate(currentSelectedIndex);
             if(indexToSelect >= 0 && indexToSelect < allPoints.size()) {
                 selectedPoints.add(allPoints.get(indexToSelect));
-            } else {
-                System.err.println("Point with index " + indexToSelect + " was not found");
             }
 
             currentSelectedIndex++;

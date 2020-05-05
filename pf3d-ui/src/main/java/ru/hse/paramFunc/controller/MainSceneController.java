@@ -9,7 +9,6 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -20,14 +19,15 @@ import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramFunc.animation.AnimationStorage;
 import ru.hse.paramfunc.SubSceneEngine;
-import ru.hse.paramfunc.contract.MouseEventListener;
 import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.engine.CameraController;
 import ru.hse.paramfunc.engine.SpaceSubScene;
-import ru.hse.paramfunc.listener.Listener;
+import ru.hse.paramfunc.event.EventListener;
+import ru.hse.paramfunc.event.EventMediator;
+import ru.hse.paramfunc.event.EventType;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.File;
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class MainSceneController implements MouseEventListener, Listener {
+public class MainSceneController implements EventListener {
 
     @FXML private MenuItem loadFileMenuItem;
     @FXML private Menu functionsMenu;
@@ -75,7 +75,9 @@ public class MainSceneController implements MouseEventListener, Listener {
     }
 
     public void initialize() {
-        FunctionStorage.getInstance().addListener(this);
+        EventMediator.addListener(EventType.FUNCTION_LIST_UPDATE, this);
+        EventMediator.addListener(EventType.MOUSE_ENTERED, this);
+        EventMediator.addListener(EventType.MOUSE_EXITED, this);
 
         loadFileMenuItem.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
@@ -85,8 +87,6 @@ public class MainSceneController implements MouseEventListener, Listener {
                 if (this.functionName != null) {
                     try {
                         SubSceneEngine.loadFunction(loadedFile.getAbsolutePath(), this.functionName);
-                        resetScene();
-                        SubSceneEngine.getSpaceSubScene().addMouseEventListener(this);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -99,7 +99,6 @@ public class MainSceneController implements MouseEventListener, Listener {
         label.setOnMouseClicked(e -> SceneRunner.getInstance().runFunctionsScene());
         functionsMenu.setGraphic(label);
         functionsMenu.setOnShowing(e -> {
-            System.out.println("Action");
             SceneRunner.getInstance().runFunctionsScene();
         });
         searchButton.setOnAction(e -> {
@@ -207,29 +206,34 @@ public class MainSceneController implements MouseEventListener, Listener {
         dialogStage.showAndWait();
     }
 
-    private void resetScene() {
-
-    }
-
     @Override
-    public void receive(MouseEvent event, FunctionPoint target, FunctionHolder functionHolder) {
-        if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
-            String functionName = functionHolder.getFunction().getName();
-            pointInfoLabel.setText(String.format("T: %d\nX: %.3f\nY: %.3f\nZ: %.3f\nFunction: %s",
-                    target.getT(),
-                    target.getOriginalX(),
-                    target.getOriginalY(),
-                    target.getOriginalZ(),
-                    functionName));
-            pointInfoLabel.setVisible(true);
-        } else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
-            pointInfoLabel.setText("");
-            pointInfoLabel.setVisible(false);
+    public void receive(EventType eventType, Object... args) {
+        if (eventType == EventType.FUNCTION_LIST_UPDATE) {
+            updateFunctionsMenu();
+        } else if (eventType == EventType.MOUSE_ENTERED) {
+            showInfo((FunctionPoint) args[0], (FunctionHolder) args[1]);
+        } else if (eventType == EventType.MOUSE_EXITED) {
+            clearInfo();
         }
     }
 
-    @Override
-    public void receive() {
+    private void showInfo(FunctionPoint target, FunctionHolder functionHolder) {
+        String functionName = functionHolder.getFunction().getName();
+        pointInfoLabel.setText(String.format("T: %d\nX: %.3f\nY: %.3f\nZ: %.3f\nFunction: %s",
+                target.getT(),
+                target.getOriginalX(),
+                target.getOriginalY(),
+                target.getOriginalZ(),
+                functionName));
+        pointInfoLabel.setVisible(true);
+    }
+
+    private void clearInfo() {
+        pointInfoLabel.setText("");
+        pointInfoLabel.setVisible(false);
+    }
+
+    private void updateFunctionsMenu() {
         List<Function> functions = FunctionStorage.getInstance().getFunctions();
         Accordion functionsAccordion;
         if (this.functionsVBox.getChildren().isEmpty()) {

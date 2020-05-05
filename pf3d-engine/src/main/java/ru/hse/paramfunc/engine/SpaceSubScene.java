@@ -12,7 +12,6 @@ import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 import org.fxyz3d.geometry.Point3D;
@@ -25,13 +24,15 @@ import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.element.Line3D;
 import ru.hse.paramfunc.element.SpacePoint;
-import ru.hse.paramfunc.listener.Listener;
+import ru.hse.paramfunc.event.EventListener;
+import ru.hse.paramfunc.event.EventMediator;
+import ru.hse.paramfunc.event.EventType;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SpaceSubScene extends SubScene implements Listener {
+public class SpaceSubScene extends SubScene implements EventListener {
 
     private final static long[] frameTimes = new long[100];
     private static int frameTimeIndex = 0;
@@ -87,7 +88,7 @@ public class SpaceSubScene extends SubScene implements Listener {
                 this.animationGroup);
         super.setFill(Paint.valueOf("#343030"));
 
-        FunctionStorage.getInstance().addListener(this);
+        EventMediator.addListener(EventType.FUNCTION_LIST_UPDATE, this);
 
         AnimationStorage.getAnimations()
                 .forEach(animation -> animationMap.put(animation.getName(), animation));
@@ -155,7 +156,7 @@ public class SpaceSubScene extends SubScene implements Listener {
                 if (!(valueNode instanceof Sphere)) return;
                 Sphere point = (Sphere) valueNode;
                 point.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
-                    if(this.is3DCoordinateSystem) {
+                    if (this.is3DCoordinateSystem) {
                         double pointX = point.getTranslateX();
                         double pointY = point.getTranslateY();
                         double pointZ = point.getTranslateZ();
@@ -264,9 +265,10 @@ public class SpaceSubScene extends SubScene implements Listener {
     }
 
     @Override
-    public void receive() {
-        updateCoordinateSystem();
-        updatePointsGroup();
+    public void receive(EventType eventType, Object... args) {
+        if (eventType == EventType.FUNCTION_LIST_UPDATE) {
+            updateCoordinateSystem();
+            updatePointsGroup();
+        }
     }
-
 }

@@ -15,13 +15,15 @@ import javafx.stage.Stage;
 import ru.hse.paramFunc.FxApplication;
 import ru.hse.paramFunc.SceneRunner;
 import ru.hse.paramfunc.domain.Function;
-import ru.hse.paramfunc.listener.Listener;
+import ru.hse.paramfunc.event.EventListener;
+import ru.hse.paramfunc.event.EventMediator;
+import ru.hse.paramfunc.event.EventType;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
 import java.util.List;
 
-public class FunctionsController implements Listener {
+public class FunctionsController implements EventListener {
 
     @FXML private Button closeButton;
     @FXML private TableView<Function> functionsTableView;
@@ -56,7 +58,7 @@ public class FunctionsController implements Listener {
     }
 
     private void initTable() {
-        FunctionStorage.getInstance().addListener(this);
+        EventMediator.addListener(EventType.FUNCTION_LIST_UPDATE, this);
 
         TableColumn<Function, String> nameColumn = new TableColumn<>("Function name");
         TableColumn<Function, Integer> allPointsColumn = new TableColumn<>("All points");
@@ -140,7 +142,9 @@ public class FunctionsController implements Listener {
     }
 
     @Override
-    public void receive() {
-        this.updateTableData();
+    public void receive(EventType eventType, Object... args) {
+        if (eventType == EventType.FUNCTION_LIST_UPDATE) {
+            this.updateTableData();
+        }
     }
 }
