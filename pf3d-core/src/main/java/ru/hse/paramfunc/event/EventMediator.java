@@ -25,7 +25,7 @@ public class EventMediator {
     public static void notifyAllListeners(EventType eventType, Object... args) {
         List<EventListener> listeners = listenerMap.get(eventType);
         if (listeners != null) {
-            //Запускаем в обратном порядке, чтобы UI обработал событие последним
+            //Запускаем в обратном порядке, чтобы UI обработал событие последним//
             List<EventListener> listenersCopy = new ArrayList<>(listeners);
             Collections.reverse(listenersCopy);
             listenersCopy.forEach(l -> l.receive(eventType, args));

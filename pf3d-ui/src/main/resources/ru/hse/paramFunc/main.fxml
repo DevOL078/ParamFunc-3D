@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -214,6 +215,11 @@
                   <Insets bottom="10.0" left="10.0" />
                </GridPane.margin>
             </Label>
+            <ProgressIndicator fx:id="progressIndicator" maxHeight="40.0" maxWidth="50.0" prefHeight="30.0" prefWidth="30.0" visible="false" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <GridPane.margin>
+                  <Insets left="10.0" top="10.0" />
+               </GridPane.margin>
+            </ProgressIndicator>
          </children>
       </GridPane>
    </children>

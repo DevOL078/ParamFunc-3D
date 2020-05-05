@@ -1,5 +1,7 @@
 package ru.hse.paramFunc.controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -28,6 +30,7 @@ import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.event.EventListener;
 import ru.hse.paramfunc.event.EventMediator;
 import ru.hse.paramfunc.event.EventType;
+import ru.hse.paramfunc.parser.FunctionValues3DParser;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.File;
@@ -53,6 +56,7 @@ public class MainSceneController implements EventListener {
     @FXML private Label fpsLabel;
     @FXML private Label pointInfoLabel;
     @FXML private VBox functionsVBox;
+    @FXML private ProgressIndicator progressIndicator;
 
     private Stage stage;
     private String functionName;
@@ -86,12 +90,29 @@ public class MainSceneController implements EventListener {
             if (loadedFile != null) {
                 showDialogWindow();
                 if (this.functionName != null) {
+                    progressIndicator.setVisible(true);
                     try {
-                        SubSceneEngine.loadFunction(loadedFile.getAbsolutePath(), this.functionName);
+                        Task<Void> task = new Task<>() {
+                            @Override
+                            protected Void call() throws Exception {
+                                List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(loadedFile.getAbsolutePath());
+                                Function function = new Function(functionName);
+                                function.setAllPoints(allPoints);
+                                function.setSelectedPoints(allPoints);
+                                Platform.runLater(() -> {
+                                    FunctionStorage.getInstance().addFunction(function);
+                                    progressIndicator.setVisible(false);
+                                });
+                                functionName = null;
+                                return null;
+                            }
+                        };
+                        Thread thread = new Thread(task);
+                        thread.setDaemon(true);
+                        thread.start();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-                    this.functionName = null;
                 }
 
             }

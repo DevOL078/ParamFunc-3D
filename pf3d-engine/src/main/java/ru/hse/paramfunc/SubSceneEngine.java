@@ -1,5 +1,6 @@
 package ru.hse.paramfunc;
 
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -41,13 +42,18 @@ public class SubSceneEngine {
         return subScene;
     }
 
-    public static void loadFunction(String filePath, String functionName) throws IOException {
-        List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(filePath);
-        Function function = new Function(functionName);
-        function.setAllPoints(allPoints);
-        function.setSelectedPoints(allPoints);
-        FunctionStorage.getInstance().addFunction(function);
-    }
+//    public static void loadFunction(String filePath, String functionName) throws IOException {
+//        System.out.println("Start loadFunction");
+//        List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(filePath);
+//        Function function = new Function(functionName);
+//        System.out.println("Created new function: " + functionName);
+//        function.setAllPoints(allPoints);
+//        System.out.println("All points");
+//        function.setSelectedPoints(allPoints);
+//        System.out.println("Selected points");
+//        Platform.runLater(() -> FunctionStorage.getInstance().addFunction(function));
+//        System.out.println("Add function");
+//    }
 
     private static Pane findSpacePane(Scene scene) {
         Pane sceneRoot = (Pane) scene.getRoot();

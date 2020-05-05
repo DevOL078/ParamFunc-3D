@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class DemoFunctionGenerator {
 
     private static Random random = new Random();
-    private final static int POINT_COUNT = 50;
+    private final static int POINT_COUNT = 500;
 
     public static void main(String[] args) throws IOException {
         List<FunctionPoint> points = new ArrayList<>();
