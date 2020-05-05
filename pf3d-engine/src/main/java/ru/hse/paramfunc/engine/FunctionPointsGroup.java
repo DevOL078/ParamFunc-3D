@@ -10,6 +10,7 @@ import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.element.SpacePoint;
+import ru.hse.paramfunc.settings.AppSettings;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class FunctionPointsGroup extends Group {
             p.getSphere().radiusProperty().bind(this.functionHolder.valuesRadiusProperty());
             PhongMaterial material = (PhongMaterial) (p.getSphere().getMaterial());
             if(this.functionHolder.focusProperty().get()) {
-                material.setDiffuseColor(Color.YELLOW);
+                material.diffuseColorProperty().bind(AppSettings.functionHighlightingColorPropertyProperty());
             } else {
                 material.diffuseColorProperty().bind(this.functionHolder.valuesColorProperty());
             }

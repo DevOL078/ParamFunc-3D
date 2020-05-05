@@ -8,6 +8,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Translate;
 import org.fxyz3d.geometry.Point3D;
+import ru.hse.paramfunc.settings.AppSettings;
 import ru.hse.paramfunc.util.Quaternion;
 import ru.hse.paramfunc.util.QuaternionUtil;
 
@@ -52,8 +53,9 @@ public class CameraController {
         // Устанавливаем камеру в центр пространства
         reset3DPosition();
 
+        double cameraSpeed = AppSettings.cameraSpeedPropertyProperty().get();
         rootScene.setOnScroll(e -> {
-            camera.setTranslateZ(camera.getTranslateZ() + 10 * (e.getDeltaY() > 0 ? 1 : -1));
+            camera.setTranslateZ(camera.getTranslateZ() + cameraSpeed * (e.getDeltaY() > 0 ? 1 : -1));
 
             Bounds bounds = cameraGroup2.localToScene(cameraGroup2.getBoundsInLocal());
             spaceSubScene.onCameraMove(bounds);
@@ -96,8 +98,9 @@ public class CameraController {
     public static void setUpForTwoDimSpace() {
         reset2DPosition();
 
+        double cameraSpeed = AppSettings.cameraSpeedPropertyProperty().get();
         rootScene.setOnScroll(e -> {
-            double newTranslateZ = camera.getTranslateZ() - 10 * (e.getDeltaY() > 0 ? 1 : -1);
+            double newTranslateZ = camera.getTranslateZ() - cameraSpeed * (e.getDeltaY() > 0 ? 1 : -1);
             if(newTranslateZ >= -500 && newTranslateZ <= 0) {
                 camera.setTranslateZ(newTranslateZ);
             }
