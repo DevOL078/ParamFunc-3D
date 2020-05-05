@@ -26,7 +26,7 @@
           <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" styleClass="inspector-button" text="Save" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <Button fx:id="saveButton" mnemonicParsing="false" prefWidth="70.0" styleClass="inspector-button" text="Save" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -34,7 +34,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
-            <Button layoutX="269.0" layoutY="370.0" mnemonicParsing="false" styleClass="inspector-button" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <Button fx:id="cancelButton" layoutX="269.0" layoutY="370.0" mnemonicParsing="false" prefWidth="70.0" styleClass="inspector-button" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
@@ -76,55 +76,55 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="defaultFunctionPointsRadiusTextField" layoutX="260.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="functionPointsRadiusTextField" layoutX="260.0" layoutY="13.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label layoutX="10.0" layoutY="45.0" styleClass="inspector-label" text="Default radius of interpolation points" GridPane.rowIndex="2">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="defaultInterpolationPointsRadiusTextField" layoutX="260.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <TextField fx:id="interpolationPointsRadiusTextField" layoutX="260.0" layoutY="43.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Label layoutX="10.0" layoutY="75.0" styleClass="inspector-label" text="Default radius of animation points" GridPane.rowIndex="3">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="defaultAnimationPointsRadiusTextField" layoutX="260.0" layoutY="73.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField fx:id="animationPointsRadiusTextField" layoutX="260.0" layoutY="73.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label layoutX="10.0" layoutY="105.0" styleClass="inspector-label" text="Default color of function points" GridPane.rowIndex="4">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <ColorPicker fx:id="defaultFunctionPointsColorPicker" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ColorPicker fx:id="functionPointsColorPicker" maxWidth="1.7976931348623157E308" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label layoutX="10.0" layoutY="135.0" styleClass="inspector-label" text="Default color of interpolation points" GridPane.rowIndex="5">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <ColorPicker fx:id="defaultInterpolationPointsColorPicker" layoutX="310.0" layoutY="133.0" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <ColorPicker fx:id="interpolationPointsColorPicker" layoutX="310.0" layoutY="133.0" maxWidth="1.7976931348623157E308" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Label layoutX="10.0" layoutY="15.0" styleClass="inspector-label" text="Default color of animation points" GridPane.rowIndex="6">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <ColorPicker fx:id="defaultAnimationPointsColorPicker" layoutX="10.0" layoutY="13.0" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <ColorPicker fx:id="animationPointsColorPicker" layoutX="10.0" layoutY="13.0" maxWidth="1.7976931348623157E308" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                               <Label layoutX="10.0" layoutY="195.0" styleClass="inspector-label" text="Default color of function highlighting" GridPane.rowIndex="7">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <ColorPicker fx:id="defaultFunctionHighlightingColorPicker" layoutX="310.0" layoutY="193.0" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <ColorPicker fx:id="functionHighlightingColorPicker" layoutX="310.0" layoutY="193.0" maxWidth="1.7976931348623157E308" styleClass="inspector-button" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                               <Label layoutX="10.0" layoutY="105.0" styleClass="inspector-label" text="Default count of interpolation points (1 step)" wrapText="true" GridPane.rowIndex="8">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="defaultInterpolationPointsCountTextField" layoutX="310.0" layoutY="103.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <TextField fx:id="interpolationPointsCountTextField" layoutX="310.0" layoutY="103.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                               <Label layoutX="10.0" layoutY="255.0" styleClass="inspector-label" text="Default animation speed" GridPane.rowIndex="9">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="defaultAnimationSppedTextField" layoutX="10.0" layoutY="253.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                              <TextField fx:id="animationSpeedTextField" layoutX="10.0" layoutY="253.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                            </children>
                         </GridPane>
                      </children>

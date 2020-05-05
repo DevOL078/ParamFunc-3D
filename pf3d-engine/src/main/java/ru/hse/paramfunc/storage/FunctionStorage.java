@@ -5,6 +5,7 @@ import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.event.EventMediator;
 import ru.hse.paramfunc.event.EventType;
+import ru.hse.paramfunc.settings.AppSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
 public class FunctionStorage {
 
     private static final FunctionStorage instance = new FunctionStorage();
-    private final static int DEFAULT_SPLINE_POINTS_NUMBER = 10;
 
     private final List<Function> functionList;
 
@@ -26,7 +26,7 @@ public class FunctionStorage {
 
     public void addFunction(Function function) {
         functionList.add(function);
-        SplineProcessor.calculateAndSaveSpline(function, DEFAULT_SPLINE_POINTS_NUMBER);
+        SplineProcessor.calculateAndSaveSpline(function, AppSettings.interpolationPointsCountProperty().get());
         EventMediator.notifyAllListeners(EventType.FUNCTION_LIST_UPDATE);
     }
 

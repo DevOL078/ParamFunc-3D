@@ -39,12 +39,8 @@
                   </items>
                 </Menu>
                   <Menu fx:id="functionsMenu" mnemonicParsing="false" />
-                <Menu mnemonicParsing="false" text="Settings" />
-                  <Menu mnemonicParsing="false" text="Help">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                     </items>
-                  </Menu>
+                <Menu fx:id="settingsMenu" mnemonicParsing="false" />
+                  <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help" />
               </menus>
                <padding>
                   <Insets left="5.0" />

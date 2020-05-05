@@ -38,16 +38,46 @@ public class AppSettings {
         interpolationPointsCountProperty = new SimpleIntegerProperty(Integer.parseInt(props.getProperty("app.interpolation.one-step.count")));
         animationSpeedProperty = new SimpleDoubleProperty(Double.parseDouble(props.getProperty("app.animation.speed")));
 
-        cameraSpeedProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        functionPointsRadiusProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        interpolationPointsRadiusProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        animationPointsRadiusProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        functionPointsColorProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        interpolationPointsColorProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        animationPointsColorProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        functionHighlightingColorProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        interpolationPointsCountProperty.addListener((observableValue, number, t1) -> storeConfigs());
-        animationSpeedProperty.addListener((observableValue, number, t1) -> storeConfigs());
+        cameraSpeedProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.camera.speed", String.valueOf(t1));
+            storeConfigs();
+        });
+        functionPointsRadiusProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.function.radius", String.valueOf(t1));
+            storeConfigs();
+        });
+        interpolationPointsRadiusProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.interpolation.radius", String.valueOf(t1));
+            storeConfigs();
+        });
+        animationPointsRadiusProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.animation.radius", String.valueOf(t1));
+            storeConfigs();
+        });
+        functionPointsColorProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.function.color", t1.toString());
+            storeConfigs();
+        });
+        interpolationPointsColorProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.interpolation.color", t1.toString());
+            storeConfigs();
+        });
+        animationPointsColorProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.animation.color", t1.toString());
+            storeConfigs();
+        });
+        functionHighlightingColorProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.highlighting.color", t1.toString());
+            storeConfigs();
+        });
+        interpolationPointsCountProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.interpolation.one-step.count", String.valueOf(t1));
+            storeConfigs();
+        });
+        animationSpeedProperty.addListener((observableValue, number, t1) -> {
+            props.setProperty("app.animation.speed", String.valueOf(t1));
+            storeConfigs();
+        });
     }
 
     private static void storeConfigs() {
@@ -64,43 +94,43 @@ public class AppSettings {
         }
     }
 
-    public static DoubleProperty cameraSpeedPropertyProperty() {
+    public static DoubleProperty cameraSpeedProperty() {
         return cameraSpeedProperty;
     }
 
-    public static DoubleProperty functionPointsRadiusPropertyProperty() {
+    public static DoubleProperty functionPointsRadiusProperty() {
         return functionPointsRadiusProperty;
     }
 
-    public static DoubleProperty interpolationPointsRadiusPropertyProperty() {
+    public static DoubleProperty interpolationPointsRadiusProperty() {
         return interpolationPointsRadiusProperty;
     }
 
-    public static DoubleProperty animationPointsRadiusPropertyProperty() {
+    public static DoubleProperty animationPointsRadiusProperty() {
         return animationPointsRadiusProperty;
     }
 
-    public static ObjectProperty<Color> functionPointsColorPropertyProperty() {
+    public static ObjectProperty<Color> functionPointsColorProperty() {
         return functionPointsColorProperty;
     }
 
-    public static ObjectProperty<Color> interpolationPointsColorPropertyProperty() {
+    public static ObjectProperty<Color> interpolationPointsColorProperty() {
         return interpolationPointsColorProperty;
     }
 
-    public static ObjectProperty<Color> animationPointsColorPropertyProperty() {
+    public static ObjectProperty<Color> animationPointsColorProperty() {
         return animationPointsColorProperty;
     }
 
-    public static ObjectProperty<Color> functionHighlightingColorPropertyProperty() {
+    public static ObjectProperty<Color> functionHighlightingColorProperty() {
         return functionHighlightingColorProperty;
     }
 
-    public static IntegerProperty interpolationPointsCountPropertyProperty() {
+    public static IntegerProperty interpolationPointsCountProperty() {
         return interpolationPointsCountProperty;
     }
 
-    public static DoubleProperty animationSpeedPropertyProperty() {
+    public static DoubleProperty animationSpeedProperty() {
         return animationSpeedProperty;
     }
 

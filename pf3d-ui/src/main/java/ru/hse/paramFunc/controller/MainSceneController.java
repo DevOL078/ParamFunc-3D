@@ -39,6 +39,7 @@ public class MainSceneController implements EventListener {
 
     @FXML private MenuItem loadFileMenuItem;
     @FXML private Menu functionsMenu;
+    @FXML private Menu settingsMenu;
     @FXML private Pane spacePane;
     @FXML private Button cameraXButton;
     @FXML private Button cameraYButton;
@@ -95,12 +96,14 @@ public class MainSceneController implements EventListener {
 
             }
         });
-        Label label = new Label("Functions");
-        label.setOnMouseClicked(e -> SceneRunner.getInstance().runFunctionsScene());
-        functionsMenu.setGraphic(label);
-        functionsMenu.setOnShowing(e -> {
-            SceneRunner.getInstance().runFunctionsScene();
-        });
+        Label functionsLabel = new Label("Functions");
+        functionsLabel.setOnMouseClicked(e -> SceneRunner.getInstance().runFunctionsScene());
+        functionsMenu.setGraphic(functionsLabel);
+
+        Label settingsLabel = new Label("Settings");
+        settingsLabel.setOnMouseClicked(e -> SceneRunner.getInstance().runAppSettingsScene());
+        settingsMenu.setGraphic(settingsLabel);
+
         searchButton.setOnAction(e -> {
             String tSearch = searchTTextField.getText();
             String xSearch = searchXTextField.getText();

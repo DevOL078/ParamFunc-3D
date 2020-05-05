@@ -10,6 +10,8 @@ import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.FunctionHolder;
 import ru.hse.paramfunc.element.SpacePoint;
+import ru.hse.paramfunc.event.EventMediator;
+import ru.hse.paramfunc.event.EventType;
 import ru.hse.paramfunc.settings.AppSettings;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
@@ -47,14 +49,14 @@ public class FunctionPointsGroup extends Group {
         List<SpacePoint> functionPoints = new ArrayList<>(pointsMap.values());
         functionPoints.forEach(p -> {
             p.getSphere().addEventFilter(MouseEvent.MOUSE_ENTERED, e ->
-                    SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder));
+                    EventMediator.notifyAllListeners(EventType.MOUSE_ENTERED, p.getFunctionPoint(), this.functionHolder));
             p.getSphere().addEventFilter(MouseEvent.MOUSE_EXITED, e ->
-                    SubSceneEngine.getSpaceSubScene().notifyAll(e, p.getFunctionPoint(), this.functionHolder));
+                    EventMediator.notifyAllListeners(EventType.MOUSE_EXITED));
 
             p.getSphere().radiusProperty().bind(this.functionHolder.valuesRadiusProperty());
             PhongMaterial material = (PhongMaterial) (p.getSphere().getMaterial());
             if(this.functionHolder.focusProperty().get()) {
-                material.diffuseColorProperty().bind(AppSettings.functionHighlightingColorPropertyProperty());
+                material.diffuseColorProperty().bind(AppSettings.functionHighlightingColorProperty());
             } else {
                 material.diffuseColorProperty().bind(this.functionHolder.valuesColorProperty());
             }
@@ -106,8 +108,7 @@ public class FunctionPointsGroup extends Group {
             if (t1) {
                 valuesSpheres.forEach(sphere -> {
                     PhongMaterial material = (PhongMaterial) sphere.getMaterial();
-                    material.diffuseColorProperty().unbind();
-                    material.setDiffuseColor(Color.YELLOW);
+                    material.diffuseColorProperty().bind(AppSettings.functionHighlightingColorProperty());
                 });
             } else {
                 valuesSpheres.forEach(sphere -> ((PhongMaterial) sphere.getMaterial())

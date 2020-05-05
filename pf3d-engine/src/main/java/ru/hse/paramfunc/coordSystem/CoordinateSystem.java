@@ -1,4 +1,4 @@
-package ru.hse.paramfunc.contract;
+package ru.hse.paramfunc.coordSystem;
 
 import javafx.geometry.Bounds;
 import javafx.scene.Group;

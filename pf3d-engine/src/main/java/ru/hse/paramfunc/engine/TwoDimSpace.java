@@ -4,7 +4,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point3D;
 import javafx.scene.paint.Color;
 import org.fxyz3d.shapes.primitives.Text3DMesh;
-import ru.hse.paramfunc.contract.CoordinateSystem;
+import ru.hse.paramfunc.coordSystem.CoordinateSystem;
 import ru.hse.paramfunc.element.Line3D;
 import ru.hse.paramfunc.element.Rectangle3D;
 import ru.hse.paramfunc.element.SpacePoint;

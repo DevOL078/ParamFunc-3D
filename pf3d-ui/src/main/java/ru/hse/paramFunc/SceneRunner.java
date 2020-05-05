@@ -1,10 +1,7 @@
 package ru.hse.paramFunc;
 
 import javafx.stage.Stage;
-import ru.hse.paramFunc.controller.FunctionSettingsController;
-import ru.hse.paramFunc.controller.FunctionsController;
-import ru.hse.paramFunc.controller.MainSceneController;
-import ru.hse.paramFunc.controller.SelectionController;
+import ru.hse.paramFunc.controller.*;
 import ru.hse.paramfunc.domain.Function;
 
 
@@ -46,6 +43,11 @@ public class SceneRunner {
 
     public void runFunctionSettingsScene(Stage ownerStage, Function function) {
         FunctionSettingsController controller = new FunctionSettingsController(ownerStage, function);
+        controller.showStage();
+    }
+
+    public void runAppSettingsScene() {
+        SettingsController controller = new SettingsController(this.mainStage);
         controller.showStage();
     }
 

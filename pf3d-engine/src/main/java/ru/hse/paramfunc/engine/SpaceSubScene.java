@@ -16,8 +16,7 @@ import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 import org.fxyz3d.geometry.Point3D;
 import ru.hse.paramFunc.animation.AnimationStorage;
-import ru.hse.paramfunc.contract.CoordinateSystem;
-import ru.hse.paramfunc.contract.MouseEventListener;
+import ru.hse.paramfunc.coordSystem.CoordinateSystem;
 import ru.hse.paramfunc.domain.Animation;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionHolder;
@@ -29,7 +28,10 @@ import ru.hse.paramfunc.event.EventMediator;
 import ru.hse.paramfunc.event.EventType;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class SpaceSubScene extends SubScene implements EventListener {
@@ -48,8 +50,6 @@ public class SpaceSubScene extends SubScene implements EventListener {
     private boolean is3DCoordinateSystem;
 
     private Map<String, Animation> animationMap;
-
-    private List<MouseEventListener> listeners = new ArrayList<>();
 
     // Включается счетчик FPS
     static {
@@ -254,14 +254,6 @@ public class SpaceSubScene extends SubScene implements EventListener {
                 sequentialTransition.play();
             });
         });
-    }
-
-    public void addMouseEventListener(MouseEventListener listener) {
-        this.listeners.add(listener);
-    }
-
-    public void notifyAll(MouseEvent event, FunctionPoint target, FunctionHolder functionHolder) {
-        this.listeners.forEach(l -> l.receive(event, target, functionHolder));
     }
 
     @Override
