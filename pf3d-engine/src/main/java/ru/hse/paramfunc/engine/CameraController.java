@@ -52,10 +52,13 @@ public class CameraController {
 
         double cameraSpeed = AppSettings.cameraSpeedProperty().get();
         rootScene.setOnScroll(e -> {
-            camera.setTranslateZ(camera.getTranslateZ() - cameraSpeed * (e.getDeltaY() > 0 ? 1 : -1));
+            double newTranslateZ = camera.getTranslateZ() - cameraSpeed * (e.getDeltaY() > 0 ? 1 : -1);
+            if(newTranslateZ >= -500 && newTranslateZ <= 0) {
+                camera.setTranslateZ(camera.getTranslateZ() - cameraSpeed * (e.getDeltaY() > 0 ? 1 : -1));
 
-            Bounds bounds = cameraGroup2.localToScene(cameraGroup2.getBoundsInLocal());
-            spaceSubScene.onCameraMove(bounds);
+                Bounds bounds = cameraGroup2.localToScene(cameraGroup2.getBoundsInLocal());
+                spaceSubScene.onCameraMove(bounds);
+            }
         });
 
         spaceSubScene.setOnMousePressed(event -> {

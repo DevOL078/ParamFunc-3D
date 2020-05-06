@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #57575C;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -65,7 +64,7 @@
                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" />
                           </rowConstraints>
                            <children>
-                              <Label styleClass="inspector-label" text="Camera movement speed">
+                              <Label styleClass="inspector-label" text="Speed of camera zoom">
                                  <font>
                                     <Font size="15.0" />
                                  </font>

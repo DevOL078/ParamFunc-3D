@@ -5,6 +5,8 @@ import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.SceneAntialiasing;
@@ -26,6 +28,7 @@ import ru.hse.paramfunc.element.SpacePoint;
 import ru.hse.paramfunc.event.EventListener;
 import ru.hse.paramfunc.event.EventMediator;
 import ru.hse.paramfunc.event.EventType;
+import ru.hse.paramfunc.settings.AppSettings;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.util.Collection;
@@ -50,6 +53,14 @@ public class SpaceSubScene extends SubScene implements EventListener {
     private boolean is3DCoordinateSystem;
 
     private Map<String, Animation> animationMap;
+
+    private ChangeListener<Number> cameraSpeedChangeListener = (observableValue, o, t1) -> {
+        if(is3DCoordinateSystem) {
+            CameraController.setUpForThreeDimSpace();
+        } else {
+            CameraController.setUpForTwoDimSpace();
+        }
+    };
 
     // Включается счетчик FPS
     static {
@@ -136,6 +147,8 @@ public class SpaceSubScene extends SubScene implements EventListener {
         } else {
             CameraController.setUpForTwoDimSpace();
         }
+        AppSettings.cameraSpeedProperty().removeListener(cameraSpeedChangeListener);
+        AppSettings.cameraSpeedProperty().addListener(cameraSpeedChangeListener);
     }
 
     public void updatePointsGroup() {
