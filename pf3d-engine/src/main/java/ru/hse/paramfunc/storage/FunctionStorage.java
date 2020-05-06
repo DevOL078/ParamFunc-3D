@@ -27,7 +27,6 @@ public class FunctionStorage {
     public void addFunction(Function function) {
         functionList.add(function);
         SplineProcessor.calculateAndSaveSpline(function, AppSettings.interpolationPointsCountProperty().get());
-        System.out.println("Notify all");
         EventMediator.notifyAllListeners(EventType.FUNCTION_LIST_UPDATE);
     }
 

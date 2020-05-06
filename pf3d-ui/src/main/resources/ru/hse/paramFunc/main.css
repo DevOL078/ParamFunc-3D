@@ -53,11 +53,13 @@
     -fx-background-color: #C4C4C4;
 }
 
-.inspector-button:default {
+.inspector-button:default,
+.inspector-button__pressed {
     -fx-background-color: #4E4E4E;
 }
 
-.inspector-button:default .text {
+.inspector-button:default .text,
+.inspector-button__pressed .text {
     -fx-fill: #FFFFFF;
 }
 

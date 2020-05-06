@@ -1,8 +1,6 @@
 package ru.hse.paramFunc.controller;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -229,7 +227,7 @@ public class MainSceneController implements EventListener {
         // Validation
         loadButton.setDisable(true);
         textField.textProperty().addListener((observableValue, s, t1) -> {
-            if(t1 != null && !t1.isBlank()) {
+            if (t1 != null && !t1.isBlank()) {
                 loadButton.setDisable(false);
             } else {
                 loadButton.setDisable(true);
@@ -299,7 +297,7 @@ public class MainSceneController implements EventListener {
         functionsAccordion.getPanes().removeAll(deletedPanes);
         this.functionsVBox.setFillWidth(true);
 
-        if(functions.isEmpty()) {
+        if (functions.isEmpty()) {
             this.functionsTitledPane.setCollapsible(false);
             this.cameraTitledPane.setCollapsible(false);
             this.navigationTitledPane.setCollapsible(false);
