@@ -1,6 +1,8 @@
 package ru.hse.paramFunc.controller;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -404,7 +406,6 @@ public class MainSceneController implements EventListener {
 
         // Play animation button
         Button playButton = new Button();
-        playButton.setOnAction(e -> functionHolder.startAnimationCallback().call());
         ImageView playImageView = new ImageView(FxApplication.class.getResource("play.png").toString());
         playImageView.setViewport(new Rectangle2D(20.0, 20.0, 25.0, 25.0));
         playImageView.setFitHeight(10);
@@ -417,12 +418,12 @@ public class MainSceneController implements EventListener {
         playButton.setMinWidth(20);
         playButton.setPrefHeight(20);
         playButton.setPrefWidth(20);
+        playButton.setDisable(true);
         GridPane.setHalignment(playButton, HPos.RIGHT);
         GridPane.setValignment(playButton, VPos.CENTER);
 
         // Pause animation button
         Button pauseButton = new Button();
-        pauseButton.setOnAction(e -> functionHolder.pauseAnimationCallback().call());
         ImageView pauseImageView = new ImageView(FxApplication.class.getResource("pause.png").toString());
         pauseImageView.setViewport(new Rectangle2D(20.0, 20.0, 25.0, 25.0));
         pauseImageView.setFitHeight(10);
@@ -433,13 +434,13 @@ public class MainSceneController implements EventListener {
         pauseButton.setMinWidth(20);
         pauseButton.setPrefHeight(20);
         pauseButton.setPrefWidth(20);
+        pauseButton.setDisable(true);
         GridPane.setColumnIndex(pauseButton, 1);
         GridPane.setHalignment(pauseButton, HPos.CENTER);
         GridPane.setValignment(pauseButton, VPos.CENTER);
 
         //Stop animation button
         Button stopButton = new Button();
-        stopButton.setOnAction(e -> functionHolder.stopAnimationCallback().call());
         ImageView stopImageView = new ImageView(FxApplication.class.getResource("stop.png").toString());
         stopImageView.setViewport(new Rectangle2D(20.0, 20.0, 25.0, 25.0));
         stopImageView.setFitHeight(10);
@@ -450,10 +451,39 @@ public class MainSceneController implements EventListener {
         stopButton.setMinWidth(20);
         stopButton.setPrefHeight(20);
         stopButton.setPrefWidth(20);
+        stopButton.setDisable(true);
         GridPane.setColumnIndex(stopButton, 2);
         GridPane.setHalignment(stopButton, HPos.LEFT);
         GridPane.setValignment(stopButton, VPos.CENTER);
         animationButtonsPane.getChildren().addAll(playButton, pauseButton, stopButton);
+
+        animationChoiceBox.valueProperty().addListener((observableValue, animation, t1) -> {
+            if (t1 != null) {
+                playButton.setDisable(false);
+            } else {
+                playButton.setDisable(true);
+            }
+            pauseButton.setDisable(true);
+            stopButton.setDisable(true);
+        });
+        playButton.setOnAction(e -> {
+            functionHolder.startAnimationCallback().call();
+            playButton.setDisable(true);
+            pauseButton.setDisable(false);
+            stopButton.setDisable(false);
+        });
+        pauseButton.setOnAction(e -> {
+            functionHolder.pauseAnimationCallback().call();
+            playButton.setDisable(false);
+            pauseButton.setDisable(true);
+            stopButton.setDisable(false);
+        });
+        stopButton.setOnAction(e -> {
+            functionHolder.stopAnimationCallback().call();
+            playButton.setDisable(false);
+            pauseButton.setDisable(true);
+            stopButton.setDisable(true);
+        });
 
         //Interpolation label
         Label interpolationLabel = new Label("Interpolation");
