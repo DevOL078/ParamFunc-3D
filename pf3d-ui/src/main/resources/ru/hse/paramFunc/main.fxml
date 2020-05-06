@@ -68,7 +68,7 @@
                <children>
                   <Accordion styleClass="custom-accordion" VBox.vgrow="NEVER">
                     <panes>
-                        <TitledPane layoutX="10.0" layoutY="134.0" styleClass="custom-titled-pane" text="Functions">
+                        <TitledPane fx:id="functionsTitledPane" collapsible="false" layoutX="10.0" layoutY="134.0" styleClass="custom-titled-pane" text="Functions">
                            <content>
                               <VBox fx:id="functionsVBox" />
                            </content>
@@ -76,7 +76,7 @@
                               <Font size="15.0" />
                            </font>
                         </TitledPane>
-                      <TitledPane styleClass="custom-titled-pane" text="Camera">
+                      <TitledPane fx:id="cameraTitledPane" collapsible="false" styleClass="custom-titled-pane" text="Camera">
                            <content>
                               <VBox prefHeight="120.0" prefWidth="100.0">
                                  <children>
@@ -120,7 +120,7 @@
                               <Font size="15.0" />
                            </font>
                         </TitledPane>
-                        <TitledPane layoutX="10.0" layoutY="35.0" styleClass="custom-titled-pane" text="Navigation">
+                        <TitledPane fx:id="navigationTitledPane" collapsible="false" layoutX="10.0" layoutY="35.0" styleClass="custom-titled-pane" text="Navigation">
                            <content>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>

@@ -256,6 +256,10 @@ public class SpaceSubScene extends SubScene implements EventListener {
         });
     }
 
+    public boolean is3DCoordinateSystem() {
+        return this.is3DCoordinateSystem;
+    }
+
     @Override
     public void receive(EventType eventType, Object... args) {
         if (eventType == EventType.FUNCTION_LIST_UPDATE) {

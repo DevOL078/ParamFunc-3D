@@ -44,6 +44,9 @@ public class MainSceneController implements EventListener {
     @FXML private Menu functionsMenu;
     @FXML private Menu settingsMenu;
     @FXML private Pane spacePane;
+    @FXML private TitledPane functionsTitledPane;
+    @FXML private TitledPane cameraTitledPane;
+    @FXML private TitledPane navigationTitledPane;
     @FXML private Button cameraXButton;
     @FXML private Button cameraYButton;
     @FXML private Button cameraZButton;
@@ -221,6 +224,16 @@ public class MainSceneController implements EventListener {
         buttonGridPane.getChildren().addAll(loadButton, cancelButton);
         root.getChildren().addAll(label, textField, buttonGridPane);
 
+        // Validation
+        loadButton.setDisable(true);
+        textField.textProperty().addListener((observableValue, s, t1) -> {
+            if(t1 != null && !t1.isBlank()) {
+                loadButton.setDisable(false);
+            } else {
+                loadButton.setDisable(true);
+            }
+        });
+
         dialogStage.setTitle("Input function name");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(this.stage);
@@ -233,7 +246,7 @@ public class MainSceneController implements EventListener {
     @Override
     public void receive(EventType eventType, Object... args) {
         if (eventType == EventType.FUNCTION_LIST_UPDATE) {
-            updateFunctionsMenu();
+            updateMenu();
         } else if (eventType == EventType.MOUSE_ENTERED) {
             showInfo((FunctionPoint) args[0], (FunctionHolder) args[1]);
         } else if (eventType == EventType.MOUSE_EXITED) {
@@ -257,7 +270,7 @@ public class MainSceneController implements EventListener {
         pointInfoLabel.setVisible(false);
     }
 
-    private void updateFunctionsMenu() {
+    private void updateMenu() {
         List<Function> functions = FunctionStorage.getInstance().getFunctions();
         Accordion functionsAccordion;
         if (this.functionsVBox.getChildren().isEmpty()) {
@@ -283,6 +296,20 @@ public class MainSceneController implements EventListener {
                 .collect(Collectors.toList());
         functionsAccordion.getPanes().removeAll(deletedPanes);
         this.functionsVBox.setFillWidth(true);
+
+        if(functions.isEmpty()) {
+            this.functionsTitledPane.setCollapsible(false);
+            this.cameraTitledPane.setCollapsible(false);
+            this.navigationTitledPane.setCollapsible(false);
+        } else {
+            this.functionsTitledPane.setCollapsible(true);
+            this.navigationTitledPane.setCollapsible(true);
+            if (SubSceneEngine.getSpaceSubScene().is3DCoordinateSystem()) {
+                this.cameraTitledPane.setCollapsible(true);
+            } else {
+                this.cameraTitledPane.setCollapsible(false);
+            }
+        }
     }
 
     private TitledPane createTitledPaneForFunction(Function function) {
