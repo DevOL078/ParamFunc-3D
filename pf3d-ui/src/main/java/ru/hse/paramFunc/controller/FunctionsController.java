@@ -80,7 +80,10 @@ public class FunctionsController implements EventListener {
             imageView.setFitWidth(15);
             imageView.setFitHeight(15);
             button.setGraphic(imageView);
-            button.setOnAction(e -> SceneRunner.getInstance().runSelectionScene(this.stage, f.getValue()));
+            button.setOnAction(e -> {
+                SceneRunner.getInstance().runSelectionScene(this.stage, f.getValue());
+                FunctionStorage.getInstance().updateFunction(f.getValue());
+            });
             return new SimpleObjectProperty<>(button);
         });
         settingsActionColumn.setCellValueFactory(f -> {

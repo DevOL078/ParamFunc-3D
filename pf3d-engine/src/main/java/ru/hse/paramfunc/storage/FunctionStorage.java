@@ -35,8 +35,7 @@ public class FunctionStorage {
         EventMediator.notifyAllListeners(EventType.FUNCTION_LIST_UPDATE);
     }
 
-    public void setSelectedPoints(Function function, List<FunctionPoint> functionPoints) {
-        function.setSelectedPoints(functionPoints);
+    public void updateFunction(Function function) {
         EventMediator.notifyAllListeners(EventType.FUNCTION_LIST_UPDATE);
     }
 

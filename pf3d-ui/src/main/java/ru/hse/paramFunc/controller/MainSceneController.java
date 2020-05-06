@@ -64,6 +64,8 @@ public class MainSceneController implements EventListener {
     private Stage stage;
     private String functionName;
 
+    private static final int MAX_FUNCTION_VALES = 200;
+
     public MainSceneController(Stage primaryStage) {
         this.stage = primaryStage;
         try {
@@ -102,7 +104,22 @@ public class MainSceneController implements EventListener {
                                 Function function = new Function(functionName);
                                 function.setAllPoints(allPoints);
                                 function.setSelectedPoints(allPoints);
+
                                 Platform.runLater(() -> {
+                                    while (function.getSelectedPoints().size() > MAX_FUNCTION_VALES) {
+                                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                                        alert.setTitle("Warning: To many function values");
+                                        alert.setHeaderText("The loaded function has too many values: " + function.getSelectedPoints().size());
+                                        alert.setContentText("The visualization engine will work slowly. " +
+                                                "You should select a subset of function values for loading.");
+                                        alert.initModality(Modality.WINDOW_MODAL);
+                                        alert.initOwner(stage);
+                                        alert.showAndWait();
+
+                                        SceneRunner.getInstance().runSelectionScene(stage, function);
+                                    }
+
+                                    function.setAllPoints(function.getSelectedPoints());
                                     FunctionStorage.getInstance().addFunction(function);
                                     progressIndicator.setVisible(false);
                                 });
@@ -521,7 +538,10 @@ public class MainSceneController implements EventListener {
         //Select points button
         Button selectPointsButton = new Button("Select points");
         selectPointsButton.getStyleClass().add("inspector-button");
-        selectPointsButton.setOnAction(e -> SceneRunner.getInstance().runSelectionScene(this.stage, function));
+        selectPointsButton.setOnAction(e -> {
+            SceneRunner.getInstance().runSelectionScene(this.stage, function);
+            FunctionStorage.getInstance().updateFunction(function);
+        });
         GridPane.setRowIndex(selectPointsButton, 4);
         GridPane.setColumnIndex(selectPointsButton, 0);
         GridPane.setColumnSpan(selectPointsButton, 2);

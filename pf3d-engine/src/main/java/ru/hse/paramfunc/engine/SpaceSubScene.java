@@ -192,9 +192,9 @@ public class SpaceSubScene extends SubScene implements EventListener {
                         double pointX = point.getTranslateX();
                         double pointZ = point.getTranslateZ();
 
-                        Point3D targetPoint = new Point3D(pointX, 0, pointZ);
-                        Point3D line1End = new Point3D(0, 0, pointZ);
-                        Point3D line2End = new Point3D(pointX, 0, 0);
+                        Point3D targetPoint = new Point3D(pointX, 0.5, pointZ);
+                        Point3D line1End = new Point3D(0, 0.5, pointZ);
+                        Point3D line2End = new Point3D(pointX, 0.5, 0);
 
                         Line3D line1 = new Line3D(targetPoint, line1End, Color.YELLOW, 0.5f);
                         Line3D line2 = new Line3D(targetPoint, line2End, Color.YELLOW, 0.5f);

@@ -58,7 +58,7 @@ public class SelectionController {
     }
 
     public void showStage() {
-        this.stage.show();
+        this.stage.showAndWait();
     }
 
     public void initialize() {
@@ -127,13 +127,6 @@ public class SelectionController {
         }));
 
         selectButton.setOnAction(e -> {
-//            Tab selectedTab = selectionTabPane.getSelectionModel().getSelectedItem();
-//            if (selectedTab.equals(selectionIntervalTab)) {
-//                selectPoints(SelectionType.INTERVAL, intervalSelectionTextArea.getText());
-//            } else if (selectedTab.equals(selectionFunctionalTab)) {
-//                selectPoints(SelectionType.FUNCTIONAL, functionalSelectionTextArea.getText());
-//            }
-
             String intervalText = intervalSelectionTextArea.getText();
             String functionalText = functionalSelectionTextArea.getText();
 
@@ -170,7 +163,7 @@ public class SelectionController {
             List<FunctionPoint> selectedPoints = function.getAllPoints().stream()
                     .filter(p -> selectedTList.contains(p.getT()))
                     .collect(Collectors.toList());
-            FunctionStorage.getInstance().setSelectedPoints(this.function, selectedPoints);
+            this.function.setSelectedPoints(selectedPoints);
             this.stage.close();
         });
 
