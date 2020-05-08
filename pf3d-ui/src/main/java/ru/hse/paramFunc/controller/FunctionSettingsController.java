@@ -1,6 +1,11 @@
 package ru.hse.paramFunc.controller;
 
-import javafx.beans.property.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +22,8 @@ import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionHolder;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class FunctionSettingsController {
 
@@ -30,6 +37,9 @@ public class FunctionSettingsController {
     @FXML private ColorPicker animationColorPicker;
     @FXML private TextField animationRadiusTextField;
     @FXML private TextField animationTimeTextField;
+
+    private static final Pattern DOUBLE_NUMBER_PATTERN = Pattern.compile("([1-9]\\d*.\\d+)|(0.\\d+)|([1-9]\\d*)");
+    private static final Pattern INTEGER_NUMBER_PATTERN = Pattern.compile("[1-9]\\d*");
 
     private Stage stage;
     private FunctionHolder functionHolder;
@@ -92,6 +102,17 @@ public class FunctionSettingsController {
         animationRadiusTextField.textProperty().bindBidirectional(animationRadiusProperty);
         animationTimeTextField.textProperty().bindBidirectional(animationTimeProperty);
 
+        valuesRadiusTextField.textProperty().addListener(
+                new ValidationListener(valuesRadiusTextField));
+        interpolationRadiusTextField.textProperty().addListener(
+                new ValidationListener(interpolationRadiusTextField));
+        interpolationPointsNumberTextField.textProperty().addListener(
+                new ValidationListener(interpolationPointsNumberTextField));
+        animationRadiusTextField.textProperty().addListener(
+                new ValidationListener(animationRadiusTextField));
+        animationTimeTextField.textProperty().addListener(
+                new ValidationListener(animationTimeTextField));
+
         saveButton.setOnAction(e -> {
             this.functionHolder.valuesColorProperty().set(this.valuesColorProperty.get());
             this.functionHolder.valuesRadiusProperty().set(
@@ -111,6 +132,50 @@ public class FunctionSettingsController {
         cancelButton.setOnAction(e -> {
             this.stage.close();
         });
+    }
+
+    private class ValidationListener implements ChangeListener<String> {
+
+        private TextField textField;
+
+        public ValidationListener(TextField textField) {
+            this.textField = textField;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+            Pattern textFieldPattern = textField.equals(interpolationPointsNumberTextField)
+                    ? INTEGER_NUMBER_PATTERN
+                    : DOUBLE_NUMBER_PATTERN;
+
+            if(textFieldPattern.matcher(textField.getText()).matches()) {
+                textField.getStyleClass().remove("invalid-text-field");
+            } else {
+                boolean isExists = textField.getStyleClass().stream()
+                        .anyMatch(c -> c.equals("invalid-text-field"));
+                if(!isExists) {
+                    textField.getStyleClass().add("invalid-text-field");
+                }
+            }
+
+            List<TextField> textFields = List.of(
+                    valuesRadiusTextField,
+                    interpolationRadiusTextField,
+                    interpolationPointsNumberTextField,
+                    animationRadiusTextField,
+                    animationTimeTextField);
+
+            Boolean isAllValid = textFields.stream()
+                    .map(tf -> tf.equals(interpolationPointsNumberTextField)
+                            ? INTEGER_NUMBER_PATTERN.matcher(tf.getText()).matches()
+                            : DOUBLE_NUMBER_PATTERN.matcher(tf.getText()).matches())
+                    .reduce(true, (a, b) -> a && b);
+            if (isAllValid) {
+                saveButton.setDisable(false);
+            } else {
+                saveButton.setDisable(true);
+            }
+        }
     }
 
 }

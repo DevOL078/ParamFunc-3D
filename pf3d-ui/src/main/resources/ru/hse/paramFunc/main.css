@@ -86,3 +86,8 @@
 .selection-tab {
     -fx-background-color: #C4C4C4;
 }
+
+.invalid-text-field {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+}
