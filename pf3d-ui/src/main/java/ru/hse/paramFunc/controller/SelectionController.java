@@ -17,7 +17,6 @@ import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.domain.enums.SelectionType;
 import ru.hse.paramfunc.selection.SelectionService;
-import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -51,6 +50,7 @@ public class SelectionController {
             FXMLLoader loader = new FXMLLoader(FxApplication.class.getResource("selection.fxml"));
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 600, 400);
+            scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
             this.stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,33 +126,43 @@ public class SelectionController {
             }
         }));
 
-        selectButton.setOnAction(e -> {
+        selectButton.setOnAction(event -> {
             String intervalText = intervalSelectionTextArea.getText();
             String functionalText = functionalSelectionTextArea.getText();
 
             List<FunctionPoint> intervalSelectedPoints = null;
             List<FunctionPoint> functionalSelectedPoints = null;
-            if (intervalText != null && !intervalText.isEmpty()) {
-                intervalSelectedPoints = SelectionService.selectPoints(this.function, SelectionType.INTERVAL, intervalText);
-            }
-            if (functionalText != null && !functionalText.isEmpty()) {
-                functionalSelectedPoints = SelectionService.selectPoints(this.function, SelectionType.FUNCTIONAL, functionalText);
-            }
+            try {
+                if (intervalText != null && !intervalText.isEmpty()) {
+                    intervalSelectedPoints = SelectionService.selectPoints(this.function, SelectionType.INTERVAL, intervalText);
+                }
+                if (functionalText != null && !functionalText.isEmpty()) {
+                    functionalSelectedPoints = SelectionService.selectPoints(this.function, SelectionType.FUNCTIONAL, functionalText);
+                }
 
-            List<FunctionPoint> selectedPoints = null;
-            if (intervalSelectedPoints != null && functionalSelectedPoints != null) {
-                selectedPoints = intervalSelectedPoints.stream()
-                        .filter(functionalSelectedPoints::contains)
-                        .sorted(Comparator.comparing(FunctionPoint::getT))
-                        .collect(Collectors.toList());
-            } else if (intervalSelectedPoints != null) {
-                selectedPoints = intervalSelectedPoints;
-            } else if (functionalSelectedPoints != null) {
-                selectedPoints = functionalSelectedPoints;
-            }
+                List<FunctionPoint> selectedPoints = null;
+                if (intervalSelectedPoints != null && functionalSelectedPoints != null) {
+                    selectedPoints = intervalSelectedPoints.stream()
+                            .filter(functionalSelectedPoints::contains)
+                            .sorted(Comparator.comparing(FunctionPoint::getT))
+                            .collect(Collectors.toList());
+                } else if (intervalSelectedPoints != null) {
+                    selectedPoints = intervalSelectedPoints;
+                } else if (functionalSelectedPoints != null) {
+                    selectedPoints = functionalSelectedPoints;
+                }
 
-            if (selectedPoints != null) {
-                updateSelectedPoints(selectedPoints);
+                if (selectedPoints != null) {
+                    updateSelectedPoints(selectedPoints);
+                }
+            } catch (Exception e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Selection error. Please, check input expressions.");
+                alert.setContentText(e.getMessage());
+                alert.initModality(Modality.WINDOW_MODAL);
+                alert.initOwner(stage);
+                alert.showAndWait();
             }
         });
 

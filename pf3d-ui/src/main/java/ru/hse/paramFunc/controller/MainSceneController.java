@@ -36,6 +36,7 @@ import ru.hse.paramfunc.storage.FunctionStorage;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class MainSceneController implements EventListener {
@@ -64,7 +65,7 @@ public class MainSceneController implements EventListener {
     private Stage stage;
     private String functionName;
 
-    private static final int MAX_FUNCTION_VALES = 200;
+    private static final int MAX_FUNCTION_VALUES = 500;
 
     public MainSceneController(Stage primaryStage) {
         this.stage = primaryStage;
@@ -106,21 +107,33 @@ public class MainSceneController implements EventListener {
                                 function.setSelectedPoints(allPoints);
 
                                 Platform.runLater(() -> {
-                                    while (function.getSelectedPoints().size() > MAX_FUNCTION_VALES) {
+                                    AtomicBoolean isCancel = new AtomicBoolean(false);
+                                    while (function.getSelectedPoints().size() > MAX_FUNCTION_VALUES && !isCancel.get()) {
                                         Alert alert = new Alert(Alert.AlertType.WARNING);
                                         alert.setTitle("Warning: To many function values");
                                         alert.setHeaderText("The loaded function has too many values: " + function.getSelectedPoints().size());
-                                        alert.setContentText("The visualization engine will work slowly. " +
-                                                "You should select a subset of function values for loading.");
+                                        alert.setContentText("You should select a subset of function values for loading.\n" +
+                                                "Maximal count of values: " + MAX_FUNCTION_VALUES);
                                         alert.initModality(Modality.WINDOW_MODAL);
                                         alert.initOwner(stage);
+                                        alert.getButtonTypes().add(ButtonType.CANCEL);
+                                        alert.setResultConverter(buttonType -> {
+                                            if(buttonType == ButtonType.CANCEL) {
+                                                isCancel.set(true);
+                                            }
+                                            return buttonType;
+                                        });
                                         alert.showAndWait();
 
-                                        SceneRunner.getInstance().runSelectionScene(stage, function);
+                                        if(!isCancel.get()) {
+                                            SceneRunner.getInstance().runSelectionScene(stage, function);
+                                        }
                                     }
 
-                                    function.setAllPoints(function.getSelectedPoints());
-                                    FunctionStorage.getInstance().addFunction(function);
+                                    if(!isCancel.get()) {
+                                        function.setAllPoints(function.getSelectedPoints());
+                                        FunctionStorage.getInstance().addFunction(function);
+                                    }
                                     progressIndicator.setVisible(false);
                                 });
                                 functionName = null;

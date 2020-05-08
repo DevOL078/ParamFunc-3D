@@ -12,7 +12,7 @@ public class SelectionFunction implements IFunction {
 
     private void buildFunction() {
         if(expression.isEmpty()) {
-            throw new IllegalArgumentException("Illegal format of function");
+            throw new IllegalArgumentException("Illegal function format");
         }
 
         //Find +
@@ -75,6 +75,17 @@ public class SelectionFunction implements IFunction {
             index = expression.indexOf('^', index + 1);
         }
 
+        // Find logA(), A - log base
+        if (expression.startsWith("log")) {
+            int openParenthesesIndex = expression.indexOf("(");
+            int closeParenthesesIndex = expression.length() - 1;
+            String logBase = expression.substring(3, openParenthesesIndex);
+            String operandExpr = expression.substring(openParenthesesIndex + 1, closeParenthesesIndex);
+            IFunction operand = new SelectionFunction(operandExpr);
+            this.function = (value) -> (int)(Math.log(operand.calculate(value)) / Math.log(Double.parseDouble(logBase)));
+            return;
+        }
+
         //Find ()
         if(expression.charAt(0) == '(' && expression.charAt(expression.length() - 1) == ')') {
             String expr = expression.substring(1, expression.length() - 1);
@@ -94,7 +105,7 @@ public class SelectionFunction implements IFunction {
             int number = Integer.parseInt(expression);
             this.function = (value) -> number;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Неверный формат функции: " + expression);
+            throw new IllegalArgumentException("Illegal function format: " + expression);
         }
     }
 

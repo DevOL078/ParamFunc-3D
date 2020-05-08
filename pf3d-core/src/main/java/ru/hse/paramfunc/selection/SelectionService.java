@@ -22,13 +22,9 @@ public class SelectionService {
 
     public static List<FunctionPoint> selectPoints(Function function, SelectionType selectionType, String expression) {
         List<FunctionPoint> selectedPoints;
-        try {
-            selectedPoints = selectorMap.get(selectionType)
+
+        selectedPoints = selectorMap.get(selectionType)
                     .selectPoints(function.getAllPoints(), expression);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Selection error: " + e.getMessage());
-        }
 
         return selectedPoints.stream()
                 .sorted(Comparator.comparing(FunctionPoint::getT))

@@ -2,6 +2,7 @@ package ru.hse.paramfunc.selection;
 
 import ru.hse.paramfunc.domain.FunctionPoint;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +20,19 @@ public class IntervalSelector implements PointSelector {
         for (String interval : intervals) {
             if (interval.contains("-")) {
                 String[] intervalEnds = interval.split("-");
-                int intervalStart = Integer.parseInt(intervalEnds[0]);
-                int intervalEnd = Integer.parseInt(intervalEnds[1]);
+                if(intervalEnds.length != 2) {
+                    throw new IllegalStateException("Invalid interval: " + interval);
+                }
+
+                int intervalStart;
+                int intervalEnd;
+                try {
+                    intervalStart = Integer.parseInt(intervalEnds[0]);
+                    intervalEnd = Integer.parseInt(intervalEnds[1]);
+                } catch (NumberFormatException e) {
+                    throw new IllegalStateException("Invalid interval: " + interval);
+                }
+
                 if (intervalStart > intervalEnd) {
                     throw new IllegalStateException("Invalid interval: " + interval);
                 }
@@ -32,7 +44,12 @@ public class IntervalSelector implements PointSelector {
                 }
                 selectedPoints.addAll(filteredPoints);
             } else {
-                int t = Integer.parseInt(interval);
+                int t;
+                try {
+                    t = Integer.parseInt(interval);
+                } catch (NumberFormatException e) {
+                    throw new IllegalStateException("Invalid interval: " + interval);
+                }
                 FunctionPoint point = allPoints.stream()
                         .filter(p -> p.getT() == t)
                         .findAny()

@@ -28,7 +28,7 @@
          <children>
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="selectionIntervalTab" text="Interval selection">
+                <Tab fx:id="selectionIntervalTab" styleClass="selection-tab" text="Interval selection">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -41,7 +41,7 @@
             </TabPane>
             <TabPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1">
                <tabs>
-                  <Tab fx:id="selectionFunctionalTab" text="Functional selection">
+                  <Tab fx:id="selectionFunctionalTab" styleClass="selection-tab" text="Functional selection">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -67,7 +67,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Save" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                  <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" styleClass="inspector-button" text="Save" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -75,7 +75,7 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="closeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Close" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                  <Button fx:id="closeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" styleClass="inspector-button" text="Close" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -83,7 +83,7 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="clearButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Clear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Button fx:id="clearButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" styleClass="inspector-button" text="Clear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -101,7 +101,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="selectButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Select" GridPane.halignment="CENTER">
+                  <Button fx:id="selectButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" styleClass="inspector-button" text="Select" GridPane.halignment="CENTER">
                      <font>
                         <Font size="15.0" />
                      </font>

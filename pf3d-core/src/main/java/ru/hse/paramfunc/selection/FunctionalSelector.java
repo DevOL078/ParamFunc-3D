@@ -3,14 +3,16 @@ package ru.hse.paramfunc.selection;
 import ru.hse.paramfunc.domain.FunctionPoint;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FunctionalSelector implements PointSelector {
     @Override
     public List<FunctionPoint> selectPoints(List<FunctionPoint> allPoints, String selectionRule) {
         String changedExpression = selectionRule.replaceAll(" ", "");
         IFunction function = new SelectionFunction(changedExpression);
-        List<FunctionPoint> selectedPoints = new ArrayList<>();
+        Set<FunctionPoint> selectedPoints = new HashSet<>();
         int currentSelectedIndex = 0;
         //Чтобы как-то ограничить цикл и не ставить while(true)
         while(currentSelectedIndex < allPoints.size()) {
@@ -21,6 +23,6 @@ public class FunctionalSelector implements PointSelector {
 
             currentSelectedIndex++;
         }
-        return selectedPoints;
+        return new ArrayList<>(selectedPoints);
     }
 }
