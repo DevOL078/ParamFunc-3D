@@ -23,8 +23,23 @@
 }
 
 .header .menu:hover .text {
-    -fx-background-color: #4E4E4E;
     -fx-fill: grey;
+}
+
+.header .menu-item {
+    -fx-background-color: #4E4E4E;
+}
+
+.header .menu:hover .menu-item .text {
+    -fx-fill: #FFFFFF;
+}
+
+.header .menu .menu-item:hover .text {
+    -fx-fill: grey;
+}
+
+.header .context-menu {
+    -fx-background-color: #4E4E4E;
 }
 
 .custom-accordion .title {
@@ -90,4 +105,21 @@
 .invalid-text-field {
     -fx-border-color: red;
     -fx-border-width: 2px;
+}
+
+.dialog-pane.alert,
+.dialog-pane.alert .header-panel {
+    -fx-background-color: #57575C;
+}
+
+.dialog-pane.alert .label .text {
+    -fx-fill: #FFFFFF;
+}
+
+.dialog-pane.alert .button {
+    -fx-background-color: #C4C4C4;
+}
+
+.dialog-pane.alert .button:hover {
+    -fx-background-color: #898989;
 }
