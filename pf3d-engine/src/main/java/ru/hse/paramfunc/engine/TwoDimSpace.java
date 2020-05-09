@@ -14,13 +14,13 @@ public class TwoDimSpace extends CoordinateSystem {
     public TwoDimSpace() {
         super();
         Line3D oX = new Line3D(
-                new SpacePoint(0, 0, 1),
-                new SpacePoint(20, 0, 1),
+                new SpacePoint(0, 0, -0.5),
+                new SpacePoint(20, 0, -0.5),
                 Color.AQUA,
                 2);
         Line3D oY = new Line3D(
-                new SpacePoint(0, 0, 1),
-                new SpacePoint(0, 20, 1),
+                new SpacePoint(0, 0, -0.5),
+                new SpacePoint(0, 20, -0.5),
                 Color.AQUA,
                 2);
 
@@ -49,11 +49,11 @@ public class TwoDimSpace extends CoordinateSystem {
     @Override
     public void setUp() {
         Rectangle3D oxy = new Rectangle3D(
-                new SpacePoint(100, 0, 1),
-                new SpacePoint(100, 100, 1),
-                new SpacePoint(0, 100, 1),
-                new SpacePoint(0, 0, 1),
-                new SpacePoint(100, 0, 1));
+                new SpacePoint(100, 0, -0.5),
+                new SpacePoint(100, 100, -0.5),
+                new SpacePoint(0, 100, -0.5),
+                new SpacePoint(0, 0, -0.5),
+                new SpacePoint(100, 0, -0.5));
         super.getChildren().add(oxy);
     }
 

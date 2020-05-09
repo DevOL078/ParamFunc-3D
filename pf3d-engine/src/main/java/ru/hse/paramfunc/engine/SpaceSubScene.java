@@ -196,8 +196,16 @@ public class SpaceSubScene extends SubScene implements EventListener {
                         Point3D line1End = new Point3D(0, 0.5, pointZ);
                         Point3D line2End = new Point3D(pointX, 0.5, 0);
 
-                        Line3D line1 = new Line3D(targetPoint, line1End, Color.YELLOW, 0.5f);
-                        Line3D line2 = new Line3D(targetPoint, line2End, Color.YELLOW, 0.5f);
+                        Line3D line1 = new Line3D(
+                                targetPoint,
+                                line1End,
+                                Color.YELLOW,
+                                (float)(CameraController.getCameraPositiveZoom() / 400));
+                        Line3D line2 = new Line3D(
+                                targetPoint,
+                                line2End,
+                                Color.YELLOW,
+                                (float)(CameraController.getCameraPositiveZoom() / 400));
                         this.additionalLinesGroup.getChildren().addAll(line1, line2);
                     }
                 });
@@ -250,14 +258,14 @@ public class SpaceSubScene extends SubScene implements EventListener {
                 increaseScaleTransition.setFromX(sphere.getScaleX());
                 increaseScaleTransition.setFromY(sphere.getScaleY());
                 increaseScaleTransition.setFromZ(sphere.getScaleZ());
-                increaseScaleTransition.setToX(sphere.getScaleX() * 2);
-                increaseScaleTransition.setToY(sphere.getScaleY() * 2);
-                increaseScaleTransition.setToZ(sphere.getScaleZ() * 2);
+                increaseScaleTransition.setToX(sphere.getScaleX() * 5);
+                increaseScaleTransition.setToY(sphere.getScaleY() * 5);
+                increaseScaleTransition.setToZ(sphere.getScaleZ() * 5);
                 increaseScaleTransition.setNode(sphere);
                 ScaleTransition decreaseScaleTransition = new ScaleTransition(Duration.millis(500));
-                decreaseScaleTransition.setFromX(sphere.getScaleX() * 2);
-                decreaseScaleTransition.setFromY(sphere.getScaleY() * 2);
-                decreaseScaleTransition.setFromZ(sphere.getScaleZ() * 2);
+                decreaseScaleTransition.setFromX(sphere.getScaleX() * 5);
+                decreaseScaleTransition.setFromY(sphere.getScaleY() * 5);
+                decreaseScaleTransition.setFromZ(sphere.getScaleZ() * 5);
                 decreaseScaleTransition.setToX(sphere.getScaleX());
                 decreaseScaleTransition.setToY(sphere.getScaleY());
                 decreaseScaleTransition.setToZ(sphere.getScaleZ());
