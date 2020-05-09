@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Builder;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SelectionController {
+public class FunctionSelectionController {
 
     @FXML private Tab selectionIntervalTab;
     @FXML private Tab selectionFunctionalTab;
@@ -41,7 +42,7 @@ public class SelectionController {
     private List<FunctionValue> functionValues;
     private Set<FunctionValue> selectedFunctionValues;
 
-    public SelectionController(Stage ownerStage, Function function) {
+    public FunctionSelectionController(Stage ownerStage, Function function) {
         this.function = function;
         this.stage = new Stage();
         this.stage.initModality(Modality.WINDOW_MODAL);
@@ -51,7 +52,10 @@ public class SelectionController {
             loader.setController(this);
             Scene scene = new Scene(loader.load(), 600, 400);
             scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
+            this.stage.setTitle(function.getName() + ": Values Selection");
             this.stage.setScene(scene);
+            this.stage.getIcons().add(new Image(FxApplication.class.getResourceAsStream("logo.png")));
+            this.stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }

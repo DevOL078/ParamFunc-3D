@@ -32,7 +32,7 @@ public class SceneRunner {
     }
 
     public void runSelectionScene(Stage ownerStage, Function function) {
-        SelectionController controller = new SelectionController(ownerStage, function);
+        FunctionSelectionController controller = new FunctionSelectionController(ownerStage, function);
         controller.showStage();
     }
 

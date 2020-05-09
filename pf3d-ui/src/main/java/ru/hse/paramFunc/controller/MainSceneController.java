@@ -10,6 +10,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -42,6 +43,7 @@ import java.util.stream.Collectors;
 public class MainSceneController implements EventListener {
 
     @FXML private MenuItem loadFileMenuItem;
+    @FXML private MenuItem exitMenuItem;
     @FXML private Menu functionsMenu;
     @FXML private Menu settingsMenu;
     @FXML private Pane spacePane;
@@ -75,6 +77,8 @@ public class MainSceneController implements EventListener {
             Scene scene = new Scene(loader.load(), 1024, 700, true);
             scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
             this.stage.setScene(scene);
+            this.stage.setTitle("Parametrically defined Functions Visualizer 3D");
+            this.stage.getIcons().add(new Image(FxApplication.class.getResourceAsStream("logo.png")));
             SubSceneEngine.start(scene);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,19 +122,19 @@ public class MainSceneController implements EventListener {
                                         alert.initOwner(stage);
                                         alert.getButtonTypes().add(ButtonType.CANCEL);
                                         alert.setResultConverter(buttonType -> {
-                                            if(buttonType == ButtonType.CANCEL) {
+                                            if (buttonType == ButtonType.CANCEL) {
                                                 isCancel.set(true);
                                             }
                                             return buttonType;
                                         });
                                         alert.showAndWait();
 
-                                        if(!isCancel.get()) {
+                                        if (!isCancel.get()) {
                                             SceneRunner.getInstance().runSelectionScene(stage, function);
                                         }
                                     }
 
-                                    if(!isCancel.get()) {
+                                    if (!isCancel.get()) {
                                         function.setAllPoints(function.getSelectedPoints());
                                         FunctionStorage.getInstance().addFunction(function);
                                     }
@@ -149,6 +153,21 @@ public class MainSceneController implements EventListener {
                 }
 
             }
+        });
+        exitMenuItem.setOnAction(e -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Exit alert");
+            alert.setHeaderText("Do you want to exit?");
+            alert.setContentText("All loaded data will be cleared.");
+            alert.initModality(Modality.WINDOW_MODAL);
+            alert.initOwner(stage);
+            alert.setResultConverter(buttonType -> {
+                if (buttonType == ButtonType.OK) {
+                    this.stage.close();
+                }
+                return buttonType;
+            });
+            alert.showAndWait();
         });
         Label functionsLabel = new Label("Functions");
         functionsLabel.setOnMouseClicked(e -> SceneRunner.getInstance().runFunctionsScene());
@@ -264,12 +283,14 @@ public class MainSceneController implements EventListener {
             }
         });
 
-        dialogStage.setTitle("Input function name");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(this.stage);
         Scene scene = new Scene(root, 300, 130);
         scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
+        dialogStage.setTitle("Input function name");
         dialogStage.setScene(scene);
+        dialogStage.setResizable(false);
+        dialogStage.getIcons().add(new Image(FxApplication.class.getResourceAsStream("logo.png")));
         dialogStage.showAndWait();
     }
 

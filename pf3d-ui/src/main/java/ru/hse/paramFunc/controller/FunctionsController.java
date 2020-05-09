@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -41,6 +42,8 @@ public class FunctionsController implements EventListener {
             scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
             this.stage.setScene(scene);
             this.stage.setTitle("Functions");
+            this.stage.getIcons().add(new Image(FxApplication.class.getResourceAsStream("logo.png")));
+            this.stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }

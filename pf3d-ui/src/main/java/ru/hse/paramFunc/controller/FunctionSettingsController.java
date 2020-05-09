@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -65,6 +66,7 @@ public class FunctionSettingsController {
             scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
             this.stage.setScene(scene);
             this.stage.setTitle(function.getName() + ": Settings");
+            this.stage.getIcons().add(new Image(FxApplication.class.getResourceAsStream("logo.png")));
             this.stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();

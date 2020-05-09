@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ru.hse.paramFunc.FxApplication;
@@ -48,6 +49,7 @@ public class SettingsController {
             scene.getStylesheets().add(FxApplication.getStylesheetPath() + "main.css");
             this.stage.setScene(scene);
             this.stage.setTitle("App settings");
+            this.stage.getIcons().add(new Image(FxApplication.class.getResourceAsStream("logo.png")));
             this.stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
