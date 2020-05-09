@@ -67,7 +67,7 @@ public class MainSceneController implements EventListener {
     private Stage stage;
     private String functionName;
 
-    private static final int MAX_FUNCTION_VALUES = 500;
+    private static final int MAX_FUNCTION_VALUES = 1000;
 
     public MainSceneController(Stage primaryStage) {
         this.stage = primaryStage;
@@ -348,6 +348,9 @@ public class MainSceneController implements EventListener {
         functionsAccordion.getPanes().removeAll(deletedPanes);
         this.functionsVBox.setFillWidth(true);
 
+        this.functionsTitledPane.setExpanded(false);
+        this.cameraTitledPane.setExpanded(false);
+        this.navigationTitledPane.setExpanded(false);
         if (functions.isEmpty()) {
             this.functionsTitledPane.setCollapsible(false);
             this.cameraTitledPane.setCollapsible(false);
