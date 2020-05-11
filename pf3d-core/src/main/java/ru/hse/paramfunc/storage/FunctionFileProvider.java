@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class FunctionFileProvider {
 
-    private static final String localFilePrefix = "./.local/";
+    private static final String localFilePrefix = "./.local";
 
     public static List<FunctionPoint> getSplinePoints(Function function) {
         List<FunctionPoint> sortedSelectedPoints = function.getSelectedPoints().stream()
@@ -27,7 +28,7 @@ public class FunctionFileProvider {
             int lastT = sortedSelectedPoints.get(sortedSelectedPoints.size() - 1).getT();
             try {
                 Path filePath = getFilePath(function);
-                List<FunctionPoint> splinePoints = Files.lines(filePath)
+                return Files.lines(filePath)
                         .filter(s -> {
                             String[] parts = s.split(" ");
                             String tStr = parts[0];
@@ -54,7 +55,6 @@ public class FunctionFileProvider {
                                     .build();
                         })
                         .collect(Collectors.toList());
-                return splinePoints;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -79,6 +79,7 @@ public class FunctionFileProvider {
         }
         try {
             Path filePath = getFilePath(function);
+            Files.createDirectories(filePath.getParent());
             Files.write(filePath, lines,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.WRITE,
@@ -89,7 +90,7 @@ public class FunctionFileProvider {
     }
 
     private static Path getFilePath(Function function) {
-        return Paths.get(localFilePrefix + function.getName() + ".fun");
+        return Paths.get(localFilePrefix, function.getName() + ".fun");
     }
 
     private static String getPointStr(FunctionPoint point) {
