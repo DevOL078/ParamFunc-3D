@@ -3,7 +3,7 @@ package ru.hse.paramfunc.domain;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import ru.hse.paramfunc.storage.FunctionFileProvider;
+import ru.hse.paramfunc.provider.FunctionFileProvider;
 
 import java.util.List;
 

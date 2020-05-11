@@ -4,7 +4,7 @@ import ru.hse.paramFunc.interpolation.spline.CatmullRomSpline;
 import ru.hse.paramFunc.interpolation.spline.Spline;
 import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
-import ru.hse.paramfunc.storage.FunctionFileProvider;
+import ru.hse.paramfunc.provider.FunctionFileProvider;
 
 import java.util.List;
 

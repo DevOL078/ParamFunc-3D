@@ -1,6 +1,8 @@
 package ru.hse.paramFunc.controller;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,6 +40,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MainSceneController implements EventListener {
@@ -68,6 +71,8 @@ public class MainSceneController implements EventListener {
     private String functionName;
 
     private static final int MAX_FUNCTION_VALUES = 1000;
+    private static final Pattern DOUBLE_NUMBER_PATTERN = Pattern.compile("([1-9]\\d*.\\d+)|(0.\\d+)|([1-9]\\d*)|0|");
+    private static final Pattern INTEGER_NUMBER_PATTERN = Pattern.compile("([1-9]\\d*)|0|");
 
     public MainSceneController(Stage primaryStage) {
         this.stage = primaryStage;
@@ -192,6 +197,13 @@ public class MainSceneController implements EventListener {
             searchYTextField.setText("");
             searchZTextField.setText("");
         });
+        searchButton.setDisable(true);
+
+        searchTTextField.textProperty().addListener(new ValidationListener(searchTTextField));
+        searchYTextField.textProperty().addListener(new ValidationListener(searchYTextField));
+        searchZTextField.textProperty().addListener(new ValidationListener(searchZTextField));
+        searchXTextField.textProperty().addListener(new ValidationListener(searchXTextField));
+
         cameraXButton.setOnAction(e -> CameraController.setTo2DXPosition());
         cameraYButton.setOnAction(e -> CameraController.setTo2DYPosition());
         cameraZButton.setOnAction(e -> CameraController.setTo2DZPosition());
@@ -591,4 +603,51 @@ public class MainSceneController implements EventListener {
         functionTitledPane.setContent(vBox);
         return functionTitledPane;
     }
+
+    private class ValidationListener implements ChangeListener<String> {
+
+        private TextField textField;
+
+        public ValidationListener(TextField textField) {
+            this.textField = textField;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+            Pattern textFieldPattern = textField.equals(searchTTextField)
+                    ? INTEGER_NUMBER_PATTERN
+                    : DOUBLE_NUMBER_PATTERN;
+
+            if(textFieldPattern.matcher(textField.getText()).matches()) {
+                textField.getStyleClass().remove("invalid-text-field");
+            } else {
+                boolean isExists = textField.getStyleClass().stream()
+                        .anyMatch(c -> c.equals("invalid-text-field"));
+                if(!isExists) {
+                    textField.getStyleClass().add("invalid-text-field");
+                }
+            }
+
+            List<TextField> textFields = List.of(
+                    searchTTextField,
+                    searchXTextField,
+                    searchYTextField,
+                    searchZTextField);
+
+            Boolean isAllValid = textFields.stream()
+                    .map(tf -> tf.equals(searchTTextField)
+                            ? INTEGER_NUMBER_PATTERN.matcher(tf.getText()).matches()
+                            : DOUBLE_NUMBER_PATTERN.matcher(tf.getText()).matches())
+                    .reduce(true, (a, b) -> a && b);
+            Boolean isAllEmpty = textFields.stream()
+                    .map(tf -> tf.getText().isEmpty())
+                    .reduce(true, (a, b) -> a && b);
+            if (isAllValid && !isAllEmpty) {
+                searchButton.setDisable(false);
+            } else {
+                searchButton.setDisable(true);
+            }
+        }
+    }
+
 }
