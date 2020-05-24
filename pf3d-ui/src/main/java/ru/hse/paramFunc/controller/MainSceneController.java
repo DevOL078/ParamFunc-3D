@@ -71,7 +71,7 @@ public class MainSceneController implements EventListener {
     private String functionName;
 
     private static final int MAX_FUNCTION_VALUES = 1000;
-    private static final Pattern DOUBLE_NUMBER_PATTERN = Pattern.compile("([1-9]\\d*.\\d+)|(0.\\d+)|([1-9]\\d*)|0|");
+    private static final Pattern DOUBLE_NUMBER_PATTERN = Pattern.compile("(-?[1-9]\\d*.\\d+)|(-?0.\\d+)|(-?[1-9]\\d*)|0|");
     private static final Pattern INTEGER_NUMBER_PATTERN = Pattern.compile("([1-9]\\d*)|0|");
 
     public MainSceneController(Stage primaryStage) {
