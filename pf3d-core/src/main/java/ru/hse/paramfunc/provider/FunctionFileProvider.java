@@ -88,6 +88,19 @@ public class FunctionFileProvider {
         }
     }
 
+    public static void deleteTmpFile(Function function) {
+        Path filePath = getFilePath(function);
+
+        try {
+            if(Files.exists(filePath)) {
+                Files.delete(filePath);
+            }
+        } catch (IOException e) {
+            System.err.println("File " + filePath + " haven't been deleted");
+            e.printStackTrace();
+        }
+    }
+
     private static Path getFilePath(Function function) {
         return Paths.get(localFilePrefix, function.getName() + ".fun");
     }

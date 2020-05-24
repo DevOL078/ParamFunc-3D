@@ -5,6 +5,7 @@ import ru.hse.paramfunc.domain.Function;
 import ru.hse.paramfunc.domain.FunctionPoint;
 import ru.hse.paramfunc.event.EventMediator;
 import ru.hse.paramfunc.event.EventType;
+import ru.hse.paramfunc.provider.FunctionFileProvider;
 import ru.hse.paramfunc.settings.AppSettings;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class FunctionStorage {
 
     public void removeFunction(Function function) {
         functionList.remove(function);
+        FunctionFileProvider.deleteTmpFile(function);
         EventMediator.notifyAllListeners(EventType.FUNCTION_LIST_UPDATE);
     }
 
