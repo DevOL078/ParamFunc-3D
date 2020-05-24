@@ -89,8 +89,7 @@ public class SelectionFunction implements IFunction {
         //Find ()
         if(expression.charAt(0) == '(' && expression.charAt(expression.length() - 1) == ')') {
             String expr = expression.substring(1, expression.length() - 1);
-            IFunction operand = new SelectionFunction(expr);
-            this.function = operand::calculate;
+            this.function = new SelectionFunction(expr);
             return;
         }
 
@@ -123,8 +122,6 @@ public class SelectionFunction implements IFunction {
         }
         return openPar == closePar;
     }
-
-
 
     @Override
     public int calculate(int value) {

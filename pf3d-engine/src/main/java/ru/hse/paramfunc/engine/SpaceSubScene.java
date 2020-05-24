@@ -6,7 +6,6 @@ import javafx.animation.SequentialTransition;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.SceneAntialiasing;
@@ -55,7 +54,7 @@ public class SpaceSubScene extends SubScene implements EventListener {
     private Map<String, Animation> animationMap;
 
     private ChangeListener<Number> cameraSpeedChangeListener = (observableValue, o, t1) -> {
-        if(is3DCoordinateSystem) {
+        if (is3DCoordinateSystem) {
             CameraController.setUpForThreeDimSpace();
         } else {
             CameraController.setUpForTwoDimSpace();
@@ -200,12 +199,12 @@ public class SpaceSubScene extends SubScene implements EventListener {
                                 targetPoint,
                                 line1End,
                                 Color.YELLOW,
-                                (float)(CameraController.getCameraPositiveZoom() / 400));
+                                (float) (CameraController.getCameraPositiveZoom() / 400));
                         Line3D line2 = new Line3D(
                                 targetPoint,
                                 line2End,
                                 Color.YELLOW,
-                                (float)(CameraController.getCameraPositiveZoom() / 400));
+                                (float) (CameraController.getCameraPositiveZoom() / 400));
                         this.additionalLinesGroup.getChildren().addAll(line1, line2);
                     }
                 });
@@ -218,10 +217,6 @@ public class SpaceSubScene extends SubScene implements EventListener {
 
     public FunctionHolder getFunctionHolderByFunction(Function function) {
         return this.pointsGroup.getFunctionHolderByFunction(function);
-    }
-
-    public List<FunctionHolder> getAllFunctionHolders() {
-        return this.pointsGroup.getAllFunctionHolders();
     }
 
     public static DoubleProperty getFpsProperty() {

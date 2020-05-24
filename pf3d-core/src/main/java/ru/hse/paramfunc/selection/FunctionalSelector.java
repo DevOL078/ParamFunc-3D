@@ -14,7 +14,7 @@ public class FunctionalSelector implements PointSelector {
         IFunction function = new SelectionFunction(changedExpression);
         Set<FunctionPoint> selectedPoints = new HashSet<>();
         int currentSelectedIndex = 0;
-        //Чтобы как-то ограничить цикл и не ставить while(true)
+
         while(currentSelectedIndex < allPoints.size()) {
             int indexToSelect = function.calculate(currentSelectedIndex);
             if(indexToSelect >= 0 && indexToSelect < allPoints.size()) {

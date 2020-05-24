@@ -67,8 +67,6 @@ public class CatmullRomSpline implements Spline {
             splinePoints.addAll(lastSplinePoints);
         }
 
-
-
         return splinePoints;
     }
 
@@ -89,14 +87,26 @@ public class CatmullRomSpline implements Spline {
 
         List<FunctionPoint> splinePoints = new ArrayList<>();
         for (double t = t1; t < t2; t += ((t2 - t1) / pointsNumber)) {
-            double[][] a1 = sum(multiplyByNumber(m0, (t1 - t) / (t1 - t0)), multiplyByNumber(m1, (t - t0) / (t1 - t0)));
-            double[][] a2 = sum(multiplyByNumber(m1, (t2 - t) / (t2 - t1)), multiplyByNumber(m2, (t - t1) / (t2 - t1)));
-            double[][] a3 = sum(multiplyByNumber(m2, (t3 - t) / (t3 - t2)), multiplyByNumber(m3, (t - t2) / (t3 - t2)));
+            double[][] a1 = sum(
+                    multiplyByNumber(m0, (t1 - t) / (t1 - t0)),
+                    multiplyByNumber(m1, (t - t0) / (t1 - t0)));
+            double[][] a2 = sum(
+                    multiplyByNumber(m1, (t2 - t) / (t2 - t1)),
+                    multiplyByNumber(m2, (t - t1) / (t2 - t1)));
+            double[][] a3 = sum(
+                    multiplyByNumber(m2, (t3 - t) / (t3 - t2)),
+                    multiplyByNumber(m3, (t - t2) / (t3 - t2)));
 
-            double[][] b1 = sum(multiplyByNumber(a1, (t2 - t) / (t2 - t0)), multiplyByNumber(a2, (t - t0) / (t2 - t0)));
-            double[][] b2 = sum(multiplyByNumber(a2, (t3 - t) / (t3 - t1)), multiplyByNumber(a3, (t - t1) / (t3 - t1)));
+            double[][] b1 = sum(
+                    multiplyByNumber(a1, (t2 - t) / (t2 - t0)),
+                    multiplyByNumber(a2, (t - t0) / (t2 - t0)));
+            double[][] b2 = sum(
+                    multiplyByNumber(a2, (t3 - t) / (t3 - t1)),
+                    multiplyByNumber(a3, (t - t1) / (t3 - t1)));
 
-            double[][] c = sum(multiplyByNumber(b1, (t2 - t) / (t2 - t1)), multiplyByNumber(b2, (t - t1) / (t2 - t1)));
+            double[][] c = sum(
+                    multiplyByNumber(b1, (t2 - t) / (t2 - t1)),
+                    multiplyByNumber(b2, (t - t1) / (t2 - t1)));
 
             splinePoints.add(FunctionPoint.builder()
                     .t(p1.getT())

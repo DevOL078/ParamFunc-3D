@@ -111,7 +111,7 @@
                         <Insets right="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <ColorPicker fx:id="valuesColorPicker" GridPane.columnIndex="1" />
+                  <ColorPicker fx:id="valuesColorPicker" styleClass="inspector-button" GridPane.columnIndex="1" />
                   <Label styleClass="inspector-label" text="Radius" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                      <font>
                         <Font size="15.0" />
@@ -161,7 +161,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <ColorPicker fx:id="interpolationColorPicker" GridPane.columnIndex="1" />
+                  <ColorPicker fx:id="interpolationColorPicker" styleClass="inspector-button" GridPane.columnIndex="1" />
                   <TextField fx:id="interpolationRadiusTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="3" />
                   <TextField fx:id="interpolationPointsNumberTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
@@ -205,7 +205,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <ColorPicker fx:id="animationColorPicker" GridPane.columnIndex="1" />
+                  <ColorPicker fx:id="animationColorPicker" styleClass="inspector-button" GridPane.columnIndex="1" />
                   <TextField fx:id="animationRadiusTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="3" />
                   <TextField fx:id="animationTimeTextField" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="125.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>

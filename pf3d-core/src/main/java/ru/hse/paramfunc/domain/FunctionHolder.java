@@ -31,14 +31,22 @@ public class FunctionHolder {
         this.function = function;
         this.isInterpolationShownProperty = new SimpleBooleanProperty(false);
         this.currentAnimationProperty = new SimpleObjectProperty<>();
-        this.valuesColorProperty = new SimpleObjectProperty<>(AppSettings.functionPointsColorProperty().get());
-        this.valuesRadiusProperty = new SimpleDoubleProperty(AppSettings.functionPointsRadiusProperty().get());
-        this.interpolationColorProperty = new SimpleObjectProperty<>(AppSettings.interpolationPointsColorProperty().get());
-        this.interpolationRadiusProperty = new SimpleDoubleProperty(AppSettings.interpolationPointsRadiusProperty().get());
-        this.interpolationPointsNumberProperty = new SimpleIntegerProperty(AppSettings.interpolationPointsCountProperty().get());
-        this.animationColorProperty = new SimpleObjectProperty<>(AppSettings.animationPointsColorProperty().get());
-        this.animationRadiusProperty = new SimpleDoubleProperty(AppSettings.animationPointsRadiusProperty().get());
-        this.animationTimeProperty = new SimpleObjectProperty<>(javafx.util.Duration.millis(AppSettings.animationSpeedProperty().get()));
+        this.valuesColorProperty = new SimpleObjectProperty<>(
+                AppSettings.functionPointsColorProperty().get());
+        this.valuesRadiusProperty = new SimpleDoubleProperty(
+                AppSettings.functionPointsRadiusProperty().get());
+        this.interpolationColorProperty = new SimpleObjectProperty<>(
+                AppSettings.interpolationPointsColorProperty().get());
+        this.interpolationRadiusProperty = new SimpleDoubleProperty(
+                AppSettings.interpolationPointsRadiusProperty().get());
+        this.interpolationPointsNumberProperty = new SimpleIntegerProperty(
+                AppSettings.interpolationPointsCountProperty().get());
+        this.animationColorProperty = new SimpleObjectProperty<>(
+                AppSettings.animationPointsColorProperty().get());
+        this.animationRadiusProperty = new SimpleDoubleProperty(
+                AppSettings.animationPointsRadiusProperty().get());
+        this.animationTimeProperty = new SimpleObjectProperty<>(
+                javafx.util.Duration.millis(AppSettings.animationSpeedProperty().get()));
         this.focusProperty = new SimpleBooleanProperty(false);
         this.visibleProperty = new SimpleBooleanProperty(true);
     }

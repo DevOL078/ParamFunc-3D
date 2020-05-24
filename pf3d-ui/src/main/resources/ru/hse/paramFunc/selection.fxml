@@ -75,7 +75,7 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="closeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" styleClass="inspector-button" text="Close" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                  <Button fx:id="closeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" styleClass="inspector-button" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
                         <Font size="15.0" />
                      </font>
