@@ -2,10 +2,7 @@ package ru.hse.paramfunc.selection;
 
 import ru.hse.paramfunc.domain.FunctionPoint;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class FunctionalSelector implements PointSelector {
     @Override
@@ -16,10 +13,11 @@ public class FunctionalSelector implements PointSelector {
         int currentSelectedIndex = 0;
 
         while(currentSelectedIndex < allPoints.size()) {
-            int indexToSelect = function.calculate(currentSelectedIndex);
-            if(indexToSelect >= 0 && indexToSelect < allPoints.size()) {
-                selectedPoints.add(allPoints.get(indexToSelect));
-            }
+            int tValueToSelect = function.calculate(currentSelectedIndex);
+            Optional<FunctionPoint> pointToSelect = allPoints.stream()
+                    .filter(p -> p.getT() == tValueToSelect)
+                    .findFirst();
+            pointToSelect.ifPresent(selectedPoints::add);
 
             currentSelectedIndex++;
         }

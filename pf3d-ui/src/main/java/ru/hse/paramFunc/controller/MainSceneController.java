@@ -33,7 +33,7 @@ import ru.hse.paramfunc.engine.SpaceSubScene;
 import ru.hse.paramfunc.event.EventListener;
 import ru.hse.paramfunc.event.EventMediator;
 import ru.hse.paramfunc.event.EventType;
-import ru.hse.paramfunc.parser.FunctionValues3DParser;
+import ru.hse.paramfunc.parser.ParseService;
 import ru.hse.paramfunc.storage.FunctionStorage;
 
 import java.io.File;
@@ -110,7 +110,7 @@ public class MainSceneController implements EventListener {
                         Task<Void> task = new Task<>() {
                             @Override
                             protected Void call() throws Exception {
-                                List<FunctionPoint> allPoints = FunctionValues3DParser.getInstance().parse(loadedFile.getAbsolutePath());
+                                List<FunctionPoint> allPoints = ParseService.getInstance().parse(loadedFile.getAbsolutePath());
                                 Function function = new Function(functionName);
                                 function.setAllPoints(allPoints);
                                 function.setSelectedPoints(allPoints);
@@ -618,12 +618,12 @@ public class MainSceneController implements EventListener {
                     ? INTEGER_NUMBER_PATTERN
                     : DOUBLE_NUMBER_PATTERN;
 
-            if(textFieldPattern.matcher(textField.getText()).matches()) {
+            if (textFieldPattern.matcher(textField.getText()).matches()) {
                 textField.getStyleClass().remove("invalid-text-field");
             } else {
                 boolean isExists = textField.getStyleClass().stream()
                         .anyMatch(c -> c.equals("invalid-text-field"));
-                if(!isExists) {
+                if (!isExists) {
                     textField.getStyleClass().add("invalid-text-field");
                 }
             }

@@ -9,16 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionValues3DParser implements Parser {
-
-    private final static FunctionValues3DParser instance = new FunctionValues3DParser();
-
-    private FunctionValues3DParser() {
-    }
-
-    public static FunctionValues3DParser getInstance() {
-        return instance;
-    }
+public class Function3DParser implements Parser {
 
     @Override
     public List<FunctionPoint> parse(String filePath) throws IOException {
@@ -27,7 +18,8 @@ public class FunctionValues3DParser implements Parser {
         List<FunctionPoint> points = new ArrayList<>();
         Files.lines(path)
                 .forEach(s -> {
-                    String[] parts = s.split(" ");
+                    s = s.replaceAll("[\"']", "");
+                    String[] parts = s.split(" |,");
                     if (parts.length != 4) {
                         throw new IllegalStateException("Illegal file format");
                     }
@@ -37,7 +29,7 @@ public class FunctionValues3DParser implements Parser {
                     float y = Float.parseFloat(parts[2]);
                     float z = Float.parseFloat(parts[3]);
 
-                    points.add(FunctionPoint.builder()
+                    FunctionPoint point = FunctionPoint.builder()
                             .t(t)
                             .systemX(x)
                             .systemY(y)
@@ -45,9 +37,11 @@ public class FunctionValues3DParser implements Parser {
                             .originalX(x)
                             .originalY(y)
                             .originalZ(z)
-                            .build());
+                            .build();
+                    System.out.println("Loaded " + point);
+
+                    points.add(point);
                 });
-        points.forEach(System.out::println);
         return points;
     }
 
